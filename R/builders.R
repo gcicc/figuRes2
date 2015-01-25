@@ -2,12 +2,8 @@
 
 #' @title build.page
 #' @description  Takes page dimensions, figure layout dimenesions and an ordered list of grobs/ggplot objects orients them on a page
-#' @param interior.h a vector summing to 1 to indicate how to partition the heights
-#' @param interior.w a vector summing to 1 to indicate how to partition the widths
-#' @param test.dim logical. Assists with figure development. If TRUE it makes a call to grid.show.layout.  
-#' @param ncol number of columns for the grid of figures
-#' @param nrow number of rows for the grid of figures
-#' @param interior a list of ncol*nrol grobs/ggplot objects to be displayed in the grid, ordered by row then col
+#' @inheritParams graphic.params
+
 build.page <- 
   function (
     interior.h=c(1/3,1/3,1/3),
@@ -29,8 +25,6 @@ build.page <-
     if(sum(interior.w) !=1) return("Argument interior.w is not equal to 1.")
     if(length(interior.h) != nrow || length(interior.w) != ncol) return(cat("Check arguments: page.heights/page.widths does not correspond with ncol/nrow."))
     
-    nrow <- nrow
-    ncol <- ncol
     page.widths <- unit(c(right.margin, interior.w*(page.width-right.margin-left.margin), left.margin), units="inches")
     page.heights <- unit(c(top.margin, interior.h*(page.height - top.margin - bottom.margin), bottom.margin), units="inches")
     
@@ -43,7 +37,8 @@ build.page <-
                         heights = page.heights, widths = page.widths) {
       padded <- list()
       for (i in 1:((int.ncol + 2) * (int.nrow + 2))) {
-        padded[[length(padded) + 1]] <- blankPanel
+  #   blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE) # From default settings
+        padded[[length(padded) + 1]] <- grid.rect(gp=gpar(col="white"), draw=FALSE)
       }
       names(padded) <- rep("blankPanel", (int.nrow + 2) * (int.ncol + 
                                                              2))

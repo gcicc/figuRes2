@@ -1,9 +1,9 @@
-Package: figuRes
+Package: figures2
 Type: Package
 Title: A package to support a variety of figure production tasks
-Version: 1.55
-Date: 2015-01-23
-Author: Greg Cicconetti
+Version: 1.00
+Date: 2015-01-25
+Authors: Greg Cicconetti, David Wade
 Maintainer: Greg Cicconetti <greg.2.cicconetti@gsk.com>
 Description: This package takes the view that a figure is a collection of
     graphs/tables assembled on a page and optionally annotated with metadata

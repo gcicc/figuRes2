@@ -193,8 +193,6 @@ default.settings2 <- function(
   cat(paste("\nThe default theme:", main.theme, "\n"))
 }
 
-
-
 # Custom Themes -----------------------------------------------------------
 #' @title theme_grey2_nomargins
 #' @description Adapts theme_grey() found in ggplot2 version 0.9.3

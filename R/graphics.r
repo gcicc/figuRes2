@@ -1,4 +1,3 @@
-
 # Standard Graphics Names -------------------------------------------------
 #' @title Standard graphics names
 #' @description This is a dummy function, purpose is to serve as repositiory for function parameter names.
@@ -9,10 +8,15 @@
 #' @param category.palette colors assoicated with categorical variable
 #' @param censor.col name of parent.df column associated with censor variable
 #' @param centime.col name of parent.df column associated with censored time
+#' @param interior a list of nrow*ncol grobs/ggplot objects to be displayed in the grid, ordered by row then col
+#' @param interior.h a vector summing to 1 to indicate how to partition the heights
+#' @param interior.w a vector summing to 1 to indicate how to partition the widths
 #' @param label.col name of parent.df column containing labels 
 #' @param line.col name of parent.df column associated with linetype
 #' @param line.size value gets passed to size within geom_line, geom_step
 #' @param linetype.palette values passed to scale_linetype_manual
+#' @param ncol number of columns for the grid of graphics being built by build.page
+#' @param nrow number of rows for the grid of graphics being built by build.page
 #' @param page.height used by build.page and annotate.page
 #' @param page.width used by build.page and annotate.page
 #' @param right.margin used by build.page and annotate.page
@@ -21,6 +25,11 @@
 #' @param bottom.margin used by build.page and annotate.page
 #' @param shape.label value sets passed to labs
 #' @param shape.palette values passed to scale_shape_manual
+#' @param test.dim logical. Assists with figure development. If TRUE it makes a call to grid.show.layout.
+#' @param text.col1 name of column holding text for column 1
+#' @param text.col2 name of column holding text for column 2; can be NULL
+#' @param text.col3 name of column holding text for column 3; can be NULL
+#' @param text.col4 name of column holding text for column 4; can be NULL
 #' @param text.size value gets passed to geom_text
 #' @param x.label value gets passed to labs
 #' @param x.limits value gets passed to scale_x_continuous
@@ -45,10 +54,15 @@ graphic.params <- function(
   category.palette, 
   censor.col,
   centime.col,
+  interior,
+  interior.h,
+  interior.w,
   label.col,
   line.col, 
   line.size,
   linetype.palette,
+  ncol,
+  nrow,
   page.height,
   page.width,
   right.margin,
@@ -57,6 +71,7 @@ graphic.params <- function(
   bottom.margin,
   shape.label,
   shape.palette, 
+  test.dim,
   x.label,
   x.limits,
   x.ticks,
@@ -67,7 +82,7 @@ graphic.params <- function(
   ymin.col,
   ymax.col,
   y.ticks){
-return("hello")
+return("Hello, this function is just a convient location to store argument names.")
 }
 
 # bar.plot ----------------------------------------------------------------
@@ -305,15 +320,7 @@ cdf.plot <-
 #' @title table.plot
 #' @description A function for plotting columns of text in a figure offering compatiability with forest.plot and dot.plot. 
 #' @inheritParams graphic.params
-#' @param text.col1 name of column holding text for column 1
-#' @param text.col2 name of column holding text for column 2; can be NULL
-#' @param text.col3 name of column holding text for column 3; can be NULL
-#' @param text.col4 name of column holding text for column 4; can be NULL
-#' @param xtick.labs names for x tick labels - should be same length as non-NULL text columns
-#' @param label name of column containing labels for y-axis
-#' @param y.buff numerical buffer added to top of figure - essentially a mechanism for adding space to top of figure
 #' @author Greg Cicconetti
-
 table.plot <-
   function(
     parent.df = working.df,
@@ -422,15 +429,7 @@ table.plot <-
 #' @title table.plot2
 #' @description A function for plotting columns of text in a figure offering compatiability with forest.plot and dot.plot. 
 #' @inheritParams graphic.params
-#' @param text.col1 name of column holding text for column 1
-#' @param text.col2 name of column holding text for column 2; can be NULL
-#' @param text.col3 name of column holding text for column 3; can be NULL
-#' @param text.col4 name of column holding text for column 4; can be NULL
-#' @param xtick.labs names for x tick labels - should be same length as non-NULL text columns
-#' @param label name of column containing labels for y-axis
-#' @param y.buff numerical buffer added to top of figure - essentially a mechanism for adding space to top of figure
 #' @author Greg Cicconetti
-
 table.plot2 <-
   function(
     parent.df = working.df,
@@ -536,7 +535,6 @@ table.plot2 <-
   }
 
 # forest.plot -------------------------------------------------------------
-
 #' @title forest.plot
 #' @description A function for plotting forest plots offering compatiability with table.plot and dot.plot. 
 #' @inheritParams graphic.params
@@ -697,7 +695,6 @@ dot.plot <- function (parent.df = dot.df.melt, category.col = "Treatment",
 }
 
 # funnel.plot -------------------------------------------------------------
-
 #' @title funnel.plot
 #' @description Creates a funnel plot tailored for regions.
 #' @details Appeals to Poisson-distribution for confidence bounds and makes continuity correction. Outliers are identified by name.  # This function should return a series of ggplot objects
@@ -1062,8 +1059,7 @@ nsubj.plot <-
   function (parent.df = working.df,
             category.palette = c("red","blue"), 
             x.label = "Number of Subjects", 
-            y.label = "Treatment\nGroup", 
-            
+            y.label = "Treatment\nGroup",
             text.size = 4,
             x.col="XVALUES",
             text.col="N",
