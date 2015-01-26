@@ -11,7 +11,7 @@ Description: This package takes the view that a figure is a collection of
     offered to streamline a variety of figure production task.
 License: GPL-2, GPL-3
 LazyLoad: yes
-Depends:
+Depends: R (>= 3.1.2), 
     ggplot2,
     grid,
     gridExtra,
