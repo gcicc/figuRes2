@@ -1,6 +1,14 @@
+# figures2 1.01
+-------------
+* revised bar.plot and added example
+* Lean verions of default.settings - need to see if this impacts
+* added vignettes
+* reorganized and trimmed back number of functions
+
 # figures2 1.00
 -------------
 * Reboot of figuRes 
+* github integration
 
 # Figures 1.55
 ----------------

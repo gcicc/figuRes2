@@ -1,5 +1,7 @@
 
-# Functions for working with outputplan --------------------------------------
+# Helper functions for working with outputplan -----------
+
+# refresh.outputplan----
 #' @title Refresh the Output Plan
 #' @description Reloads outputplan_study.csv file and applies canonical formatting changes.
 #' @details Ensure all columns are read in as character vectors. Ensure all missing entries are replaced with blank character string. Ensure all escape characters for carrige returns are respected. Grabs the 'modified time' from file attributes associated with .csv files named in the outputplan.
@@ -89,7 +91,8 @@ refresh.outputplan <-
   }
 
 
-# Functions for Output control --------------------------------------------------------
+# Functions for Output control -----------------------
+# run.specific-----
 #' @title run.specific
 #' @description This function sources a .r driver file and sends its product to a newly opened 8.5in x 11in screen or a pdf file with 8.5in x 11in dimensions.
 #' @param source.code This is intended to be a darapladib graphics driver file returning a graphic possibly with complete headers and footers.
@@ -104,7 +107,7 @@ refresh.outputplan <-
 #' \dontrun{
 #' }
 #' @author David wade
-run.specific<-
+run.specific <-
   function (source.code = "g_AErr2.r", 
             outfile = "", toPDF=F, toWMF=F, toJPEG=F, toPNG=F, toBMP=F, toEPS=F, dpires=600)
     { 
@@ -263,6 +266,7 @@ run.specific<-
     }
   }
 
+# all.in.one ----
 #' @title all.in.one
 #' @description Produces pdf files with batches of graphics based on flags in outputplan. A progress bar is displayed.
 #' @details Prerequisites: You need to have output, code, data directory paths defined in your workspace. These should take variable names od, cd, dd, respectively. This can be done by running a personalized set of the following commands:
@@ -323,103 +327,12 @@ all.in.one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE)
   elasped
 }
 
-#' @title Insert a New Line
-#' @description This function takes a string and returns a list containing 4 components.  
-#' @details Fill in details
-#' @param text.string a text string holding the title to a display
-#' @param nlhere a vector of integers identifying after which ordered word in the title a new line should be placed
-#' @examples 
-#' \dontrun{
-#' insertNL(outputplan$FigureTitle[90])
-#' }
-#' @author Greg Cicconetti
-insertNL <- function(text.string = "Kaplan-Meier Plot of Time to First Occurence of the Total Coronary Events Excluding Target Lesion Revascularizations in Subjects Treated with Percutaneous Coronary Intervention Prior to Randomization During the Time Period for Follow-up of Cardiovascular Efficacy Endpoints",
-                     nlhere=seq(7,70,7)){
-  text.string <- gsub("\\n", " ", x=text.string)
-  # 2 lines:  
-  NL.2 <- 
-    paste(
-      paste(unlist(strsplit(text.string," "))[1:floor(length(unlist(strsplit(text.string," ")))/2)], collapse=" ")
-      ,"\n",
-      paste(unlist(strsplit(text.string," "))[(floor(length(unlist(strsplit(text.string," ")))/2)+1):length(unlist(strsplit(text.string," ")))], collapse=" ")
-      ,sep="")
-  
-  # 3 lines:
-  NL.3 <- 
-    paste(
-      paste(unlist(strsplit(text.string," "))[1:floor(length(unlist(strsplit(text.string," ")))/3)], collapse=" ")
-      ,"\n",
-      paste(unlist(strsplit(text.string," "))[(floor(length(unlist(strsplit(text.string," ")))/3)+1):(2*floor(length(unlist(strsplit(text.string," ")))/3))], collapse=" ")
-      ,"\n",
-      paste(unlist(strsplit(text.string," "))[(2*floor(length(unlist(strsplit(text.string," ")))/3)+1):length(unlist(strsplit(text.string," ")))], collapse=" ")
-      ,sep="")
-  
-  # 4 lines
-  NL.4 <- 
-    paste(
-      paste(unlist(strsplit(text.string," "))[1:floor(length(unlist(strsplit(text.string," ")))/4)], collapse=" ")
-      ,"\n",
-      paste(unlist(strsplit(text.string," "))[(floor(length(unlist(strsplit(text.string," ")))/4)+1):(2*floor(length(unlist(strsplit(text.string," ")))/4))], collapse=" ")
-      ,"\n",
-      paste(unlist(strsplit(text.string," "))[(floor(length(unlist(strsplit(text.string," ")))/4*2)+1):(3*floor(length(unlist(strsplit(text.string," ")))/4))], collapse=" ")
-      ,"\n",
-      paste(unlist(strsplit(text.string," "))[(3*floor(length(unlist(strsplit(text.string," ")))/4)+1):length(unlist(strsplit(text.string," ")))], collapse=" ")
-      ,sep="")
-  
-  length(unlist(strsplit(text.string," ")))
-  # Insert arbitrarily:  vector 
-  
-  nlhere <- c(nlhere, length(unlist(strsplit(text.string," "))))
-  nlhere <- nlhere[nlhere <= length(unlist(strsplit(text.string," ")))]
-  nlhere <- unique(nlhere)
-  nlhere <- sort(nlhere)
-  NL.here <- character()
-  for(i in 1:length(nlhere)){
-    if(i != length(nlhere))
-      NL.here <- paste(NL.here, paste(unlist(strsplit(text.string," "))[(length(unlist(strsplit(NL.here," "))) +1): nlhere[i] ], collapse= " "), "\n", sep="")
-    if(i == length(nlhere))
-      NL.here <- paste(NL.here, paste(unlist(strsplit(text.string," "))[(nlhere[i-1]+1): nlhere[i] ], collapse= " "), sep="")
-  }
-  
-  return(c(NL.2, NL.3, NL.4, NL.here))
-  
-}
-
 #' @title standardize
 #' @description A helper function for determining y-axis position
 #' @param x a vector
 standardize <- function(x){(x-mean(x))/(length(unique(x)))}
 
-# Utility Functions ------------------------------------------------------
-#' @title ddmmyy.chron
-#' @description This function converts text dates to Date dates via lubridate
-#' @param string character string vector with ddmmyy format
-#' @seealso convert.dates
-#' @examples
-#' \dontrun{
-#' }
-#' @author Greg Cicconetti
-ddmmmyy.data   <- function(string){
-  as.Date(dmy(paste(substring(as.character(string), 1,2), 
-                    substring(as.character(string), 3,5), 
-                    substring(as.character(string), 6,9))))
-}
-
-#' @title convert.dates
-#' @description This function applies ddmmmyy.data to all columns of a data.frame ending in 'DT'
-#' @param dataset a data.frame
-#' @examples
-#' \dontrun{
-#' }
-#' @author Greg Cicconetti
-convert.dates   <- function(dataset){
-  # Applys ddmmyy.chron to all columns in a data.frame ending in 'DT'
-  for(i in names(dataset)[substring(names(dataset),nchar(names(dataset))-1, nchar(names(dataset))) =="DT"]) {
-    dataset[,colnames(dataset) == i] <- ddmmmyy.data((dataset[,colnames(dataset) == i]))
-  } 
-  dataset
-}
-
+# Utility Functions -----------------------------------
 #' @title fmt
 #' @description A function to control number of digits used in graphics.
 #' @details This function is used within ggplot, e.g. (scale_y_continuous(labels=fmt(digits=3))) to control the number of digits presented. By default, axis labels will truncate zeros so that labels might read: 0, 2.5, 5, 7.5. Using this will result in labels: 0.0, 2.5, 5.0, 7.5.
@@ -442,7 +355,6 @@ fmt <- function(digits=2){
 #' @examples
 #' \dontrun{
 #' }
-#' @author Ripped from stackoverflow
 facetAdjust <-
   function (x, pos = c("up", "down"), newpage = is.null(vp), vp = NULL) 
   {
@@ -483,8 +395,8 @@ facetAdjust <-
     invisible(list(p, gtable))
   }
 
-
 # David's functions-----
+# start.session.log----
 #' @title start.session.log
 #' @description A function to start logging the session history for a graphic driver run 
 #' @details Note that the stop.session.log function is used to stop the logging and save the log file.
@@ -557,234 +469,3 @@ stop.session.log<-function()
 }
 
 
-
-#' @title code column names
-#' @description This function reads in a dataframe from a HARP dddata datafile .csv and returns a copy of the dataframe with a format-specified subset of the column names coded to a format-specified set of numerical values specified by the format name passed.
-#' @param parent.df The name of the dataframe to be processed.
-#' @param format.name  The name of a pre-specified format
-#' @author David Wade
-code.column.names <- function(parent.df = working.df, format.name = "TRT633")
-{                     
-  working.df <- parent.df   
-  # Code any treatment columns by assigning code numbers to them
-  format.name.found <- FALSE  
-  if (format.name=="TRT633") {
-    format.name.found <- TRUE
-    names(working.df)[grep('Control',names(working.df))] <- 't_0'
-    names(working.df)[grep('X4.mg',  names(working.df))] <- 't_1'
-    names(working.df)[grep('X6.mg',  names(working.df))] <- 't_2'    
-    names(working.df)[grep('X8.mg',  names(working.df))] <- 't_3'    
-    names(working.df)[grep('X10.mg', names(working.df))] <- 't_4'    
-    names(working.df)[grep('X12.mg', names(working.df))] <- 't_5'    
-    names(working.df)[grep('X15.mg', names(working.df))] <- 't_6'    
-    names(working.df)[grep('X25.mg', names(working.df))] <- 't_7'    
-  }
-  
-  if (format.name.found==FALSE){    
-    cat(paste("figuRes Warning:","The format name",format.name,"was not found.\n"))    
-  }  
-  parent.df <- working.df
-  return(parent.df)
-}
-
-#' @title decode.column.values
-#' @description This function reads in a dataframe that has a column with numerically coded values and returns a copy of the dataframe with a new column containing the decoded text values and the decoded plot symbols for those same values
-#' @param parent.df The name of the dataframe to be processed
-#' @param format.name  The name of a pre-specified treatment format
-#' @param coded.col  The name of the existing column containing the numerically coded treatment values
-#' @param formatted.col  The name of the new column to contain the decoded treatment text values
-#' @param formatted.symbol.col  The name of the new column to contain the decoded treatment plot symbols
-#' @examples
-#' \dontrun{ 
-#' # Assign formatted values to TREATMENT
-#' working.df <- decode.column.values (parent.df = working.df, format.name  ="TRT633", coded.col ="TREATMENT", formatted.col="TREATMENT.TEXT", formatted.symbol.col="TREATMENT.SYMBOL")
-#' working.df <- (parent.df=working.df, format.name="TRT633")
-#' }
-#' @author David Wade
-decode.column.values <- function (parent.df    = working.df,
-                                  format.name  = "TRT633",
-                                  coded.col    ="TREATMENT",
-                                  formatted.col="TREATMENT.TEXT",
-                                  formatted.symbol.col="TREATMENT.SYMBOL")
-  {
-  working.df <- parent.df 
-  working.df[,formatted.symbol.col] <- NULL  
-  working.df[,formatted.col]        <- NULL
-  format.name.found<-FALSE
-  if (format.name=="TRT633") {
-    format.name.found<-TRUE    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="0"] <- "C"    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="1"] <- "4"    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="2"] <- "6"    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="3"] <- "8"    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="4"] <- "0"    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="5"] <- "2"    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="6"] <- "5"    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="7"] <- "H"
-    working.df[,formatted.col][working.df[,coded.col]=="0"] <- "Control"    
-    working.df[,formatted.col][working.df[,coded.col]=="1"] <- "4 mg"    
-    working.df[,formatted.col][working.df[,coded.col]=="2"] <- "6 mg"    
-    working.df[,formatted.col][working.df[,coded.col]=="3"] <- "8 mg"    
-    working.df[,formatted.col][working.df[,coded.col]=="4"] <- "10 mg"    
-    working.df[,formatted.col][working.df[,coded.col]=="5"] <- "12 mg"    
-    working.df[,formatted.col][working.df[,coded.col]=="6"] <- "15 mg"    
-    working.df[,formatted.col][working.df[,coded.col]=="7"] <- "25 mg"    
-    working.df[,formatted.col]<-factor(working.df[,formatted.col],
-                                       c("Control","4 mg", "6 mg", "8 mg", "10 mg", "12 mg", "15 mg", "25 mg"))
-    }
-  if (format.name.found==FALSE){    
-    cat(paste("figuRes Warning:","The format name",format.name,"was not found."))    
-  } 
-  
-  parent.df <- working.df  
-  return(parent.df)
-}
-
-
-
-
-#' @title code.treatment.values
-#' @description blah
-#' @param format.name
-#' @param coded.col
-#' @param raw.col
-code.treatment.values <- function (parent.df    = working.df,
-                                   format.name  = "TRT633",
-                                   coded.col    ="TREATMENT",                                                                   
-                                   raw.col   ="Planned.Treatment"
-)
-{
-  
-  working.df <- parent.df  
-  
-  working.df[,coded.col] <- "Null"
-  
-  
-  format.name.found=FALSE
-  
-  if (format.name=="TRT633") {
-    format.name.found=TRUE
-    
-    
-    working.df[,coded.col][working.df[,raw.col]=="Control"] <- "0"
-    working.df[,coded.col][working.df[,raw.col]=="4 mg"] <- "1"
-    working.df[,coded.col][working.df[,raw.col]=="6 mg"] <- "2"
-    working.df[,coded.col][working.df[,raw.col]=="8 mg"] <- "3"
-    working.df[,coded.col][working.df[,raw.col]=="10 mg"] <- "4"
-    working.df[,coded.col][working.df[,raw.col]=="12 mg"] <- "5"
-    working.df[,coded.col][working.df[,raw.col]=="15 mg"] <- "6"
-    working.df[,coded.col][working.df[,raw.col]=="25 mg"] <- "7"
-    
-    
-  }
-  
-  if (format.name.found==FALSE){
-    cat(paste("figuRes Warning:","The format name",format.name,"was not found."))
-  }
-  
-  parent.df <- working.df
-  
-  return(parent.df)
-}
-
-
-#' @title code.treatment.columns
-#' @description This function reads in a dataframe from a HARP dddata datafile .csv and returns a copy of the dataframe with a format-specified subset of the column names coded to a format-specified set of numerical values specified by the format name passed. 
-#' @param parent.df The name of the dataframe to be processed.
-#' @param format.name  The name of a pre-specified format (valid values are: ?TRT633?)
-#' @examples
-#' \dontrun{     working.df <- (parent.df=working.df, format.name=?TRT633?)
-#' }
-#' @author David Wade
-code.treatment.columns <- function (parent.df = working.df,
-                                    format.name = "TRT633"
-)
-{
-  
-  working.df <- parent.df  
-  
-  # Code any treatment columns by assigning code numbers to them
-  
-  format.name.found=FALSE
-  
-  if (format.name=="TRT633") {
-    format.name.found=TRUE
-    names(working.df)[grep('Control',names(working.df))] <- 't_0'
-    names(working.df)[grep('X4.mg',  names(working.df))] <- 't_1'
-    names(working.df)[grep('X6.mg',  names(working.df))] <- 't_2'
-    names(working.df)[grep('X8.mg',  names(working.df))] <- 't_3'
-    names(working.df)[grep('X10.mg', names(working.df))] <- 't_4'
-    names(working.df)[grep('X12.mg', names(working.df))] <- 't_5'
-    names(working.df)[grep('X15.mg', names(working.df))] <- 't_6'
-    names(working.df)[grep('X25.mg', names(working.df))] <- 't_7'
-  }
-  
-  if (format.name.found==FALSE){
-    cat(paste("figuRes Warning:","The format name",format.name,"was not found."))
-  }
-  
-  parent.df <- working.df
-  
-  return(parent.df)
-}
-
-
-#' @title decode.treatment.values
-#' @description This function reads in a dataframe that has a column with numerically coded values and returns a copy of the dataframe with a new column containing the decoded text values and the decoded plot symbols for those same values
-#' @param parent.df The name of the dataframe to be processed
-#' @param format.name  The name of a pre-specified treatment format (valid values are: ?TRT633?)
-#? @param coded.col  The name of the existing column containing the numerically coded treatment values
-#? @param formatted.col  The name of the new column to contain the decoded treatment text values
-#? @param formatted.symbol.col  The name of the new column to contain the decoded treatment plot symbols
-#' @examples
-#' \dontrun{    }
-#' @author David Wade
-decode.treatment.values <- function (parent.df    = working.df,
-                                     format.name  = "TRT633",
-                                     coded.col    ="TREATMENT",
-                                     formatted.col="TREATMENT.TEXT",
-                                     formatted.symbol.col="TREATMENT.SYMBOL"
-)
-{
-  
-  working.df <- parent.df  
-  
-  working.df[,formatted.symbol.col] <- "Null"
-  working.df[,formatted.col]        <- "Null"
-  
-  format.name.found=FALSE
-  
-  if (format.name=="TRT633") {
-    format.name.found=TRUE
-    
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="0"] <- "C"
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="1"] <- "4"
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="2"] <- "6"
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="3"] <- "8"
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="4"] <- "0"
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="5"] <- "2"
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="6"] <- "5"
-    working.df[,formatted.symbol.col][working.df[,coded.col]=="7"] <- "H"
-    
-    working.df[,formatted.col][working.df[,coded.col]=="0"] <- "Control"
-    working.df[,formatted.col][working.df[,coded.col]=="1"] <- "4 mg"
-    working.df[,formatted.col][working.df[,coded.col]=="2"] <- "6 mg"
-    working.df[,formatted.col][working.df[,coded.col]=="3"] <- "8 mg"
-    working.df[,formatted.col][working.df[,coded.col]=="4"] <- "10 mg"
-    working.df[,formatted.col][working.df[,coded.col]=="5"] <- "12 mg"
-    working.df[,formatted.col][working.df[,coded.col]=="6"] <- "15 mg"
-    working.df[,formatted.col][working.df[,coded.col]=="7"] <- "25 mg"
-    
-    working.df[,formatted.col]<-factor(working.df[,formatted.col],
-                                       c("Control","4 mg", "6 mg", "8 mg", "10 mg", "12 mg", "15 mg", "25 mg"))
-    
-  }
-  
-  if (format.name.found==FALSE){
-    cat(paste("figuRes Warning:","The format name",format.name,"was not found."))
-  }
-  
-  parent.df <- working.df
-  
-  return(parent.df)
-}

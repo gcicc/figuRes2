@@ -2,7 +2,7 @@ Package: figures2
 Type: Package
 Title: A package to support a variety of figure production tasks
 Version: 1.00
-Date: 2015-01-25
+Date: 2015-01-26
 Authors: Greg Cicconetti, David Wade
 Maintainer: Greg Cicconetti <greg.2.cicconetti@gsk.com>
 Description: This package takes the view that a figure is a collection of
@@ -21,7 +21,8 @@ Depends: R (>= 3.1.2),
     plyr,
     lubridate,
     gtable,
-    stringr
+    stringr,
+    RColorBrewer
 ByteCompile: TRUE
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown

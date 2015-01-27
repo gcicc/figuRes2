@@ -1,4 +1,7 @@
-# Global Defaults ---------------------------------------------------------
+# Global functions for figures2 
+# -----------------------------
+
+# default.settins----
 #' @title default.settings
 #' @description Global Defaults
 #' @details Global Defaults
@@ -14,23 +17,6 @@
 #'   \item devd 
 #'   \item docd
 #'   \item blankPanel 
-#'   \item treatment.labels
-#'   \item treatment.palette
-#'   \item ae.shape.palette
-#'   \item boxplot.shape.palette
-#'   \item lineplot.shape.palette
-#'   \item funnel.plot.line.palette
-#'   \item line.plot.line.palette
-#'   \item lplot2.linetypes
-#'   \item lplot3.linetypes
-#'   \item km.line.palette 
-#'   \item km.line.size 
-#'   \item line.size 
-#'   \item line.plot.line.size 
-#'   \item forest.plot.text.color 
-#'   \item at.risk.palette
-#'   \item adj.palette
-#'   \item outline.color 
 #' }
 #' }
 #' @author Greg Cicconetti
@@ -65,34 +51,33 @@ default.settings <- function()
   cat("The default page left and right page margins:", left.margin, "in. and", right.margin  ,"in., respectively.\n")
   cat("The default top an bottom margins:", top.margin, "in. and ", bottom.margin, "in., respectively.")
   
-
   graph.region.h <<- page.height - (right.margin + left.margin)
   graph.region.w <<- page.width - (top.margin + bottom.margin)
   blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE)
   
-  treatment.labels <<- c("Placebo", "Drug")
-  treatment.palette <<- c("red", "blue")
+#   treatment.labels <<- c("Placebo", "Drug")
+#   treatment.palette <<- c("red", "blue")
 #   ae.shape.palette <<- c(17, 16)
-  boxplot.shape.palette <<- c(24, 24)
-  lineplot.shape.palette <<- c(24, 24)
-  funnel.plot.line.palette <<- c("solid", "dotted", "solid", "dotted")
-  line.plot.line.palette <<- c("solid", "dotted", "solid", "blank")
-  lplot2.linetypes <<- c("solid", "dotted", "dotted", "blank")
-  lplot3.linetypes <<- c("solid", "blank", "dotted", "blank")
-  km.line.palette <<- c("solid", "dotted")
-  km.line.size <<- .75
-  line.size <<- .75
-  line.plot.line.size <<- .75
+#   boxplot.shape.palette <<- c(24, 24)
+#   lineplot.shape.palette <<- c(24, 24)
+#   funnel.plot.line.palette <<- c("solid", "dotted", "solid", "dotted")
+#   line.plot.line.palette <<- c("solid", "dotted", "solid", "blank")
+#   lplot2.linetypes <<- c("solid", "dotted", "dotted", "blank")
+#   lplot3.linetypes <<- c("solid", "blank", "dotted", "blank")
+#   km.line.palette <<- c("solid", "dotted")
+#   km.line.size <<- .75
+#   line.size <<- .75
+#   line.plot.line.size <<- .75
 #   forest.plot.text.color <<- "grey30"
 #   at.risk.palette <<- c("red", "blue")
 #   adj.palette <<- brewer.pal(9, "Blues")[c(3, 5, 6, 7, 9)]
-  outline.color <<- "black"
+#   outline.color <<- "black"
 #   tnsmall <<- 2
   theme_set(theme_grey2_nomargins())
   cat("\nThe default theme: theme_grey2_nomargins", "\n")
 }
 
-
+# default.settings2----
 #' @title default.settings2 - next iteration of default.settings
 #' @description Global Defaults
 #' @details Global Defaults
@@ -125,7 +110,7 @@ default.settings <- function()
 #'   \item bottom.margin 
 #'   \item graph.region.h
 #'   \item graph.region.w
-#'   \item blankPanel #'   
+#'   \item blankPanel 
 #' }
 #' }
 #' @author Greg Cicconetti
@@ -193,9 +178,11 @@ default.settings2 <- function(
   cat(paste("\nThe default theme:", main.theme, "\n"))
 }
 
-# Custom Themes -----------------------------------------------------------
+# Custom Themes ----------------------------------------
+
+# theme_grey2_nomargins----
 #' @title theme_grey2_nomargins
-#' @description Adapts theme_grey() found in ggplot2 version 0.9.3
+#' @description Adapts theme_grey() found in ggplot2 
 #' @details axis.text colour changed from "grey50" to "black"; legend.position changed from "right" to "bottom"; legend.direction changed to "horizontal"; plot.margin changed from default unit(c(1, 1, 0.5, 0.5), "lines") to unit(c(0, 0, 0, 0), "in")
 #' @param base_size use default
 #' @param base_family  use default
@@ -265,6 +252,7 @@ theme_grey2_nomargins <-  function (base_size = 12, base_family = ""){
           complete = TRUE)
   }
 
+# theme_grey2_default_margins----
 #' @describeIn theme_grey2_nomargins Same as theme_grey2_nomargins but with margins set to ggplot defaults, unit(c(1, 1, 0.5, 0.5), "lines")
 theme_grey2_default_margins <-  function (base_size = 12, base_family = ""){
     theme(line = element_line(colour = "black", 
@@ -327,6 +315,7 @@ theme_grey2_default_margins <-  function (base_size = 12, base_family = ""){
           complete = TRUE)
   }
 
+# theme_grey2_nomargins----
 #' @describeIn theme_grey2_nomargins Similar to theme_grey2
 theme_bw2_nomargins <- function (base_size = 12, base_family = "") 
 {
@@ -369,73 +358,3 @@ theme_table_nomargins <- function (base_size = 12, base_family = "") {
           strip.background = element_rect(fill = "white", colour = "white", size = 0.2),
           plot.margin = unit(c(0, 0, 0, 0), "lines"))
 }
-
-#' @title process.bslchar
-#' @description This function processes the demog.data set included in this package. Serves as an example for preprocessing data prior to building graphics.
-#' @param dframe The input data.frame should be demog.data.
-#' @section Value:
-#' \describe{ 
-#' A data.frame.
-#' }
-#' @examples
-#' \dontrun{
-#' data(demog.data)
-#' default.settings()
-#' process.bslchar(dframe = demog.data)
-#' }
-#' @author Greg Cicconetti
-process.bslchar<-
-  function (dframe = read.csv(paste(dd, "g_bslchar.csv", sep = ""))) 
-  {
-    levels(dframe$TRTGRP) <- c("Treatment A", "Treatment B")
-    dframe$LOGHSCRP <- log(dframe$HSCRP)
-    dframe$LDLC2 <- dframe$LDLC * 1/0.0259
-    dframe$HDLC2 <- dframe$HDLC * 1/0.0259
-    dframe$FDRACE2 <- factor(dframe$FDRACE, levels = c("American Indian or Alaska Native", 
-                                                       "Asian", "Black", "Native Hawaiian or Other Pacific Islander", 
-                                                       "Other Mixed Race", "White"), ordered = T)
-    levels(dframe$FDRACE2) <- c("American Indian or\nAlaska Native", 
-                                "Asian", "Black", "Native Hawaiian or\nOther Pacific Islander", 
-                                "Other Mixed Race", "White")
-    levels(dframe$ETHNIC) <- c("Hispanic\nor Latino", "Not Hispanic\nor Latino")
-    dframe$SEX <- factor(dframe$SEX, c("F", "M"), ordered = T) 
-    levels(dframe$SEX) <- c("Female", "Male")
-    dframe$GWHRT <- factor(dframe$GWHRT, c("Level 1: Males: <=0.90, Females: <=0.83",
-                                           "Level 2: Males:>0.90-<=0.95, Females: >0.83-<=0.90",
-                                           "Level 3: Males: >0.95, Females: >0.90",
-                                           "Missing"), ordered = T)
-    levels(dframe$GWHRT) <- c("Level 1\n: Males: <=0.90, Females: <=0.83",
-                              "Level 2\n: Males:>0.90-<=0.95, Females: >0.83-<=0.90",  
-                              "Level 3\n: Males: >0.95, Females: >0.90",
-                              "Missing")
-    
-    dframe$REGRAP <- factor(dframe$REGRAP, c("Asia/Pacific", 
-                                             "Eastern Europe", "Western Europe", "North America", 
-                                             "South America"), ordered = T)
-    dframe$AGEGRP <- factor(dframe$AGEGRP, c("<65 years", "65-74 years", 
-                                             ">=75 years"), ordered = T)
-    dframe$BPGRP2 <- factor(dframe$BPGRP, c("Pre-Hypertensives", 
-                                            "Normotensives", "Hypertensives", "Missing"), ordered = T)
-    dframe$VSBMIG <- factor(dframe$VSBMIG, c("<25 kg/m2", "25-<30 kg/m2", 
-                                             ">=30 kg/m2"), ordered = T)
-    dframe$LDLCG <- factor(dframe$LDLCG, c( "<1.80 mmol/L",
-                                            ">=1.80-<2.58 mmol/L",
-                                            ">=2.58 mmol/L",
-                                            "Missing" ), ordered = T)
-    
-    dframe$HDLCG <- factor(dframe$HDLCG, c("<1.03 mmol/L",
-                                           ">=1.03-<1.55 mmol/L",
-                                           ">=1.55 mmol/L",
-                                           "Missing"), ordered = T)
-    
-    dframe$HSCRPG <- factor(dframe$HSCRPG, c("<1.0 mg/L",
-                                             "1.0-3.0 mg/L",
-                                             ">3.0 mg/L",
-                                             "Missing"), ordered = T)
-    
-    dframe$SUSMHS <- factor(dframe$SUSMHS, c("Current smoker", 
-                                             "Former smoker", "Never smoked", "Missing"), ordered = T)
-    return(dframe)
-  }
-
-
