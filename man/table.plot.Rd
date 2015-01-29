@@ -27,8 +27,6 @@ table.plot(parent.df = working.df, y.rank.col = "Subcategory",
 
 \item{text.size}{value gets passed to geom_text}
 
-\item{xtick.labs}{names for x tick labels - should be same length as non-NULL text columns}
-
 \item{x.limits}{value gets passed to scale_x_continuous}
 
 \item{y.limits}{passed to scale_y_continuous}
@@ -42,10 +40,6 @@ table.plot(parent.df = working.df, y.rank.col = "Subcategory",
 \item{y.label.col}{column holding labels for forest/dot/table plots}
 
 \item{category.palette}{colors assoicated with categorical variable}
-
-\item{label}{name of column containing labels for y-axis}
-
-\item{y.buff}{numerical buffer added to top of figure - essentially a mechanism for adding space to top of figure}
 }
 \description{
 A function for plotting columns of text in a figure offering compatiability with forest.plot and dot.plot.

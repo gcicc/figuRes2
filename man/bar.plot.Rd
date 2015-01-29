@@ -4,20 +4,23 @@
 \alias{bar.plot}
 \title{bar.plot}
 \usage{
-bar.plot(parent.df = working.df, y.col = "GWHRT",
-  y.label = "Percentage of Subjects", category.col = "TRTGRP",
-  category.label = "Treatment Group", y.limits = c(0, 0.7),
+bar.plot(parent.df = working.df, category.col = "TRTGRP",
+  category.label = "Treatment Group", x.label = "", y.col = "GWHRT",
+  y.label = "Percentage of Subjects", y.limits = c(0, 0.7),
   y.ticks = seq(0, 0.3, 0.05), bar.position = "dodge",
-  category.palette = c("red", "blue"), text.size = 3, killMissing = TRUE)
+  category.palette = c("red", "blue"), text.size = 3, text.buffer = 0.05,
+  killMissing = TRUE)
 }
 \arguments{
-\item{y.col}{parent.df column associated with response vairable}
-
-\item{y.label}{value gets passed to labs}
-
 \item{category.col}{parent.df column associated with explantory variable}
 
 \item{category.label}{passed to x-axis label}
+
+\item{x.label}{value gets passed to labs}
+
+\item{y.col}{parent.df column associated with response vairable}
+
+\item{y.label}{value gets passed to labs}
 
 \item{y.limits}{passed to scale_y_continuous}
 
@@ -36,6 +39,21 @@ A function for creating bar charts; adds tabular data to bar chart.
 }
 \details{
 In building the driver files, manual adjustment of y.limits and y.ticks is required. Note that this function computes summary statistics from raw data.
+}
+\examples{
+\dontrun{
+# pre-processing
+data(demog.data)
+levels(demog.data$SEX) <- c("Female", "Male")
+
+# A ggplot object is returned
+p1 <- bar.plot(parent.df = demog.data, y.col = "SEX",
+x.label="Gender", y.label = "Percentage of Subjects",
+category.col = "REGRAP", category.label = "Region",
+y.limits = c(0, 0.35), y.ticks = seq(0, 0.5, 0.05),
+bar.position="dodge", category.palette = brewer.pal(n=5, name="Dark2"), text.size=4, text.buffer=.025, killMissing = TRUE)
+print(p1)
+}
 }
 \author{
 Greg Cicconetti

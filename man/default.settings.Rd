@@ -21,27 +21,7 @@ The following are assigned to global environment upon calling:
   \item dd
   \item cd
   \item od
-  \item supd
-  \item devd
-  \item docd
   \item blankPanel
-  \item treatment.labels
-  \item treatment.palette
-  \item ae.shape.palette
-  \item boxplot.shape.palette
-  \item lineplot.shape.palette
-  \item funnel.plot.line.palette
-  \item line.plot.line.palette
-  \item lplot2.linetypes
-  \item lplot3.linetypes
-  \item km.line.palette
-  \item km.line.size
-  \item line.size
-  \item line.plot.line.size
-  \item forest.plot.text.color
-  \item at.risk.palette
-  \item adj.palette
-  \item outline.color
 }
 }
 }

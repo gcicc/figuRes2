@@ -59,7 +59,7 @@ The following are assigned to global environment upon calling:
   \item bottom.margin
   \item graph.region.h
   \item graph.region.w
-  \item blankPanel #'
+  \item blankPanel
 }
 }
 }

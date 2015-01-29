@@ -5,7 +5,8 @@
 benrisk2.data
 }
 \description{
-A data set for producting forest plots}
+%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+}
 \usage{data("benrisk2.data")}
 \format{
   A data frame with 18 observations on the following 19 variables.

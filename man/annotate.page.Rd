@@ -23,6 +23,24 @@ annotate.page(page.height = 8.5, page.width = 11, top.margin = 1 - 0.5,
   fileloc = "gfileloc", override = "", addTime = TRUE)
 }
 \arguments{
+\item{page.height}{default: 8.5 inches}
+
+\item{page.width}{default:  11 inches}
+
+\item{top.margin}{default: 0.5 inches}
+
+\item{bottom.margin}{default: 0.5 inches}
+
+\item{right.margin}{default: 0.75 inches}
+
+\item{left.margin}{default: 0.75 inchres}
+
+\item{foot.size}{default: 10; passed to grid.text via gp}
+
+\item{head.size}{default: 10; passed to grid.text via gp}
+
+\item{title.size}{default: 14; passed to grid.text via gp}
+
 \item{add.fignum}{logical}
 
 \item{fnote.buffer}{fine-control of vertical position}

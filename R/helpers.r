@@ -13,7 +13,6 @@ refresh.outputplan <-
     loadplan=TRUE,
     filename = "C:/Users/gqc70045/Documents/LOCALR/Darapladib Graphics/Stability Graphics/refdata/outputplan_stability 22NOV13.csv") 
   {
-    
     if(loadplan==TRUE) temp <- read.csv(filename) else temp <-  outputplan
     
     # step through column of outputplan
@@ -89,7 +88,6 @@ refresh.outputplan <-
                 outputplan$rcode[duplicated(outputplan$rcode)]), 
           "\n")
   }
-
 
 # Functions for Output control -----------------------
 # run.specific-----
@@ -347,7 +345,7 @@ fmt <- function(digits=2){
 
 #' @title FacetLabelAdjuster
 #' @description This function takes a 'facet wrapped' ggplot and adds axis labels when a rxc grid is incomplete  
-#' @details Taken in whole from: http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot
+#' @details Adapted from: http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot
 #' @param x a ggplot object
 #' @param pos maintain default
 #' @param newpage maintain default

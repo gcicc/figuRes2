@@ -13,9 +13,6 @@
 #'   \item dd
 #'   \item cd
 #'   \item od
-#'   \item supd
-#'   \item devd 
-#'   \item docd
 #'   \item blankPanel 
 #' }
 #' }
@@ -28,9 +25,6 @@ default.settings <- function()
   cd <<- paste0(my.path, "/code/")
   od <<- paste0(my.path, "/output/")
   logd <<- paste0(my.path, "/log/")
-  supd <<- paste0(my.path, "/support/")
-  devd <<- paste0(my.path, "/development/")
-  docd <<- paste0(my.path, "/docs/")
   cat("my.path is set to:", my.path, "\n")
   cat("dd is set to:", dd, "\n")
   cat("cd is set to:", cd, "\n")
@@ -47,32 +41,18 @@ default.settings <- function()
   left.margin <<- .75  
   top.margin <<- 1.4-.5
   bottom.margin <<- 1.75-.5
-  cat("The default page dimension is set to landscape:", page.width, "in. x", page.height,"in.\n")
-  cat("The default page left and right page margins:", left.margin, "in. and", right.margin  ,"in., respectively.\n")
-  cat("The default top an bottom margins:", top.margin, "in. and ", bottom.margin, "in., respectively.")
+  
+  cat("The default page dimension is set to landscape:", 
+      page.width, "in. x", page.height,"in.\n")
+  cat("The default page left and right page margins:", 
+      left.margin, "in. and", right.margin  ,"in., respectively.\n")
+  cat("The default top an bottom margins:", 
+      top.margin, "in. and ", bottom.margin, "in., respectively.")
   
   graph.region.h <<- page.height - (right.margin + left.margin)
   graph.region.w <<- page.width - (top.margin + bottom.margin)
   blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE)
   
-#   treatment.labels <<- c("Placebo", "Drug")
-#   treatment.palette <<- c("red", "blue")
-#   ae.shape.palette <<- c(17, 16)
-#   boxplot.shape.palette <<- c(24, 24)
-#   lineplot.shape.palette <<- c(24, 24)
-#   funnel.plot.line.palette <<- c("solid", "dotted", "solid", "dotted")
-#   line.plot.line.palette <<- c("solid", "dotted", "solid", "blank")
-#   lplot2.linetypes <<- c("solid", "dotted", "dotted", "blank")
-#   lplot3.linetypes <<- c("solid", "blank", "dotted", "blank")
-#   km.line.palette <<- c("solid", "dotted")
-#   km.line.size <<- .75
-#   line.size <<- .75
-#   line.plot.line.size <<- .75
-#   forest.plot.text.color <<- "grey30"
-#   at.risk.palette <<- c("red", "blue")
-#   adj.palette <<- brewer.pal(9, "Blues")[c(3, 5, 6, 7, 9)]
-#   outline.color <<- "black"
-#   tnsmall <<- 2
   theme_set(theme_grey2_nomargins())
   cat("\nThe default theme: theme_grey2_nomargins", "\n")
 }
@@ -121,7 +101,6 @@ default.settings2 <- function(
   cd = paste0(getwd(), "/code/"),
   od = paste0(getwd(), "/output/"),
   logd = paste0(getwd(), "/log/"),
-
   page.width = 11,
   page.height = 8.5,
   right.margin = .75,
@@ -148,32 +127,17 @@ default.settings2 <- function(
   left.margin <<- left.margin  
   top.margin <<- top.margin
   bottom.margin <<- bottom.margin
-  cat("The default page dimension is set to landscape:", page.width, "in. x", page.height,"in.\n")
-  cat("The default page left and right page margins:", left.margin, "in. and", right.margin  ,"in., respectively.\n")
-  cat("The default top an bottom margins:", top.margin, "in. and ", bottom.margin, "in., respectively.")
+  cat("The default page dimension is set to landscape:", 
+      page.width, "in. x", page.height,"in.\n")
+  cat("The default page left and right page margins:",
+      left.margin, "in. and", right.margin  ,"in., respectively.\n")
+  cat("The default top an bottom margins:", 
+      top.margin, "in. and ", bottom.margin, "in., respectively.")
   
   graph.region.h <<- page.height - (right.margin + left.margin)
   graph.region.w <<- page.width - (top.margin + bottom.margin)
   blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE)
   
-  #   treatment.labels <<- c("Placebo", "Drug")
-  #   treatment.palette <<- c("red", "blue")
-  #   ae.shape.palette <<- c(17, 16)
-  #   boxplot.shape.palette <<- c(24, 24)
-  #   lineplot.shape.palette <<- c(24, 24)
-  #   funnel.plot.line.palette <<- c("solid", "dotted", "solid", "dotted")
-  #   line.plot.line.palette <<- c("solid", "dotted", "solid", "blank")
-  #   lplot2.linetypes <<- c("solid", "dotted", "dotted", "blank")
-  #   lplot3.linetypes <<- c("solid", "blank", "dotted", "blank")
-  #   km.line.palette <<- c("solid", "dotted")
-  #   km.line.size <<- .75
-  #   line.size <<- .75
-  #   line.plot.line.size <<- .75
-  #   forest.plot.text.color <<- "grey30"
-  #   at.risk.palette <<- c("red", "blue")
-  #   adj.palette <<- brewer.pal(9, "Blues")[c(3, 5, 6, 7, 9)]
-  #   outline.color <<- "black"
-  #   tnsmall <<- 2
   do.call("theme_set", list(do.call(main.theme, list())))
   cat(paste("\nThe default theme:", main.theme, "\n"))
 }
@@ -188,7 +152,7 @@ default.settings2 <- function(
 #' @param base_family  use default
 #' @examples
 #' \dontrun{
-#' theme_set(theme_grey2())
+#' theme_set(theme_grey2_nomargins())
 #' }
 #' @author Greg Cicconetti
 theme_grey2_nomargins <-  function (base_size = 12, base_family = ""){

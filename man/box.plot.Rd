@@ -35,6 +35,27 @@ Produces boxplots
 \details{
 Adjust y.limits, y.ticks and y.digits at the the driver level. Note: This function computes summary statistics from raw data.
 }
+\examples{
+\dontrun{
+#' data(demog.data)
+# pre-processing
+
+levels(demog.data$SEX) <- c("Female", "Male")
+
+# p1 <- box.plot(parent.df = demog.data,
+#     y.col = "VSBMI",
+#     y.label = expression(paste("BMI (m/kg",phantom()^2,")")),
+#     category.col = "SEX",
+#     category.label = "Gender",
+#      y.limits = c(0, 70),
+#      y.ticks = seq(0, 100, 10),
+#      y.digits = 0,
+#      shape.palette = c(20, 20),
+#      category.palette = rainbow(6),
+#      bplot.text = 4)
+# print(p1)
+}
+}
 \author{
 Greg Cicconetti
 }

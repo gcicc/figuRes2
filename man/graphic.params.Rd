@@ -5,11 +5,12 @@
 \title{Standard graphics names}
 \usage{
 graphic.params(at.risk.palette, background.palette, category.col,
-  category.label, category.palette, censor.col, centime.col, label.col,
-  line.col, line.size, linetype.palette, page.height, page.width, right.margin,
-  left.margin, top.margin, bottom.margin, shape.label, shape.palette, x.label,
-  x.limits, x.ticks, x.ticks.labels, y.col, y.label, y.limits, ymin.col,
-  ymax.col, y.ticks)
+  category.label, category.palette, censor.col, centime.col, interior,
+  interior.h, interior.w, label.col, line.col, line.size, linetype.palette,
+  ncol, nrow, page.height, page.width, right.margin, left.margin, top.margin,
+  bottom.margin, shape.label, shape.palette, test.dim, x.label, x.limits,
+  x.ticks, x.ticks.labels, y.col, y.label, y.limits, ymin.col, ymax.col,
+  y.ticks)
 }
 \arguments{
 \item{at.risk.palette}{colors to be assocated with categorical variable in accompanying at.risk table}
@@ -26,6 +27,12 @@ graphic.params(at.risk.palette, background.palette, category.col,
 
 \item{centime.col}{name of parent.df column associated with censored time}
 
+\item{interior}{a list of nrow*ncol grobs/ggplot objects to be displayed in the grid, ordered by row then col}
+
+\item{interior.h}{a vector summing to 1 to indicate how to partition the heights}
+
+\item{interior.w}{a vector summing to 1 to indicate how to partition the widths}
+
 \item{label.col}{name of parent.df column containing labels}
 
 \item{line.col}{name of parent.df column associated with linetype}
@@ -33,6 +40,10 @@ graphic.params(at.risk.palette, background.palette, category.col,
 \item{line.size}{value gets passed to size within geom_line, geom_step}
 
 \item{linetype.palette}{values passed to scale_linetype_manual}
+
+\item{ncol}{number of columns for the grid of graphics being built by build.page}
+
+\item{nrow}{number of rows for the grid of graphics being built by build.page}
 
 \item{page.height}{used by build.page and annotate.page}
 
@@ -49,6 +60,8 @@ graphic.params(at.risk.palette, background.palette, category.col,
 \item{shape.label}{value sets passed to labs}
 
 \item{shape.palette}{values passed to scale_shape_manual}
+
+\item{test.dim}{logical. Assists with figure development. If TRUE it makes a call to grid.show.layout.}
 
 \item{x.label}{value gets passed to labs}
 
@@ -69,6 +82,14 @@ graphic.params(at.risk.palette, background.palette, category.col,
 \item{ymax.col}{name of parent.df column associated with ymax}
 
 \item{y.ticks}{passed to scale_y_continuous}
+
+\item{text.col1}{name of column holding text for column 1}
+
+\item{text.col2}{name of column holding text for column 2; can be NULL}
+
+\item{text.col3}{name of column holding text for column 3; can be NULL}
+
+\item{text.col4}{name of column holding text for column 4; can be NULL}
 
 \item{text.size}{value gets passed to geom_text}
 

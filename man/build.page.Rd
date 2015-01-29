@@ -16,13 +16,25 @@ build.page(interior.h = c(1/3, 1/3, 1/3), interior.w = c(0.5, 0.25, 0.25),
 
 \item{interior.w}{a vector summing to 1 to indicate how to partition the widths}
 
-\item{ncol}{number of columns for the grid of figures}
+\item{ncol}{number of columns for the grid of graphics being built by build.page}
 
-\item{nrow}{number of rows for the grid of figures}
+\item{nrow}{number of rows for the grid of graphics being built by build.page}
 
-\item{interior}{a list of ncol*nrol grobs/ggplot objects to be displayed in the grid, ordered by row then col}
+\item{interior}{a list of nrow*ncol grobs/ggplot objects to be displayed in the grid, ordered by row then col}
 
 \item{test.dim}{logical. Assists with figure development. If TRUE it makes a call to grid.show.layout.}
+
+\item{page.height}{used by build.page and annotate.page}
+
+\item{page.width}{used by build.page and annotate.page}
+
+\item{right.margin}{used by build.page and annotate.page}
+
+\item{left.margin}{used by build.page and annotate.page}
+
+\item{top.margin}{used by build.page and annotate.page}
+
+\item{bottom.margin}{used by build.page and annotate.page}
 }
 \description{
 Takes page dimensions, figure layout dimenesions and an ordered list of grobs/ggplot objects orients them on a page

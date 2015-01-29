@@ -1,9 +1,8 @@
 # This file holds functions associated with assembling figures on a page
-
+#-----build.page-----
 #' @title build.page
 #' @description  Takes page dimensions, figure layout dimenesions and an ordered list of grobs/ggplot objects orients them on a page
 #' @inheritParams graphic.params
-
 build.page <- 
   function (
     interior.h=c(1/3,1/3,1/3),
@@ -64,8 +63,18 @@ build.page <-
 }
   }
 
+# annotate.page ----
 #' @title annotate.page
 #' @description Adds titles, headers, and footers
+#' @param page.height default: 8.5 inches
+#' @param page.width default:  11 inches 
+#' @param top.margin default: 0.5 inches  
+#' @param bottom.margin default: 0.5 inches
+#' @param right.margin default: 0.75 inches
+#' @param left.margin default: 0.75 inchres
+#' @param foot.size default: 10; passed to grid.text via gp
+#' @param head.size default: 10; passed to grid.text via gp
+#' @param title.size default: 14; passed to grid.text via gp
 #' @param title vector of title lines
 #' @param urh vector for upper right headers
 #' @param ulh vector for upper left headers
@@ -183,6 +192,7 @@ annotate.page <- function (
               fnote[[1]], gp = gpar(fontsize = foot.size))
   }
 
+# sync.ylab.widths -----
 #' @title sync.ylab.widths
 #' @description Aligns the widths of ggplot objects to ensure common plot regions. The maximum length required for y-axis labels among the list is determined and applied to the other plots. This assists in syncing the widths of ggplot objects for the purpose of align figures on a page.
 #' @param gg.list a list of ggplot objects
@@ -200,6 +210,7 @@ sync.ylab.widths <-
     return(gtable.list)
   }
 
+# get.top.xaxis ----
 #' @title get.top.xaxis
 #' @description This takes two ggplot objects, steals the bottom x-axis from 2nd object and returns a gtable object with that bottom x-axis per object 1 and top x-axis per object 2
 #' @param p1 ggplot object with bottom x-axis

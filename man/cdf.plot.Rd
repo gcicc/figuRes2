@@ -38,6 +38,24 @@ cdf.plot(parent.df = working.df, category.col = "TRTGRP",
 \description{
 Function to produce Cumulative Distribution plot.  Statistics computed by stat_ecdf().
 }
+\examples{
+\dontrun{
+# data(demog.data)
+# cdf.plot(parent.df= demog.data,
+#         category.col = "SEX",
+#         category.label   = "Gender",
+#         response.col = "VSBMI",
+#         x.label = expression(paste("BMI (m/kg",phantom()^2,")")),
+#         x.limits=c(0,60),
+#         x.ticks=seq(0,60,5),
+#         y.label = "Percentage of Subjects",
+#         y.limits= c(0,1),
+#         y.ticks = seq(0,1,.2),
+#         line.size=.75,
+#         category.palette=c("red", "blue"),
+#         exclude=c(0))
+}
+}
 \author{
 Greg Cicconetti
 }

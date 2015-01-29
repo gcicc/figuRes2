@@ -4,12 +4,13 @@ Title: A package to support a variety of figure production tasks
 Version: 1.00
 Date: 2015-01-26
 Authors: Greg Cicconetti, David Wade
+URL: https://github.com/gcicc/figures2
 Maintainer: Greg Cicconetti <greg.2.cicconetti@gsk.com>
 Description: This package takes the view that a figure is a collection of
     graphs/tables assembled on a page and optionally annotated with metadata
     (titles, headers and footers).  Functions and supporting documentation are
     offered to streamline a variety of figure production task.
-License: GPL-2, GPL-3
+License: GPL-2
 LazyLoad: yes
 Depends: R (>= 3.1.2), 
     ggplot2,

@@ -46,6 +46,13 @@ gcurve(expr, from = NULL, to = NULL, n = 101, add = FALSE, type = "l",
 \description{
 A function to exploit base R's curve function.  This returns a data.frame holding x and y values returned from a call to curve, but suppress the plotting of that function
 }
+\examples{
+\dontrun{
+curve(dnorm(x, mean=0, sd=1), from=-4, to = 4, n= 1001)
+ggplot(gcurve(expr = dnorm(x, mean=0, sd=1),from=-4, to = 4, n= 1001,
+category="Standard Normal"), aes(x=x, y=y)) + geom_line()
+}
+}
 \author{
 Greg Cicconetti
 }

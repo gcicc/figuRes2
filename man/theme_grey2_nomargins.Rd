@@ -24,7 +24,7 @@ theme_table_nomargins(base_size = 12, base_family = "")
 \item{base_family}{use default}
 }
 \description{
-Adapts theme_grey() found in ggplot2 version 0.9.3
+Adapts theme_grey() found in ggplot2
 }
 \details{
 axis.text colour changed from "grey50" to "black"; legend.position changed from "right" to "bottom"; legend.direction changed to "horizontal"; plot.margin changed from default unit(c(1, 1, 0.5, 0.5), "lines") to unit(c(0, 0, 0, 0), "in")
@@ -41,7 +41,7 @@ axis.text colour changed from "grey50" to "black"; legend.position changed from 
 }}
 \examples{
 \dontrun{
-theme_set(theme_grey2())
+theme_set(theme_grey2_nomargins())
 }
 }
 \author{

@@ -1,5 +1,19 @@
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{build.page and annotate.page}
+---
+title: "Using the figuRes Package v1.5"
+author: "Greg Cicconetti"
+date: "September 23, 2014"
+output:
+  pdf_document:
+    fig_caption: yes
+    latex_engine: xelatex
+    number_sections: yes
+    toc: yes
+---
+```{r, results='hide', message=FALSE, warning=FALSE, echo=FALSE}
+require(knitr)
+opts_chunk$set(echo=TRUE, cache=FALSE, warning=FALSE, dev='pdf',
+               message=FALSE, fig.width=11, fig.height=8.5, comment=NA)
+```
 
 # Introduction to the figures2 package 
 This package takes the view that a figure is a collection of graphs/tables assembled on a page and optionally annotated with metadata (titles, headers and footers). The steps to figure building can then be chunked as follows:
@@ -370,4 +384,3 @@ build.page(interior.h = c(.35, .65),
                                                      unit="in"))))
 annotate.page(override = "", title=list("Title Line 1", "","","",""))
 ```
-

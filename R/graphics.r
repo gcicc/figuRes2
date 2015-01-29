@@ -98,7 +98,7 @@ return("Hello, this function is just a convient location to store argument names
 #' @examples 
 #' \dontrun{
 #' # pre-processing
-#' 
+#' data(demog.data)
 #' levels(demog.data$SEX) <- c("Female", "Male")
 #' 
 #' # A ggplot object is returned
@@ -157,6 +157,26 @@ bar.plot <-   function (
 #' @description Produces boxplots 
 #' @details Adjust y.limits, y.ticks and y.digits at the the driver level. Note: This function computes summary statistics from raw data.
 #' @inheritParams graphic.params
+#' @examples 
+#' \dontrun{
+#' #' data(demog.data)
+#' # pre-processing
+#' 
+#' levels(demog.data$SEX) <- c("Female", "Male")
+#' 
+#' # p1 <- box.plot(parent.df = demog.data, 
+#' #     y.col = "VSBMI", 
+#' #     y.label = expression(paste("BMI (m/kg",phantom()^2,")")), 
+#' #     category.col = "SEX",
+#' #     category.label = "Gender", 
+#' #      y.limits = c(0, 70), 
+#' #      y.ticks = seq(0, 100, 10), 
+#' #      y.digits = 0,
+#' #      shape.palette = c(20, 20),
+#' #      category.palette = rainbow(6),
+#' #      bplot.text = 4)
+#' # print(p1)
+#' }
 #' @author Greg Cicconetti
 box.plot <-
   function (parent.df = working.df, 
@@ -234,6 +254,23 @@ box.plot <-
 #' @description Function to produce Cumulative Distribution plot.  Statistics computed by stat_ecdf().
 #' @inheritParams graphic.params
 #' @param exclude
+#' @examples 
+#' \dontrun{
+#' # data(demog.data)
+#' # cdf.plot(parent.df= demog.data, 
+#' #         category.col = "SEX",
+#' #         category.label   = "Gender",
+#' #         response.col = "VSBMI", 
+#' #         x.label = expression(paste("BMI (m/kg",phantom()^2,")")), 
+#' #         x.limits=c(0,60),
+#' #         x.ticks=seq(0,60,5),
+#' #         y.label = "Percentage of Subjects", 
+#' #         y.limits= c(0,1),
+#' #         y.ticks = seq(0,1,.2),
+#' #         line.size=.75,
+#' #         category.palette=c("red", "blue"),
+#' #         exclude=c(0))
+#' }
 #' @author Greg Cicconetti
 cdf.plot <-
   function (parent.df= working.df, 
@@ -442,189 +479,17 @@ forest.plot <-
     return(for.return)
   }
 
-# funnel.plot -------------------------------------------------------------
-#' @title funnel.plot
-#' @description Creates a funnel plot tailored for regions.
-#' @details Appeals to Poisson-distribution for confidence bounds and makes continuity correction. Outliers are identified by name.  # This function should return a series of ggplot objects
-#' The number of graphics returned should depend on the reference.category: If reference category is "global" one graphic is returned; number of points equals number of unique categories. 
-#' If reference category is region, then one graphic is returned for each region.  When category is country, a dot for each country is used. When category is centreid a dot for each centreid is used.
-#' If reference category is country, then one graphic for each country is returned.  Category is assumed to be centreid; one dot for each centre.
-#' @param response Column holding the count variable (in case of 1st MACE: 0 censored, 1 observed)
-#' @param base Could be "centre", "country", or "region"
-#' @param reference should be at least one level above base:  "country", "region", "global"
-#' @param region  if reference == "region", specify 
-#' @param country  if reference == "country", specify
-#' @param voffset vertical offset for text
-#' @section Value: 
-#' \describe{
-#' A revamped version of the older funnel plot.  Previous version produced funnel plots for regions relative to  study's global average.  This version allows comparison of 'base' relative to a 'reference'.  
-#' }
-#' @references David J. Spiegelhalter. Funnel plots for comparing institutional performance. Statist. Med. 2005; 24:1185-1202
-#' @author Greg Cicconetti
-funnel.plot <- 
-  function (parent.df = read.csv(paste(dd, "g_KMfmace.csv", sep = "")), 
-            censored.time="centime",
-            censor.var = "censor", 
-            base = "region", 
-            reference = "global", 
-            region = "Asia/Pacific", 
-            country = "Hong Kong", 
-            voffset = 0,
-            text.size=4) 
-  {
-    names(parent.df) <- toupper(names(parent.df))
-    
-    parent.df$centime <- parent.df[,censored.time]
-    parent.df$censor <- parent.df[, censor.var]
-    counts.reference <- data.frame(table(parent.df[, response]))
-    counts.reference <- counts.reference[counts.reference$Var1 == 1, ]
-    names(counts.reference) <- c("Var1", "Freq")
-    centime.sum <- sum(parent.df$centime, na.rm = T)
-    forfunnel.reference <- merge(counts.reference, centime.sum)
-    names(forfunnel.reference) <- c("Var1", "Freq", "centime.sum")
-    forfunnel.reference$otime.years <- forfunnel.reference$centime.sum/365.25
-    forfunnel.reference$rate <- forfunnel.reference$Freq/forfunnel.reference$otime.years
-    global.data <- forfunnel.reference
-    counts.reference <- data.frame(table(parent.df[, response], 
-                                         parent.df[, "REGRAP"]))
-    counts.reference <- counts.reference[counts.reference$Var1 == 1, ]
-    names(counts.reference) <- c("Var1", "REGRAP", "Freq")
-    centime.sum <- ddply(parent.df, .(REGRAP), summarize, centime.sum = sum(centime, na.rm = T))
-    forfunnel.reference <- merge(counts.reference, centime.sum)
-    forfunnel.reference$otime.years <- forfunnel.reference$centime.sum/365.25
-    forfunnel.reference$rate <- forfunnel.reference$Freq/forfunnel.reference$otime.years
-    regional.data <- forfunnel.reference
-    counts.reference <- data.frame(table(dataframe[, response], dataframe[, "COUNTRY"]))
-    counts.reference <- counts.reference[counts.reference$Var1 ==  1, ]
-    names(counts.reference) <- c("Var1", "COUNTRY", "Freq")
-    centime.sum <- ddply(dataframe, .(COUNTRY, REGRAP), summarize, centime.sum = sum(centime))
-    forfunnel.reference <- merge(counts.reference, centime.sum)
-    forfunnel.reference$otime.years <- forfunnel.reference$centime.sum/365.25
-    forfunnel.reference$rate <- forfunnel.reference$Freq/forfunnel.reference$otime.years
-    country.data <- forfunnel.reference
-    counts.reference <- data.frame(table(dataframe[, response], dataframe[, "CENTREID"]))
-    counts.reference <- counts.reference[counts.reference$Var1 == 
-                                           1, ]
-    names(counts.reference) <- c("Var1", "CENTREID", "Freq")
-    centime.sum <- ddply(dataframe, .(CENTREID, COUNTRY, REGRAP), 
-                         summarize, centime.sum = sum(centime))
-    forfunnel.reference <- merge(counts.reference, centime.sum)
-    forfunnel.reference$otime.years <- forfunnel.reference$centime.sum/365.25
-    forfunnel.reference$rate <- forfunnel.reference$Freq/forfunnel.reference$otime.years
-    centre.data <- forfunnel.reference
-    switch(reference, 
-           "global"= {lam0 <- global.data$rate},
-           "region" = {lam0 <- subset(regional.data, REGRAP == region)$rate},
-           "country" = {centre.data <- subset(centre.data, COUNTRY == country)
-                        lam0 <- subset(country.data, COUNTRY == country)$rate}
-    )
-    
-    switch(base, 
-           "centre" = {
-             switch(reference, 
-                    "global" = {figdframe <- centre.data},
-                    "region" = {figdframe <- subset(centre.data, REGRAP == region)},
-                    "country" = {figdframe <- subset(centre.data, COUNTRY == country)}
-             )},
-           "country" = {
-             switch(reference,
-                    "global"= {figdframe <- country.data},
-                    "region" = {figdframe <- subset(country.data, REGRAP == region)}
-             )},
-           "region" = {figdframe <- regional.data}
-    )
-                    
-    y1 <- c(0, max(figdframe$rate) * 1.25)
-    x1 <- c(0, max(figdframe$otime.years))
-    py <- figdframe$otime.years
-    mn <- lam0 * py
-    elowq.95 <- qpois(0.025, mn)
-    ehghq.95 <- qpois(0.975, mn)
-    elowq.99 <- qpois(0.005, mn)
-    ehghq.99 <- qpois(0.995, mn)
-    elowq.c.95 <- elowq.95 - 1
-    elowq.c.99 <- elowq.99 - 1
-    a.95 <- (ppois(elowq.95, mn) - 0.025)/(ppois(elowq.95, mn) - ppois(elowq.c.95, mn))
-    a.99 <- (ppois(elowq.99, mn) - 0.005)/(ppois(elowq.99, mn) -  ppois(elowq.c.99, mn))
-    lowq.c.95 <- pmax(0, (elowq.95 - a.95)/py)
-    lowq.c.99 <- pmax(0, (elowq.99 - a.99)/py)
-    ehghq.c.95 <- ehghq.95 - 1
-    a.95 <- (ppois(ehghq.95, mn) - 0.975)/(ppois(ehghq.95, mn) - ppois(ehghq.c.95, mn))
-    ehghq.c.99 <- ehghq.99 - 1 
-    a.99 <- (ppois(ehghq.99, mn) - 0.995)/(ppois(ehghq.99, mn) -  ppois(ehghq.c.99, mn))
-    hghq.c.95 <- (ehghq.95 - a.95)/py
-    hghq.c.99 <- (ehghq.99 - a.99)/py
-    figdframe$lowq.c.95 <- lowq.c.95
-    figdframe$lowq.c.99 <- lowq.c.99
-    figdframe$hghq.c.95 <- hghq.c.95
-    figdframe$hghq.c.99 <- hghq.c.99
-    figdframe$flag.95 <- ifelse(figdframe$rate >= lowq.c.95 & 
-                                  figdframe$rate <= hghq.c.95, "N", "Y")
-    figdframe$flag.99 <- ifelse(figdframe$rate >= lowq.c.99 & 
-                                  figdframe$rate <= hghq.c.99, "N", "Y")
-    figdframe.melt <- melt(data = figdframe, id = ("otime.years"), 
-                           measure.vars = c("lowq.c.95", "lowq.c.99", "hghq.c.95", 
-                                            "hghq.c.99"))
-    levels(figdframe.melt$variable) <- c("95% band", "99% band", 
-                                         "hghq.c.95", "hghq.c.99")
-    names(figdframe)[1] <- "base"
-    figdframe$rate2 <- figdframe$rate - voffset
-
-    p1 <- ggplot(figdframe, aes(x = otime.years, y = rate)) + 
-      geom_line(size = 1.25, data = figdframe.melt, 
-                aes(x = otime.years, y = value, color = variable, linetype = variable)) + 
-      scale_color_manual(breaks = c("95% band", "99% band"), 
-                         values = category.palette[c(1, 2, 1, 2)]) + 
-      scale_linetype_manual(breaks = c("lowq.c.95", "lowq.c.99"), values = fplot.linetypes) + 
-      geom_point(data = figdframe, size = 3) + 
-      scale_y_continuous(label = percent) + 
-      labs(x = "Subject Years", y = "Annualized Rates", 
-           colour = "Confidence Level", linetype = "Confidence Level") + 
-      guides(colour = guide_legend(override.aes = list(linetype = c("solid", "dotted"))))
-    
-    if (sum(figdframe$flag.95 == "Y") > 0) 
-      p1 <- p1 + 
-      geom_text(data = subset(figdframe, flag.95 == "Y"), 
-                aes(x = otime.years, y = rate2, label = base), 
-                hjust = 0.5, vjust = 1.05, size = text.size, show_guide = F)
-    if (nrow(figdframe) < 10) 
-      p1 <- p1 +
-      geom_text(data = (figdframe), aes(x = otime.years, y = rate2, label = base), 
-                hjust = 0.5, vjust = 1.05, size=text.size, show_guide = F)
-    if (base == "centre") {
-      figdframe$focus <- ifelse(figdframe$COUNTRY == country & 
-                                  figdframe$REGRAP == region, 0.4, 0.1) + ifelse(figdframe$COUNTRY == country, 0.4, 0.1)
-      p2 <- ggplot(figdframe, aes(x = otime.years, y = rate)) + 
-        geom_line(size = 1.25, data = figdframe.melt, aes(x = otime.years, 
-                                                          y = value, color = variable, linetype = variable)) + 
-        scale_color_manual(breaks = c("95% band", "99% band"), 
-                           values = category.palette[c(1, 2, 1, 2)]) + 
-        scale_linetype_manual(breaks = c("lowq.c.95", "lowq.c.99"), 
-                              values = fplot.linetypes) + geom_point(size = 3, 
-                                                                     color = factor(figdframe$flag.95), alpha = figdframe$focus) + 
-        scale_y_continuous(label = percent) + labs(x = "Subject Years", 
-                                                   y = "Annualized Rates", colour = "Confidence Level", 
-                                                   linetype = "Confidence Level")
-      if (sum(figdframe$flag.95 == "Y" & figdframe$COUNTRY == 
-                country) > 0) 
-        p2 <- p2 + geom_text(data = subset(figdframe, flag.95 == 
-                                             "Y" & COUNTRY == country), aes(x = otime.years, 
-                                                                            y = rate, label = base), hjust = 0.5, vjust = 1.05, 
-                             size = text.size, show_guide = F)
-      if (nrow(figdframe) < 10) 
-        p2 <- p2 + geom_text(data = subset(figdframe, COUNTRY == 
-                                             country), aes(x = otime.years, y = rate, label = base), 
-                             hjust = 0.5, vjust = 1.05, size = text.size, show_guide = F)
-      return(list(p1, p2, figdframe))
-    }
-    else return(list(p1, figdframe))
-  }
-
 # gcurve ----
 #' @title gcurve 
 #' @description A function to exploit base R's curve function.  This returns a data.frame holding x and y values returned from a call to curve, but suppress the plotting of that function
 #' @inheritParams graphics::curve
 #' @param category option to add a column populated with a factor
+#' @examples 
+#' \dontrun{
+#' curve(dnorm(x, mean=0, sd=1), from=-4, to = 4, n= 1001)
+#' ggplot(gcurve(expr = dnorm(x, mean=0, sd=1),from=-4, to = 4, n= 1001,
+#' category="Standard Normal"), aes(x=x, y=y)) + geom_line()
+#' }
 #' @author Greg Cicconetti
 gcurve <- function (expr, from = NULL, to = NULL, n = 101, add = FALSE, 
                     type = "l", xname = "x", xlab = xname, ylab = NULL, log = NULL, 
@@ -692,11 +557,37 @@ gcurve <- function (expr, from = NULL, to = NULL, n = 101, add = FALSE,
         return(for.return)
 }
 
-# km.plot -----------------------------------------------------------------
+# km.plot -------------------------------------------
 #' @title km.plot 
 #' @description A function to create km plots
 #' @inheritParams graphic.params
 #' @param fromthetop logical.  If TRUE KM curve decends from 1, if FALSE KM curve ascends from 0. Ensure you have an appropriate censor.col passed above!
+#' @examples 
+#' \dontrun{
+#' # data(km.data)
+#' # working.df <- km.data
+#' # head(working.df)
+#' # working.df$centime <- working.df$centime/30.4375
+#' # km.M <- km.plot(parent.df = subset(working.df, SEX=="M"),
+#' #       category.col = "TRTGRP",
+#' #       category.palette = ("red", "blue"),
+#' #       at.risk.palette = c("red","blue"),                       
+#' #       linetype.palette = c("solid","dotted"), 
+#' #       y.limits=c(0,.25), 
+#' #       y.ticks=seq(0,.25,.05), 
+#' #       x.limits=c(-3,48),
+#' #       x.ticks=seq(0,48,6))
+#' # print(km.M[[1]])
+#' # print(km.M[[2]])
+#' # grid.arrange(km.M[[1]] + theme(legend.position="bottom"), km.M[[2]], ncol=1)
+#' # comeback <- sync.ylab.widths(list(km.M[[1]]+ theme(legend.position="bottom"), km.M[[2]]))
+#' # grid.arrange(comeback[[1]] , comeback[[2]], ncol=1)
+#' # build.page(interior.h = c(.8, .2),
+#' #            interior.w = c(1),
+#' #             ncol=1, nrow=2,
+#' #             interior = list(comeback[[1]], 
+#' #                             comeback[[2]]))
+#'  }
 #' @author Greg Cicconetti
 km.plot <- 
         function (parent.df, 
@@ -932,7 +823,7 @@ lasso.plot <- function(lasso.model=lasso.mod){
   
 }
 
-# line.plot ---------------------------------------------------------------
+# line.plot --------------------
 #' @title line.plot 
 #' @description A function to create lineplots.
 #' @inheritParams graphic.params
@@ -940,29 +831,7 @@ lasso.plot <- function(lasso.model=lasso.mod){
 #' @param pdval value passed to position_dodge
 #' @author Greg Cicconetti
 #' @examples
-#' \dontrun{     my.plot <- line.plot(parent.df=working.df, 
-#' category.palette = c("red","blue"),
-#' linetype.palette = c("dotted", "blank", "solid","blank"),
-#' line.size = 0.75,
-#' shape.palette = c(24, 21),
-#' x.label = "Visit", 
-#' y.label = "Response",
-#' category.label = "Treatment Group", 
-#' x.limits = NULL,
-#' x.ticks = unique(working.df$XVALUES), 
-#' x.ticks.labels = unique(working.df$XVALUES),
-#' addBars = TRUE, 
-#' pdval = 0.25,
-#' x.col = "XVALUES",
-#' y.col = "YVALUES",
-#' y.limits = NULL, 
-#' y.ticks = NULL,
-#' category.col = "CATEGORY",
-#' category.symbol.col="CATEGORY.SYMBOL",
-#' y.digits = 0, 
-#' ymin.col = "YMIN",
-#' ymax.col = "YMAX",
-#' line.col = "LTYPE") 
+#' \dontrun{   
 #' }
 #' @author Greg Cicconetti/David Wade
 line.plot <- function (parent.df = working.df,
