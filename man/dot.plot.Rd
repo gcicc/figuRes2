@@ -12,6 +12,8 @@ dot.plot(parent.df = dot.df.melt, category.col = "Treatment",
   "blue"))
 }
 \arguments{
+\item{parent.df}{data.frame used by ggplot}
+
 \item{category.col}{parent.df column associated with explantory variable}
 
 \item{y.rank.col}{column holding ranks for line items in forest/dot/table plots}

@@ -13,6 +13,8 @@ forest.plot(parent.df = working.df, y.rank.col = "rank", Point.Est = "hr",
   "blue"), shape.palette = c(16, 16), flip.palette = FALSE)
 }
 \arguments{
+\item{parent.df}{data.frame used by ggplot}
+
 \item{y.rank.col}{column holding ranks for line items in forest/dot/table plots}
 
 \item{Point.Est}{= "Point_Est",}

@@ -13,6 +13,8 @@ cdf.plot(parent.df = working.df, category.col = "TRTGRP",
   category.palette = c("red", "blue"), exclude = c(0))
 }
 \arguments{
+\item{parent.df}{data.frame used by ggplot}
+
 \item{category.col}{parent.df column associated with explantory variable}
 
 \item{category.label}{passed to x-axis label}

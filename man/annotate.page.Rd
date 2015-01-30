@@ -51,6 +51,8 @@ annotate.page(page.height = 8.5, page.width = 11, top.margin = 1 - 0.5,
 
 \item{title.buffer}{fine-control of vertical position}
 
+\item{fignum}{figure number}
+
 \item{title}{vector of title lines}
 
 \item{ulh}{vector for upper left headers}
@@ -58,6 +60,12 @@ annotate.page(page.height = 8.5, page.width = 11, top.margin = 1 - 0.5,
 \item{urh}{vector for upper right headers}
 
 \item{fnote}{vector of 5 footnotes. 5th row is traditionally reserved for filepath, table reference and time stamp. Populate from bottom up.}
+
+\item{fileloc}{text string for file location}
+
+\item{override}{override}
+
+\item{addTime}{logical for ading time stamp}
 }
 \description{
 Adds titles, headers, and footers

@@ -84,6 +84,10 @@ build.page <-
 #' @param fignum.buffer fine-control of vertical position
 #' @param title.buffer fine-control of vertical position
 #' @param add.fignum logical
+#' @param fignum figure number
+#' @param fileloc text string for file location
+#' @param override override
+#' @param addTime logical for ading time stamp
 annotate.page <- function (
   page.height = 8.5, 
   page.width = 11, 

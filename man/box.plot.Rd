@@ -11,6 +11,8 @@ box.plot(parent.df = working.df, y.col = "VSBMI",
   category.palette = c("red", "blue"), bplot.text = 3)
 }
 \arguments{
+\item{parent.df}{data.frame used by ggplot}
+
 \item{y.col}{parent.df column associated with response vairable}
 
 \item{y.label}{value gets passed to labs}

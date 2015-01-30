@@ -26,6 +26,7 @@
 #' @param left.margin used by build.page and annotate.page
 #' @param top.margin used by build.page and annotate.page
 #' @param bottom.margin used by build.page and annotate.page
+#' @param parent.df data.frame used by ggplot
 #' @param shape.label value sets passed to labs
 #' @param shape.palette values passed to scale_shape_manual
 #' @param test.dim logical. Assists with figure development. If TRUE it makes a call to grid.show.layout.
@@ -68,6 +69,7 @@ graphic.params <- function(
   nrow,
   page.height,
   page.width,
+  parent.df,
   right.margin,
   left.margin,
   top.margin,
@@ -94,7 +96,7 @@ return("Hello, this function is just a convient location to store argument names
 #' @details In building the driver files, manual adjustment of y.limits and y.ticks is required. Note that this function computes summary statistics from raw data.
 #' @inheritParams graphic.params
 #' @param bar.position passed to geom_bar
-#' @param killMissing
+#' @param killMissing logical
 #' @examples 
 #' \dontrun{
 #' # pre-processing

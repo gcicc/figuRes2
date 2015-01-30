@@ -16,6 +16,8 @@ line.plot(parent.df = working.df, category.palette = c("red", "blue"),
   ymin.col = "YMIN", ymax.col = "YMAX", line.col = "LTYPE")
 }
 \arguments{
+\item{parent.df}{data.frame used by ggplot}
+
 \item{category.palette}{colors assoicated with categorical variable}
 
 \item{linetype.palette}{values passed to scale_linetype_manual}

@@ -13,6 +13,8 @@ table.plot2(parent.df = working.df, y.rank.col = "Subcategory",
   category.palette = c("red", "blue"))
 }
 \arguments{
+\item{parent.df}{data.frame used by ggplot}
+
 \item{y.rank.col}{column holding ranks for line items in forest/dot/table plots}
 
 \item{category.col}{parent.df column associated with explantory variable}

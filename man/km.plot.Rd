@@ -14,6 +14,8 @@ km.plot(parent.df, censor.col = "CENSOR", centime.col = "CENTIME",
   text.size = 4)
 }
 \arguments{
+\item{parent.df}{data.frame used by ggplot}
+
 \item{censor.col}{name of parent.df column associated with censor variable}
 
 \item{centime.col}{name of parent.df column associated with censored time}

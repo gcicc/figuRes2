@@ -4,8 +4,7 @@
 \alias{refresh.outputplan}
 \title{Refresh the Output Plan}
 \usage{
-refresh.outputplan(loadplan = TRUE,
-  filename = "C:/Users/gqc70045/Documents/LOCALR/Darapladib Graphics/Stability Graphics/refdata/outputplan_stability 22NOV13.csv")
+refresh.outputplan(loadplan = TRUE, filename = "outputplan.csv")
 }
 \arguments{
 \item{loadplan}{logical; if true then it loads from the filename, else it presumes outputplan is an object in Global Environment}

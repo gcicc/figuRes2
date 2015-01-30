@@ -29,10 +29,6 @@ default.settings <- function()
   cat("dd is set to:", dd, "\n")
   cat("cd is set to:", cd, "\n")
   cat("od is set to:", od, "\n")
-  cat("logd is set to:", logd, "\n")
-  cat("supd is set to:", supd, "\n")
-  cat("devd is set to:", devd, "\n")
-  cat("docd is set to:", docd, "\n")
   cat("\nNote: If a path is assigned to an object called od2, non-pdf files created by\nrun.specific will be diverted to that folder.\n")
   
   page.width <<- 11

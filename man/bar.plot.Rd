@@ -12,6 +12,8 @@ bar.plot(parent.df = working.df, category.col = "TRTGRP",
   killMissing = TRUE)
 }
 \arguments{
+\item{parent.df}{data.frame used by ggplot}
+
 \item{category.col}{parent.df column associated with explantory variable}
 
 \item{category.label}{passed to x-axis label}
@@ -32,7 +34,7 @@ bar.plot(parent.df = working.df, category.col = "TRTGRP",
 
 \item{text.size}{value gets passed to geom_text}
 
-\item{killMissing}{}
+\item{killMissing}{logical}
 }
 \description{
 A function for creating bar charts; adds tabular data to bar chart.

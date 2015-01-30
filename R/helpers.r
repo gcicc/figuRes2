@@ -9,86 +9,84 @@
 #' @param filename Should point to the outputplan_study.csv typically located in the /code directory.
 #' @author Greg Cicconetti
 refresh.outputplan <- 
-  function (
-    loadplan=TRUE,
-    filename = "C:/Users/gqc70045/Documents/LOCALR/Darapladib Graphics/Stability Graphics/refdata/outputplan_stability 22NOV13.csv") 
-  {
-    if(loadplan==TRUE) temp <- read.csv(filename) else temp <-  outputplan
-    
-    # step through column of outputplan
-    # convert columns to text class, use blank space for missing values when reading numeric columns
-    # search for \n in FigureTitle column
-    for (i in 1:ncol(temp)) {
-      temp[, i] <- as.character(temp[, i], na = "")
-      temp[, i][is.na(temp[, i]) == T] <- ""
-    }
-    
-    # Replace 
-    temp$FigureTitle <- gsub(pattern = "\\n", x = temp$FigureTitle, 
-                             replacement = "\n", fixed = T)
-    temp$FigureTitle <- gsub(pattern = "COMMA", x = temp$FigureTitle, 
-                             replacement = ",", fixed = T)
-    temp$TableID <- gsub(pattern = "COMMA", x = temp$TableID, 
-                             replacement = ",", fixed = T)
-    temp$fnote1 <- gsub(pattern = "COMMA", x = temp$fnote1, 
-                         replacement = ",", fixed = T)
-    temp$fnote2 <- gsub(pattern = "COMMA", x = temp$fnote2, 
-                         replacement = ",", fixed = T)
-    temp$fnote3 <- gsub(pattern = "COMMA", x = temp$fnote3, 
-                         replacement = ",", fixed = T)
-    temp$fnote4 <- gsub(pattern = "COMMA", x = temp$fnote4, 
-                         replacement = ",", fixed = T)
-    # Prepare to split FigureTitle Column into constituent title lines
-    temp$FigureTitle1 <- temp$FigureTitle2 <- temp$FigureTitle3 <- temp$FigureTitle4 <- ""
-    temp$nTitleLines <- 1
-    
-    
-    # Run though rows, identify number of lines needed and populate constituent title lines
-    for(i in 1:nrow(temp)){
-      if(length(str_split(temp$FigureTitle[i], pattern="\n")[[1]]) == 1){
-        temp$FigureTitle1[i] <- temp$FigureTitle[i]
-        temp$nFootLines[i] <- sum(c(temp$fnote1[i]!="",temp$fnote2[i]!="",temp$fnote3[i]!="",temp$fnote4[i]!=""))
-      }
-      if(  length(str_split(temp$FigureTitle[i], pattern="\n")[[1]]) == 2){
-        temp$FigureTitle1[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][1]
-        temp$FigureTitle2[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][2]
-        temp$nTitleLines[i] <- 2
-        temp$nFootLines[i] <- sum(c(temp$fnote1[i]!="",temp$fnote2[i]!="",temp$fnote3[i]!="",temp$fnote4[i]!=""))
-        
-      }
-      if(  length(str_split(temp$FigureTitle[i], pattern="\n")[[1]]) == 3){
-        temp$FigureTitle1[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][1]
-        temp$FigureTitle2[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][2]
-        temp$FigureTitle3[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][3]
-        temp$nTitleLines[i] <- 3
-        temp$nFootLines[i] <- sum(c(temp$fnote1[i]!="",temp$fnote2[i]!="",temp$fnote3[i]!="",temp$fnote4[i]!=""))
-        
-      }
-      if(  length(str_split(temp$FigureTitle[i], pattern="\n")[[1]]) == 4){
-        temp$FigureTitle1[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][1]
-        temp$FigureTitle2[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][2]
-        temp$FigureTitle3[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][3]
-        temp$FigureTitle4[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][4]
-        temp$nTitleLines[i] <- 4
-        temp$nFootLines[i] <- sum(c(temp$fnote1[i]!="",temp$fnote2[i]!="",temp$fnote3[i]!="",temp$fnote4[i]!=""))
-        
-      }
-    }
-        
-    temp$datadate <- file.info(paste(dd, temp$csv, sep = ""))$mtime
-    temp$nFootLines <- as.numeric( temp$nFootLines)
-    temp$nTitleLines <- as.numeric(temp$nTitleLines)
-    outputplan <<- temp
-    if (any(duplicated(outputplan$output))) 
-      cat(paste("Note: outputplan has duplicated values in the output column.\nThe outputplan should be edited or subseted to ensure no duplicates.\nCulprits are:", 
-                outputplan$output[duplicated(outputplan$output)]), 
-          "\n")
-    if (any(duplicated(outputplan$rcode))) 
-      cat(paste("Note: outputplan has duplicated values in the rcode column.\nThe outputplan should be edited or subseted to ensure no duplicates.\nCulprits are:", 
-                outputplan$rcode[duplicated(outputplan$rcode)]), 
-          "\n")
-  }
-
+        function (
+                loadplan=TRUE,
+                filename = "outputplan.csv") 
+        {
+                if(loadplan==TRUE) temp <- read.csv(filename) else temp <-  outputplan
+                
+                # step through column of outputplan
+                # convert columns to text class, use blank space for missing values when reading numeric columns
+                # search for \n in FigureTitle column
+                for (i in 1:ncol(temp)) {
+                        temp[, i] <- as.character(temp[, i], na = "")
+                        temp[, i][is.na(temp[, i]) == T] <- ""
+                }
+                
+                # Replace 
+                temp$FigureTitle <- gsub(pattern = "\\n", x = temp$FigureTitle, 
+                                         replacement = "\n", fixed = T)
+                temp$FigureTitle <- gsub(pattern = "COMMA", x = temp$FigureTitle, 
+                                         replacement = ",", fixed = T)
+                temp$TableID <- gsub(pattern = "COMMA", x = temp$TableID, 
+                                     replacement = ",", fixed = T)
+                temp$fnote1 <- gsub(pattern = "COMMA", x = temp$fnote1, 
+                                    replacement = ",", fixed = T)
+                temp$fnote2 <- gsub(pattern = "COMMA", x = temp$fnote2, 
+                                    replacement = ",", fixed = T)
+                temp$fnote3 <- gsub(pattern = "COMMA", x = temp$fnote3, 
+                                    replacement = ",", fixed = T)
+                temp$fnote4 <- gsub(pattern = "COMMA", x = temp$fnote4, 
+                                    replacement = ",", fixed = T)
+                # Prepare to split FigureTitle Column into constituent title lines
+                temp$FigureTitle1 <- temp$FigureTitle2 <- temp$FigureTitle3 <- temp$FigureTitle4 <- ""
+                temp$nTitleLines <- 1
+                
+                
+                # Run though rows, identify number of lines needed and populate constituent title lines
+                for(i in 1:nrow(temp)){
+                        if(length(str_split(temp$FigureTitle[i], pattern="\n")[[1]]) == 1){
+                                temp$FigureTitle1[i] <- temp$FigureTitle[i]
+                                temp$nFootLines[i] <- sum(c(temp$fnote1[i]!="",temp$fnote2[i]!="",temp$fnote3[i]!="",temp$fnote4[i]!=""))
+                        }
+                        if(  length(str_split(temp$FigureTitle[i], pattern="\n")[[1]]) == 2){
+                                temp$FigureTitle1[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][1]
+                                temp$FigureTitle2[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][2]
+                                temp$nTitleLines[i] <- 2
+                                temp$nFootLines[i] <- sum(c(temp$fnote1[i]!="",temp$fnote2[i]!="",temp$fnote3[i]!="",temp$fnote4[i]!=""))
+                                
+                        }
+                        if(  length(str_split(temp$FigureTitle[i], pattern="\n")[[1]]) == 3){
+                                temp$FigureTitle1[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][1]
+                                temp$FigureTitle2[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][2]
+                                temp$FigureTitle3[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][3]
+                                temp$nTitleLines[i] <- 3
+                                temp$nFootLines[i] <- sum(c(temp$fnote1[i]!="",temp$fnote2[i]!="",temp$fnote3[i]!="",temp$fnote4[i]!=""))
+                                
+                        }
+                        if(  length(str_split(temp$FigureTitle[i], pattern="\n")[[1]]) == 4){
+                                temp$FigureTitle1[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][1]
+                                temp$FigureTitle2[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][2]
+                                temp$FigureTitle3[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][3]
+                                temp$FigureTitle4[i] <- str_split(temp$FigureTitle[i],pattern="\n")[[1]][4]
+                                temp$nTitleLines[i] <- 4
+                                temp$nFootLines[i] <- sum(c(temp$fnote1[i]!="",temp$fnote2[i]!="",temp$fnote3[i]!="",temp$fnote4[i]!=""))
+                                
+                        }
+                }
+                
+                temp$nFootLines <- as.numeric( temp$nFootLines)
+                temp$nTitleLines <- as.numeric(temp$nTitleLines)
+                outputplan <<- temp
+                if (any(duplicated(outputplan$output))) 
+                        cat(paste("Note: outputplan has duplicated values in the output column.\nThe outputplan should be edited or subseted to ensure no duplicates.\nCulprits are:", 
+                                  outputplan$output[duplicated(outputplan$output)]), 
+                            "\n")
+                if (any(duplicated(outputplan$rcode))) 
+                        cat(paste("Note: outputplan has duplicated values in the rcode column.\nThe outputplan should be edited or subseted to ensure no duplicates.\nCulprits are:", 
+                                  outputplan$rcode[duplicated(outputplan$rcode)]), 
+                            "\n")
+        }
 # Functions for Output control -----------------------
 # run.specific-----
 #' @title run.specific

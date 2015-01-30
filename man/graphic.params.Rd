@@ -7,10 +7,10 @@
 graphic.params(at.risk.palette, background.palette, category.col,
   category.label, category.palette, censor.col, centime.col, interior,
   interior.h, interior.w, label.col, line.col, line.size, linetype.palette,
-  ncol, nrow, page.height, page.width, right.margin, left.margin, top.margin,
-  bottom.margin, shape.label, shape.palette, test.dim, x.label, x.limits,
-  x.ticks, x.ticks.labels, y.col, y.label, y.limits, ymin.col, ymax.col,
-  y.ticks)
+  ncol, nrow, page.height, page.width, parent.df, right.margin, left.margin,
+  top.margin, bottom.margin, shape.label, shape.palette, test.dim, x.label,
+  x.limits, x.ticks, x.ticks.labels, y.col, y.label, y.limits, ymin.col,
+  ymax.col, y.ticks)
 }
 \arguments{
 \item{at.risk.palette}{colors to be assocated with categorical variable in accompanying at.risk table}
@@ -48,6 +48,8 @@ graphic.params(at.risk.palette, background.palette, category.col,
 \item{page.height}{used by build.page and annotate.page}
 
 \item{page.width}{used by build.page and annotate.page}
+
+\item{parent.df}{data.frame used by ggplot}
 
 \item{right.margin}{used by build.page and annotate.page}
 

@@ -3,7 +3,7 @@ Type: Package
 Title: A package to support a variety of figure production tasks
 Version: 1.00
 Date: 2015-01-26
-Authors: Greg Cicconetti, David Wade
+Author: Greg Cicconetti, David Wade
 URL: https://github.com/gcicc/figures2
 Maintainer: Greg Cicconetti <greg.2.cicconetti@gsk.com>
 Description: This package takes the view that a figure is a collection of
@@ -12,18 +12,8 @@ Description: This package takes the view that a figure is a collection of
     offered to streamline a variety of figure production task.
 License: GPL-2
 LazyLoad: yes
-Depends: R (>= 3.1.2), 
-    ggplot2,
-    grid,
-    gridExtra,
-    reshape2,
-    scales,
-    survival,
-    plyr,
-    lubridate,
-    gtable,
-    stringr,
-    RColorBrewer
+Depends: R (>= 3.1.2), survival, ggplot2(>= 1.0.0), scales
+Imports: plyr (>= 1.7.1), digest, grid (>= 3.0.0), gridExtra, gtable (>= 0.1.1), reshape2, stringr (>= 0.6.2), gtable (>= 0.1.2),  RColorBrewer 
 ByteCompile: TRUE
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown
