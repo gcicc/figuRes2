@@ -4,7 +4,7 @@
 \alias{sync.ylab.widths}
 \title{sync.ylab.widths}
 \usage{
-sync.ylab.widths(gg.list = list(lp, tp), default.length = 2)
+sync.ylab.widths(gg.list, default.length = 2)
 }
 \arguments{
 \item{gg.list}{a list of ggplot objects}

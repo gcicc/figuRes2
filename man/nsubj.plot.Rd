@@ -4,7 +4,7 @@
 \alias{nsubj.plot}
 \title{nsubj.plot}
 \usage{
-nsubj.plot(parent.df = working.df, category.palette = c("red", "blue"),
+nsubj.plot(parent.df, category.palette = c("red", "blue"),
   x.label = "Number of Subjects", y.label = "Treatment\\nGroup",
   text.size = 4, x.col = "XVALUES", text.col = "N",
   category.col = "CATEGORY", x.limits = c(0.5, 18),

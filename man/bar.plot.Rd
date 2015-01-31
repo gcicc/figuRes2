@@ -4,7 +4,7 @@
 \alias{bar.plot}
 \title{bar.plot}
 \usage{
-bar.plot(parent.df = working.df, category.col = "TRTGRP",
+bar.plot(parent.df, category.col = "TRTGRP",
   category.label = "Treatment Group", x.label = "", y.col = "GWHRT",
   y.label = "Percentage of Subjects", y.limits = c(0, 0.7),
   y.ticks = seq(0, 0.3, 0.05), bar.position = "dodge",

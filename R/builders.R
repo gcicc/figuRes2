@@ -5,13 +5,10 @@
 #' @inheritParams graphic.params
 build.page <- 
   function (
-    interior.h=c(1/3,1/3,1/3),
-    interior.w=c(.5, .25, .25),
-    ncol=3, nrow=4,
-    interior= list(synced.fps[[1]], dtest1, ttest1, 
-                   synced.fps[[2]], dtest2, ttest2, 
-                   synced.fps[[3]], dtest3, ttest3, 
-                   synced.fps[[4]], dtest4, ttest4),
+    interior.h=c(1),
+    interior.w=c(1),
+    ncol=1, nrow=1,
+    interior,
     test.dim=FALSE,
     page.height=8.5,
     page.width=11,
@@ -36,7 +33,10 @@ build.page <-
                         heights = page.heights, widths = page.widths) {
       padded <- list()
       for (i in 1:((int.ncol + 2) * (int.nrow + 2))) {
-  #   blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE) # From default settings
+  
+ assign("blankPanel", grid.rect(gp=gpar(col="white"), draw=FALSE) , envir = .GlobalEnv)
+              
+              #  blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE) # From default settings
         padded[[length(padded) + 1]] <- grid.rect(gp=gpar(col="white"), draw=FALSE)
       }
       names(padded) <- rep("blankPanel", (int.nrow + 2) * (int.ncol + 
@@ -201,7 +201,7 @@ annotate.page <- function (
 #' @description Aligns the widths of ggplot objects to ensure common plot regions. The maximum length required for y-axis labels among the list is determined and applied to the other plots. This assists in syncing the widths of ggplot objects for the purpose of align figures on a page.
 #' @param gg.list a list of ggplot objects
 sync.ylab.widths <- 
-  function(gg.list=list(lp, tp), default.length=2){    
+  function(gg.list, default.length=2){    
     gtable.list <- list()
     maxWidthList <- list()    
     for(i in 1:length(gg.list)){
@@ -219,7 +219,8 @@ sync.ylab.widths <-
 #' @description This takes two ggplot objects, steals the bottom x-axis from 2nd object and returns a gtable object with that bottom x-axis per object 1 and top x-axis per object 2
 #' @param p1 ggplot object with bottom x-axis
 #' @param p2 ggplot object with intended top x-axis in bottom position
-get.top.xaxis <- function(p1=p1.1, p2=p1.2){  
+get.top.xaxis <- function(p1, p2){
+name <- r <- NULL
   # Extract gtable
   g1 <- ggplot_gtable(ggplot_build(p1))
   g2 <- ggplot_gtable(ggplot_build(p2))

@@ -4,12 +4,10 @@
 \alias{build.page}
 \title{build.page}
 \usage{
-build.page(interior.h = c(1/3, 1/3, 1/3), interior.w = c(0.5, 0.25, 0.25),
-  ncol = 3, nrow = 4, interior = list(synced.fps[[1]], dtest1, ttest1,
-  synced.fps[[2]], dtest2, ttest2, synced.fps[[3]], dtest3, ttest3,
-  synced.fps[[4]], dtest4, ttest4), test.dim = FALSE, page.height = 8.5,
-  page.width = 11, right.margin = 0.75, left.margin = 0.75,
-  top.margin = 1.4 - 0.5, bottom.margin = 1.75 - 0.5)
+build.page(interior.h = c(1), interior.w = c(1), ncol = 1, nrow = 1,
+  interior, test.dim = FALSE, page.height = 8.5, page.width = 11,
+  right.margin = 0.75, left.margin = 0.75, top.margin = 1.4 - 0.5,
+  bottom.margin = 1.75 - 0.5)
 }
 \arguments{
 \item{interior.h}{a vector summing to 1 to indicate how to partition the heights}

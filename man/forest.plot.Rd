@@ -4,7 +4,7 @@
 \alias{forest.plot}
 \title{forest.plot}
 \usage{
-forest.plot(parent.df = working.df, y.rank.col = "rank", Point.Est = "hr",
+forest.plot(parent.df, y.rank.col = "rank", Point.Est = "hr",
   Lower.CI = "low", Upper.CI = "high", y.label.rank.col = "rank",
   y.label.col = "subcategory", x.label = "Estimate", y.label = "Item",
   log.trans = TRUE, x.limits = c(0.21, 5), x.ticks = 2^(-2:2),

@@ -39,7 +39,7 @@ The outputplan holds metadata for each figure.  One row is allocated to each fig
 
 The figuRes package has a dummy outputplan stored as a data set.
 ```{r}
-require(figures2)
+require(figures2); require(stringr)
 data(outputplan)
 # Run the next line to see first 6 rows
 # head(outputplan)

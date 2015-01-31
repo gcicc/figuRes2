@@ -4,7 +4,7 @@
 \alias{get.top.xaxis}
 \title{get.top.xaxis}
 \usage{
-get.top.xaxis(p1 = p1.1, p2 = p1.2)
+get.top.xaxis(p1, p2)
 }
 \arguments{
 \item{p1}{ggplot object with bottom x-axis}

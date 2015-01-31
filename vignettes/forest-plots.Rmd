@@ -11,6 +11,17 @@ This first example will demonstrate that pre-processing and post-processing are 
 ```{r, results='hide'}
 remove(list=ls())
 require(figures2)
+require(survival)
+require(ggplot2)
+require(scales)
+require(stringr)
+require(plyr)
+require(grid)
+require(gridExtra)
+require(reshape2)
+require(gtable)
+require(RColorBrewer)
+
 default.settings()
 ```
 

@@ -20,6 +20,17 @@ Recall the working definition for a figure is a collection of 1 or more graphics
 
 ```{r, fig.cap="A figure built using a single graphic with top and bottom margins set default values", message=FALSE}
 require(figures2)
+require(survival)
+require(ggplot2)
+require(scales)
+require(stringr)
+require(plyr)
+require(grid)
+require(gridExtra)
+require(reshape2)
+require(gtable)
+require(RColorBrewer)
+
 #pdf("figure1 - testing dimensions.pdf", h=8.5, w=11)
 build.page(interior.h=c(1),
            interior.w=c(1),

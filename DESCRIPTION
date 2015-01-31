@@ -12,8 +12,9 @@ Description: This package takes the view that a figure is a collection of
     offered to streamline a variety of figure production task.
 License: GPL-2
 LazyLoad: yes
-Depends: R (>= 3.1.2), survival, ggplot2(>= 1.0.0), scales
-Imports: plyr (>= 1.7.1), digest, grid (>= 3.0.0), gridExtra, gtable (>= 0.1.1), reshape2, stringr (>= 0.6.2), gtable (>= 0.1.2),  RColorBrewer 
+Depends: R (>= 3.1.2)
+Imports: survival, ggplot2(>= 1.0.0), scales, stringr, plyr (>= 1.7.1), grid (>= 3.0.0), gridExtra, reshape2, gtable (>= 0.1.2) 
+Suggests: RColorBrewer
 ByteCompile: TRUE
 VignetteBuilder: knitr
 Suggests: knitr, rmarkdown

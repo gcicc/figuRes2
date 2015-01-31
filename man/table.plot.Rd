@@ -4,13 +4,12 @@
 \alias{table.plot}
 \title{table.plot}
 \usage{
-table.plot(parent.df = working.df, y.rank.col = "Subcategory",
-  category.col = "Treatment", text.col1 = "Point_Est", text.col2 = "LCI",
-  text.col3 = "UCI", text.col4 = NULL, text.size = 12,
-  xtick.labs = c("Estimate", "LCI", "UCI"), x.limits = NULL,
-  y.limits = NULL, x.label = "Text", y.label = "Item",
-  y.label.rank.col = "rank", y.label.col = "subcategory",
-  category.palette = c("red", "blue"))
+table.plot(parent.df, y.rank.col = "Subcategory",
+  category.col = "Treatment", text.col1 = "Point_Est", text.col2 = NULL,
+  text.col3 = NULL, text.col4 = NULL, text.size = 12, xtick.labs = c("",
+  "", ""), x.limits = NULL, y.limits = NULL, x.label = "Text",
+  y.label = "Item", y.label.rank.col = "rank",
+  y.label.col = "subcategory", category.palette = c("red", "blue"))
 }
 \arguments{
 \item{parent.df}{data.frame used by ggplot}

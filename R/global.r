@@ -19,24 +19,39 @@
 #' @author Greg Cicconetti
 default.settings <- function() 
 {
+ page.width <- page.height <- left.margin <- right.margin <- top.margin <- bottom.margin <- graph.region.h <- graph.region.w <- NULL      
+ my.path <- NULL
   # Directories
-  my.path <<- getwd()
-  dd <<- paste0(my.path, "/dddata/")
-  cd <<- paste0(my.path, "/code/")
-  od <<- paste0(my.path, "/output/")
-  logd <<- paste0(my.path, "/log/")
+  # my.path <<- getwd()
+ assign("my.path", getwd(), envir = .GlobalEnv)
+ assign("dd", paste0(my.path, "/dddata/"), envir = .GlobalEnv)
+ assign("cd", paste0(my.path, "/code/"), envir = .GlobalEnv)
+ assign("od", paste0(my.path, "/output/"), envir = .GlobalEnv)
+ assign("logd", paste0(my.path, "/logd/"), envir = .GlobalEnv)
+ 
+  #dd <<- paste0(my.path, "/dddata/")
+  #cd <<- paste0(my.path, "/code/")
+  #od <<- paste0(my.path, "/output/")
+  #logd <<- paste0(my.path, "/log/")
   cat("my.path is set to:", my.path, "\n")
   cat("dd is set to:", dd, "\n")
   cat("cd is set to:", cd, "\n")
   cat("od is set to:", od, "\n")
   cat("\nNote: If a path is assigned to an object called od2, non-pdf files created by\nrun.specific will be diverted to that folder.\n")
   
-  page.width <<- 11
-  page.height <<- 8.5
-  right.margin <<- .75
-  left.margin <<- .75  
-  top.margin <<- 1.4-.5
-  bottom.margin <<- 1.75-.5
+ assign("page.width", 11 , envir = .GlobalEnv)
+ assign("page.height", 8.5, envir = .GlobalEnv)
+ assign("right.margin", .75, envir = .GlobalEnv)
+ assign("left.margin", .75, envir = .GlobalEnv)
+ assign("top.margin", 1.4-.5, envir = .GlobalEnv)
+ assign("bottom.margin", 1.75-.5, envir = .GlobalEnv)
+ 
+#   page.width <<- 11
+#   page.height <<- 8.5
+#   right.margin <<- .75
+#   left.margin <<- .75  
+#   top.margin <<- 1.4-.5
+#   bottom.margin <<- 1.75-.5
   
   cat("The default page dimension is set to landscape:", 
       page.width, "in. x", page.height,"in.\n")
@@ -45,9 +60,13 @@ default.settings <- function()
   cat("The default top an bottom margins:", 
       top.margin, "in. and ", bottom.margin, "in., respectively.")
   
-  graph.region.h <<- page.height - (right.margin + left.margin)
-  graph.region.w <<- page.width - (top.margin + bottom.margin)
-  blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE)
+assign("graph.region.h", page.height, envir = .GlobalEnv)
+assign("graph.region.w", page.width, envir = .GlobalEnv)
+assign("bottom.margin", 1.75-.5, envir = .GlobalEnv)
+#   graph.region.h <<- page.height - (right.margin + left.margin)
+#   graph.region.w <<- page.width - (top.margin + bottom.margin)
+assign("blankPanel",grid.rect(gp=gpar(col="white"), draw=FALSE), envir = .GlobalEnv)
+
   
   theme_set(theme_grey2_nomargins())
   cat("\nThe default theme: theme_grey2_nomargins", "\n")
@@ -105,11 +124,17 @@ default.settings2 <- function(
   bottom.margin = 1.75-.5)
 {
   # Directories
-  my.path <<-my.path
-  dd <<- dd
-  cd <<- cd
-  od <<- od
-  logd <<- logd
+assign("my.path", my.path, envir = .GlobalEnv)
+assign("dd", dd, envir = .GlobalEnv)
+assign("cd", cd, envir = .GlobalEnv)
+assign("od", od, envir = .GlobalEnv)
+assign("logd", logd, envir = .GlobalEnv)
+
+  #my.path <<-my.path
+ # dd <<- dd
+ # cd <<- cd
+#  od <<- od
+ # logd <<- logd
 
   cat("my.path is set to:", my.path, "\n")
   cat("dd is set to:", dd, "\n")
@@ -130,9 +155,12 @@ default.settings2 <- function(
   cat("The default top an bottom margins:", 
       top.margin, "in. and ", bottom.margin, "in., respectively.")
   
-  graph.region.h <<- page.height - (right.margin + left.margin)
-  graph.region.w <<- page.width - (top.margin + bottom.margin)
-  blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE)
+assign("graph.region.h", page.height - (right.margin + left.margin), envir = .GlobalEnv)
+assign("graph.region.w", page.height - (right.margin + left.margin), envir = .GlobalEnv)
+assign("blankPanel", grid.rect(gp=gpar(col="white"), draw=FALSE), envir = .GlobalEnv)
+  # graph.region.h <<- page.height - (right.margin + left.margin)
+ # graph.region.w <<- page.width - (top.margin + bottom.margin)
+ # blankPanel <<- grid.rect(gp=gpar(col="white"), draw=FALSE)
   
   do.call("theme_set", list(do.call(main.theme, list())))
   cat(paste("\nThe default theme:", main.theme, "\n"))

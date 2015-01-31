@@ -4,7 +4,7 @@
 \alias{table.plot2}
 \title{table.plot2}
 \usage{
-table.plot2(parent.df = working.df, y.rank.col = "Subcategory",
+table.plot2(parent.df, y.rank.col = "Subcategory",
   category.col = "Treatment", text.col1 = "Point_Est", text.col2 = "LCI",
   text.col3 = "UCI", text.col4 = NULL, text.size = 12,
   xtick.labs = c("Estimate", "LCI", "UCI"), x.ticks = 1:3,

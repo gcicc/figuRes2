@@ -7,6 +7,8 @@ Intialize a session:
 ```{r, results='hide'}
 remove(list=ls())
 require(figures2) 
+require(survival)
+require(ggplot2)
 default.settings()
 ```
 

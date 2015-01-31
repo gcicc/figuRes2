@@ -4,13 +4,10 @@
 \alias{cdf.plot}
 \title{cdf.plot}
 \usage{
-cdf.plot(parent.df = working.df, category.col = "TRTGRP",
-  category.label = "Treatment Group", response.col = "EXDURMTH",
-  x.label = "Month 6 HDL Cholesterol", x.limits = c(0, 60),
-  x.ticks = seq(0, 60, 10),
-  y.label = "Percentage with 3 Month HDL Cholesterol Less Than x-value",
-  y.limits = c(0, 1), y.ticks = seq(0, 1, 0.2), line.size = 0.75,
-  category.palette = c("red", "blue"), exclude = c(0))
+cdf.plot(parent.df, category.col, category.label, response.col, x.label = "",
+  x.limits = NULL, x.ticks = NULL, y.label = "", y.limits = c(0, 1),
+  y.ticks = seq(0, 1, 0.2), line.size = 0.75, category.palette = c("red",
+  "blue"))
 }
 \arguments{
 \item{parent.df}{data.frame used by ggplot}

@@ -4,16 +4,16 @@
 \alias{line.plot}
 \title{line.plot}
 \usage{
-line.plot(parent.df = working.df, category.palette = c("red", "blue"),
+line.plot(parent.df, category.palette = c("red", "blue"),
   linetype.palette = c("dotted", "blank", "solid", "blank"),
   line.size = 0.75, shape.palette = c(24, 21), x.label = "Visit",
   y.label = "Response", category.label = "Treatment Group",
-  x.limits = NULL, x.ticks = unique(working.df$XVALUES),
-  x.ticks.labels = unique(working.df$XVALUES), addBars = TRUE,
-  bar.width = 1, pdval = 0.25, x.col = "XVALUES", y.col = "YVALUES",
-  y.limits = NULL, y.ticks = NULL, category.col = "CATEGORY",
-  category.symbol.col = "CATEGORY.SYMBOL", y.digits = 0,
-  ymin.col = "YMIN", ymax.col = "YMAX", line.col = "LTYPE")
+  x.limits = NULL, x.ticks = NULL, x.ticks.labels = NULL,
+  addBars = TRUE, bar.width = 1, pdval = 0.25, x.col = "XVALUES",
+  y.col = "YVALUES", y.limits = NULL, y.ticks = NULL,
+  category.col = "CATEGORY", category.symbol.col = "CATEGORY.SYMBOL",
+  y.digits = 0, ymin.col = "YMIN", ymax.col = "YMAX",
+  line.col = "LTYPE")
 }
 \arguments{
 \item{parent.df}{data.frame used by ggplot}

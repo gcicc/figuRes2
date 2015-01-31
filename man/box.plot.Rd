@@ -4,11 +4,11 @@
 \alias{box.plot}
 \title{box.plot}
 \usage{
-box.plot(parent.df = working.df, y.col = "VSBMI",
-  y.label = "BMI (m/kg^2)", category.col = "TRTGRP",
-  category.label = "Treatment Group", y.limits = c(10, 100),
-  y.ticks = seq(10, 100, 10), y.digits = 0, shape.palette = c(1, 2),
-  category.palette = c("red", "blue"), bplot.text = 3)
+box.plot(parent.df, y.col = "VSBMI", y.label = "BMI (m/kg^2)",
+  category.col = "TRTGRP", category.label = "Treatment Group",
+  y.limits = c(10, 100), y.ticks = seq(10, 100, 10), y.digits = 0,
+  shape.palette = c(1, 2), category.palette = c("red", "blue"),
+  bplot.text = 3)
 }
 \arguments{
 \item{parent.df}{data.frame used by ggplot}

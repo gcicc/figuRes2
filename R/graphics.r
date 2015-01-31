@@ -1,3 +1,5 @@
+utils::globalVariables(c("outputplan", "od", "cd", "dd", "FigureNumber", "FigureStatus", "FigureTitle", "i" ))
+
 # Graphics functions for figures2
 #-------------------
 
@@ -90,7 +92,7 @@ graphic.params <- function(
 return("Hello, this function is just a convient location to store argument names.")
 }
 
-# bar.plot ----------------------------------------------------------------
+# bar.plot -------
 #' @title bar.plot
 #' @description A function for creating bar charts; adds tabular data to bar chart.
 #' @details In building the driver files, manual adjustment of y.limits and y.ticks is required. Note that this function computes summary statistics from raw data.
@@ -113,7 +115,7 @@ return("Hello, this function is just a convient location to store argument names
 #' } 
 #' @author Greg Cicconetti
 bar.plot <-   function (
-  parent.df = working.df, 
+  parent.df, 
   category.col = "TRTGRP",
   category.label = "Treatment Group", 
   x.label="",
@@ -127,6 +129,8 @@ bar.plot <-   function (
   text.buffer=.05,
   killMissing = TRUE) 
   {
+
+Var1 <- Var2 <- Freq <- Prop <- Prop.text <- CATEGORY <- RESPONSE <- LOWER <- UPPER <- MEDIAN <- NULL 
   
   if(is.null(y.limits) || is.null(y.ticks)) {
     y.limits = c(0, 1)
@@ -181,7 +185,7 @@ bar.plot <-   function (
 #' }
 #' @author Greg Cicconetti
 box.plot <-
-  function (parent.df = working.df, 
+  function (parent.df, 
             y.col = "VSBMI", 
             y.label = "BMI (m/kg^2)", 
             category.col = "TRTGRP",
@@ -192,7 +196,8 @@ box.plot <-
             shape.palette = c(1,2),
             category.palette = c("red", "blue"),
             bplot.text = 3) {
-    
+CATEGORY <- RESPONSE <- LOWER <- UPPER <- MEDIAN <- NULL 
+          
     get.whiskers <- function(dframe) {
       bplot <- boxplot(dframe$RESPONSE ~ dframe$CATEGORY, plot = F)
       whiskers <- with(bplot, 
@@ -275,24 +280,22 @@ box.plot <-
 #' }
 #' @author Greg Cicconetti
 cdf.plot <-
-  function (parent.df= working.df, 
-            category.col = "TRTGRP",
-            category.label   = "Treatment Group",
-            response.col = "EXDURMTH", 
-            x.label = "Month 6 HDL Cholesterol", 
-            x.limits=c(0,60),
-            x.ticks=seq(0,60,10),
-            y.label = "Percentage with 3 Month HDL Cholesterol Less Than x-value", 
+  function (parent.df, 
+            category.col,
+            category.label,
+            response.col, 
+            x.label = "", 
+            x.limits=NULL,
+            x.ticks=NULL,
+            y.label = "", 
             y.limits= c(0,1),
             y.ticks = seq(0,1,.2),
             line.size=.75,
-            category.palette=c("red", "blue"),
-            exclude=c(0))
+            category.palette=c("red", "blue"))
 {
     names(parent.df) <- toupper(names(parent.df))
-    
-    names(parent.df) <- toupper(names(parent.df))
-    
+  
+    RESPONSE <- CATEGORY <- NULL
     cdf.df <- data.frame(
       RESPONSE= parent.df[, response.col],
       CATEGORY= parent.df[, category.col])
@@ -321,7 +324,7 @@ cdf.plot <-
     return(p1)
   }
 
-# dot.plot ----------------------------------------------------------------
+# dot.plot ----------------
 #' @title dot.plot
 #' @description A function for plotting dotplots offering compatiability with table.plot and dot.plot. 
 #' @inheritParams graphic.params
@@ -335,6 +338,7 @@ dot.plot <- function (parent.df = dot.df.melt, category.col = "Treatment",
                       x.label = "Estimate", y.label = "Item",
                       category.palette = c("red", "blue")) 
 {
+dot.df.melt <- RANK <- POINT.EST <- CATEGORY <- NULL
         
         names(parent.df) <- toupper(names(parent.df))
         if (is.null(y.limits)) {
@@ -364,7 +368,7 @@ dot.plot <- function (parent.df = dot.df.melt, category.col = "Treatment",
         return(for.return)
 }
 
-# forest.plot -------------------------------------------------------------
+# forest.plot -----------
 #' @title forest.plot
 #' @description A function for plotting forest plots offering compatiability with table.plot and dot.plot. 
 #' @inheritParams graphic.params
@@ -375,7 +379,7 @@ dot.plot <- function (parent.df = dot.df.melt, category.col = "Treatment",
 #' @param flip.palette logical; if TRUE it reverse the order of colors used for background
 #' @author Greg Cicconetti
 forest.plot <-
-  function (parent.df = working.df, 
+  function (parent.df, 
             y.rank.col = "rank",  # this maps the line segments to y-axis
             Point.Est = "hr",  
             Lower.CI = "low", 
@@ -394,7 +398,8 @@ forest.plot <-
             shape.palette = c(16, 16), 
             flip.palette = FALSE) 
 {
-    
+    xmin <- xmax <- ymin <- ymax <- period <- POINT.EST <- RANK <- CATEGORY <- LOWER.CI <- UPPER.CI <- NULL
+          
     if(is.null(y.limits) ) {
       y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
                    max(parent.df[,y.rank.col], na.rm=T)+.25) 
@@ -559,7 +564,7 @@ gcurve <- function (expr, from = NULL, to = NULL, n = 101, add = FALSE,
         return(for.return)
 }
 
-# km.plot -------------------------------------------
+# km.plot ----------
 #' @title km.plot 
 #' @description A function to create km plots
 #' @inheritParams graphic.params
@@ -611,7 +616,7 @@ km.plot <-
                   fromthetop=FALSE,
                   text.size=4) 
 {
-                
+CATEGORY <- AT.RISK <- XVALUES <- YVALUES <- NULL                
                 names(parent.df) <- toupper(names(parent.df))
                 
                 if(is.null(category.col)==FALSE){
@@ -765,66 +770,6 @@ p2 <- nsubj.plot(parent.df = at.risk,
 return(list(p1, p2, at.risk))}
         }
 
-# lasso.plot-----
-#' @title lasso.plot
-#' @description This function takes a glmnet object and builds a data.frame create ggplot versions of glmnet plot methods - expand to offer 3 standards and return a list
-#' @param lasso.model glmnet object
-#' @author Greg Cicconetti
-
-lasso.plot <- function(lasso.model=lasso.mod){
-  lasso.df <- data.frame(t(rbind(lasso.model$lambda, 
-                                 as.matrix(lasso.mod$beta))))
-  names(lasso.df)[1]<- "lambda"
-  # Compute L1 Norm of coefficient vector
-  lasso.df$L1.norm <- rowSums(abs(lasso.df[,-1]))
-  lasso.df.melt <- melt(lasso.df, id=c("lambda", "L1.norm"))
-  ggplot(lasso.df.melt) + 
-    aes(x=L1.norm/max(L1.norm), y=value, color=variable) + 
-    geom_line(size=.75)+
-    labs(x=expression(paste(L[1], " Norm = ", sum)), y="Coefficients")
-  
-  head(testing)
-  testing$L1.norm <- rowSums(abs(testing[,-1]))
-  head(testing)
-  testing.melt <- melt(testing, id=c("lambda", "L1.norm"))
-  ggplot(testing.melt) + 
-    aes(x=L1.norm, y=value, color=variable) + 
-    geom_line(size=.75)
-  
-  ggplot(testing.melt) + 
-    aes(x=log(lambda), y=value, color=variable) + 
-    geom_line(size=.75)+xlim(-8,-3)
-  
-  plot(lasso.mod, xvar="norm")
-  ggplot(models.l2.melt) + 
-    aes(x=abs(value)/sum(abs(value)), y=value, color=variable) + 
-    geom_line(size=.75)
-  
-  hist(abs(models.l2.melt$value)/sum(abs(models.l2.melt$value)))
-  
-  
-  reg.l1 <- glmnet(features, target, alpha=1)
-  
-  
-  models.l2$dev.ratio <-lasso.mod$dev.ratio
-  
-  colnames(models.l2)[1] <- "lambda"
-  models.l2.melt <- melt(models.l2, c("lambda"))
-  
-  coef_l1 <- ggplot(models.l2.melt) + 
-    aes(x=-log(lambda), y=value, color=variable) + geom_line(size=.75)+
-    xlim(3.5, 10)
-  
- # plot(lasso.mod, xvar="lambda")
-  coef_l1 <- ggplot(models.l2.melt) + 
-    aes(x=log(lambda), y=value, color=variable) + geom_line(size=.75)
-  
- # plot(lasso.mod, xvar="dev")
-  ggplot(models.l2.melt) + 
-    aes(x=dev.ratio, y=value, color=variable) + geom_line(size=.75)
-  
-}
-
 # line.plot --------------------
 #' @title line.plot 
 #' @description A function to create lineplots.
@@ -836,7 +781,7 @@ lasso.plot <- function(lasso.model=lasso.mod){
 #' \dontrun{   
 #' }
 #' @author Greg Cicconetti/David Wade
-line.plot <- function (parent.df = working.df,
+line.plot <- function (parent.df,
                        category.palette = c("red","blue"),
                        linetype.palette = c("dotted", "blank", "solid","blank"),
                        line.size = 0.75,
@@ -845,8 +790,8 @@ line.plot <- function (parent.df = working.df,
                        y.label = "Response",
                        category.label = "Treatment Group", 
                        x.limits = NULL,
-                       x.ticks = unique(working.df$XVALUES), 
-                       x.ticks.labels = unique(working.df$XVALUES),
+                       x.ticks = NULL, 
+                       x.ticks.labels = NULL,
                        addBars = TRUE, 
                        bar.width=1,
                        pdval = 0.25,
@@ -861,6 +806,7 @@ line.plot <- function (parent.df = working.df,
                        ymax.col = "YMAX",
                        line.col = "LTYPE") 
 {
+XVALUES <- YVALUES <- YMIN <- YMAX <- CATEGORY <- LTYPE <- NULL
         names(parent.df) <- toupper(names(parent.df))
         
         lineplot.df <- data.frame(XVALUES = parent.df[, x.col],
@@ -924,7 +870,7 @@ line.plot <- function (parent.df = working.df,
 #' @author Greg Cicconetti/David Wade
 
 nsubj.plot <- 
-        function (parent.df = working.df,
+        function (parent.df ,
                   category.palette = c("red","blue"), 
                   x.label = "Number of Subjects", 
                   y.label = "Treatment\nGroup",
@@ -937,6 +883,8 @@ nsubj.plot <-
                   x.ticks.labels = unique(parent.df$XVALUES)
         ) 
 {
+                
+XVALUES <- YVALUES <- COLOR.COL <- TEXT <- NULL
                 if (is.null(x.limits) || is.null(x.ticks)) {
                         cat("Either x.limits or x.ticks are set to NULL; specify.\n")
                         break
@@ -966,15 +914,15 @@ nsubj.plot <-
 #' @author Greg Cicconetti
 table.plot <-
         function(
-                parent.df = working.df,
+                parent.df ,
                 y.rank.col="Subcategory",
                 category.col="Treatment",
                 text.col1 = "Point_Est",
-                text.col2 = "LCI",
-                text.col3 = "UCI",
+                text.col2 = NULL,
+                text.col3 = NULL,
                 text.col4 = NULL,
                 text.size = 12,
-                xtick.labs = c("Estimate", "LCI", "UCI"),
+                xtick.labs = c("", "", ""),
                 x.limits=NULL,
                 y.limits=NULL,
                 x.label="Text",
@@ -983,6 +931,7 @@ table.plot <-
                 y.label.col = "subcategory", 
                 category.palette = c("red", "blue")){
                 
+CATEGORY <- RANK <- TEXT.COL1 <- TEXT.COL2 <- TEXT.COL3 <- TEXT.COL4 <- NULL
                 if(is.null(y.limits) ) {
                         y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
                                      max(parent.df[,y.rank.col], na.rm=T)+.25) 
@@ -1075,7 +1024,7 @@ table.plot <-
 #' @author Greg Cicconetti
 table.plot2 <-
         function(
-                parent.df = working.df,
+                parent.df,
                 y.rank.col="Subcategory",
                 category.col="Treatment",
                 text.col1 = "Point_Est",
@@ -1092,6 +1041,8 @@ table.plot2 <-
                 y.label.rank.col ="rank",  #  this identifies the y-axis values for labels
                 y.label.col = "subcategory", 
                 category.palette = c("red", "blue")){
+
+CATEGORY <- RANK <- TEXT.COL1 <- TEXT.COL2 <- TEXT.COL3 <- TEXT.COL4 <- NULL
                 
                 if(is.null(y.limits) ) {
                         y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,

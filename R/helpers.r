@@ -1,4 +1,3 @@
-
 # Helper functions for working with outputplan -----------
 
 # refresh.outputplan----
@@ -107,6 +106,8 @@ run.specific <-
   function (source.code = "g_AErr2.r", 
             outfile = "", toPDF=F, toWMF=F, toJPEG=F, toPNG=F, toBMP=F, toEPS=F, dpires=600)
     { 
+      myError <- NULL    
+          
     if (!exists("outputplan"))
       stop("outputplan does not exist in memory.")
     if (!(source.code %in% outputplan$rcode))
@@ -157,7 +158,7 @@ run.specific <-
         jpeg(paste(od2,unlist(strsplit(outputplan[i, ]$outputfile,"\\."))[1],".jpeg",sep = ""),             
              height = 8.5, width = 11, units="in", res=dpires)      
       if (outfile != "")        
-        jpg(paste(od2,unlist(strsplit(outfile,"\\."))[1],".jpeg", sep = ""), 
+        jpeg(paste(od2,unlist(strsplit(outfile,"\\."))[1],".jpeg", sep = ""), 
             height = 8.5, width = 11, units="in", res=dpires)      
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {        
         myError <<- e$message        
@@ -323,12 +324,7 @@ all.in.one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE)
   elasped
 }
 
-#' @title standardize
-#' @description A helper function for determining y-axis position
-#' @param x a vector
-standardize <- function(x){(x-mean(x))/(length(unique(x)))}
-
-# Utility Functions -----------------------------------
+# Utility Functions -----------------------
 #' @title fmt
 #' @description A function to control number of digits used in graphics.
 #' @details This function is used within ggplot, e.g. (scale_y_continuous(labels=fmt(digits=3))) to control the number of digits presented. By default, axis labels will truncate zeros so that labels might read: 0, 2.5, 5, 7.5. Using this will result in labels: 0.0, 2.5, 5.0, 7.5.
@@ -354,7 +350,7 @@ fmt <- function(digits=2){
 facetAdjust <-
   function (x, pos = c("up", "down"), newpage = is.null(vp), vp = NULL) 
   {
-    ggplot2:::set_last_plot(x)
+   # ggplot2:::set_last_plot(x) # Bit sure if this is needed!!!
     if (newpage) 
       grid.newpage()
     pos <- match.arg(pos)
@@ -404,6 +400,7 @@ facetAdjust <-
 #' @author David Wade
 start.session.log<-function(outputfile="example.PDF")
 {
+logd <- log.start.time <- NULL
   # Strip the extension off of outputfile and replace with .rhis
   log.file.name <- paste0(logd,strsplit(outputfile,split = "[.]")[[1]][1],".rhis")
   # start directing all console output to a log file
@@ -452,6 +449,7 @@ start.session.log<-function(outputfile="example.PDF")
 #' @author David Wade
 stop.session.log<-function()
 {
+log.start.time <- NULL
   cat(" \n")
   cat(" \n")
   cat(" \n")
