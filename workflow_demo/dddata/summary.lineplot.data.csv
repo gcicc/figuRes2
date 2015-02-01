@@ -1,0 +1,239 @@
+"","TRTGRP","VISIT","lbtest1","TRTCD","VISITNUM","bign","P25","P75","max","mean","median","min","n","std"
+"1","Placebo","SCREENING","Alanine Amino Transferase (IU/L)",1,10,7894,15,27,482,22.4,20,2,6969,13.02
+"2","Placebo","BASELINE (RAW)","Alanine Amino Transferase (IU/L)",1,20,7894,15,26,370,22.3,19,2,7802,13.73
+"3","Placebo","BASELINE [1]","Alanine Amino Transferase (IU/L)",1,25,7894,15,26,370,22.4,19,2,7880,13.76
+"4","Placebo","MONTH 1","Alanine Amino Transferase (IU/L)",1,30,7894,19,27,47,24.5,23.5,13,26,8.71
+"5","Placebo","MONTH 3","Alanine Amino Transferase (IU/L)",1,40,7894,15,26,251,22,19,2,7234,12.05
+"6","Placebo","MONTH 6","Alanine Amino Transferase (IU/L)",1,50,7894,15,27,795,22.5,20,2,7010,14.83
+"7","Placebo","MONTH 12","Alanine Amino Transferase (IU/L)",1,70,7894,14,26,303,21.8,19,2,6707,12.42
+"8","Placebo","MONTH 18","Alanine Amino Transferase (IU/L)",1,90,7894,15,26,239,22.1,19,2,6458,12.55
+"9","Placebo","MONTH 24","Alanine Amino Transferase (IU/L)",1,110,7894,14,25,267,21.8,19,2,6136,13.01
+"10","Placebo","MONTH 30","Alanine Amino Transferase (IU/L)",1,130,7894,14,26,331,22,19,2,5992,13.56
+"11","Placebo","MONTH 36","Alanine Amino Transferase (IU/L)",1,150,7894,14,25,300,21.3,18,2,5744,12.87
+"12","Placebo","MONTH 42","Alanine Amino Transferase (IU/L)",1,170,7894,14,25,202,21.7,19,2,3495,12.59
+"13","Placebo","MONTH 48","Alanine Amino Transferase (IU/L)",1,190,7894,17,19,19,18,18,17,2,1.41
+"14","Placebo","TRT END/EWD IP (Combined)","Alanine Amino Transferase (IU/L)",1,605,7894,14,25,1215,22,19,2,6036,22.54
+"15","Placebo","FOLLOW-UP","Alanine Amino Transferase (IU/L)",1,700,7894,14,26,375,23.4,19,3,1348,20.74
+"16","Placebo","END-OF-TREATMENT (Derived) [2]","Alanine Amino Transferase (IU/L)",1,705,7894,14,25,1215,22.2,18,2,7438,24.99
+"17","Placebo","END-OF-STUDY (Derived) [2]","Alanine Amino Transferase (IU/L)",1,710,7894,14,25,820,22,18,2,7678,20.9
+"18","Treatment","SCREENING","Alanine Amino Transferase (IU/L)",2,10,7908,15,27,176,22.6,20,2,6972,11.86
+"19","Treatment","BASELINE (RAW)","Alanine Amino Transferase (IU/L)",2,20,7908,15,27,226,22.5,20,4,7832,12.31
+"20","Treatment","BASELINE [1]","Alanine Amino Transferase (IU/L)",2,25,7908,15,27,226,22.5,20,4,7899,12.3
+"21","Treatment","MONTH 1","Alanine Amino Transferase (IU/L)",2,30,7908,14,29,84,25.9,21,10,23,19.76
+"22","Treatment","MONTH 3","Alanine Amino Transferase (IU/L)",2,40,7908,15,27,837,22.5,19,3,7224,15.85
+"23","Treatment","MONTH 6","Alanine Amino Transferase (IU/L)",2,50,7908,15,27,191,22.7,20,4,6993,12
+"24","Treatment","MONTH 12","Alanine Amino Transferase (IU/L)",2,70,7908,15,26,861,22,19,4,6675,15.72
+"25","Treatment","MONTH 18","Alanine Amino Transferase (IU/L)",2,90,7908,15,26,546,22,19,4,6460,14.46
+"26","Treatment","MONTH 24","Alanine Amino Transferase (IU/L)",2,110,7908,14,25,477,21.7,19,3,6186,14.06
+"27","Treatment","MONTH 30","Alanine Amino Transferase (IU/L)",2,130,7908,14,26,203,21.7,19,2,6018,12.19
+"28","Treatment","MONTH 36","Alanine Amino Transferase (IU/L)",2,150,7908,14,25,443,21.3,19,2,5742,13.44
+"29","Treatment","MONTH 42","Alanine Amino Transferase (IU/L)",2,170,7908,14,25,237,21.4,19,4,3479,12.35
+"30","Treatment","MONTH 48","Alanine Amino Transferase (IU/L)",2,190,7908,17,28,28,22.5,22.5,17,2,7.78
+"31","Treatment","TRT END/EWD IP (Combined)","Alanine Amino Transferase (IU/L)",2,605,7908,14,25,957,21.9,19,2,5980,20.98
+"32","Treatment","FOLLOW-UP","Alanine Amino Transferase (IU/L)",2,700,7908,14,25,265,21.9,19,4,1334,16.17
+"33","Treatment","END-OF-TREATMENT (Derived) [2]","Alanine Amino Transferase (IU/L)",2,705,7908,14,25,957,22.1,19,2,7416,21.26
+"34","Treatment","END-OF-STUDY (Derived) [2]","Alanine Amino Transferase (IU/L)",2,710,7908,14,25,609,21.5,19,2,7670,15.09
+"35","Placebo","SCREENING","Albumin (G/L)",1,10,7894,42,46,55,43.9,44,28,6969,2.79
+"36","Placebo","BASELINE (RAW)","Albumin (G/L)",1,20,7894,42,46,56,44,44,24,7800,2.85
+"37","Placebo","BASELINE [1]","Albumin (G/L)",1,25,7894,42,46,56,44,44,24,7880,2.85
+"38","Placebo","MONTH 1","Albumin (G/L)",1,30,7894,42,45,49,43.8,44,38,25,2.66
+"39","Placebo","MONTH 3","Albumin (G/L)",1,40,7894,42,46,54,43.8,44,25,7234,2.86
+"40","Placebo","MONTH 6","Albumin (G/L)",1,50,7894,42,46,64,44.1,44,25,7010,2.98
+"41","Placebo","MONTH 12","Albumin (G/L)",1,70,7894,42,46,58,44.1,44,27,6707,3.03
+"42","Placebo","MONTH 18","Albumin (G/L)",1,90,7894,42,46,55,44,44,27,6458,3.06
+"43","Placebo","MONTH 24","Albumin (G/L)",1,110,7894,42,46,55,43.9,44,18,6135,2.98
+"44","Placebo","MONTH 30","Albumin (G/L)",1,130,7894,42,46,54,43.9,44,24,5992,2.98
+"45","Placebo","MONTH 36","Albumin (G/L)",1,150,7894,42,46,61,43.8,44,17,5745,3.05
+"46","Placebo","MONTH 42","Albumin (G/L)",1,170,7894,42,46,56,44.1,44,28,3496,2.98
+"47","Placebo","MONTH 48","Albumin (G/L)",1,190,7894,46,49,49,47.5,47.5,46,2,2.12
+"48","Placebo","TRT END/EWD IP (Combined)","Albumin (G/L)",1,605,7894,42,47,57,44.5,45,18,6037,3.26
+"49","Placebo","FOLLOW-UP","Albumin (G/L)",1,700,7894,42,46,55,43.8,44,17,1347,3.62
+"50","Placebo","END-OF-TREATMENT (Derived) [2]","Albumin (G/L)",1,705,7894,42,46,57,44.2,44,17,7436,3.4
+"51","Placebo","END-OF-STUDY (Derived) [2]","Albumin (G/L)",1,710,7894,42,46,57,44.1,44,17,7676,3.46
+"52","Treatment","SCREENING","Albumin (G/L)",2,10,7908,42,46,53,43.8,44,29,6972,2.81
+"53","Treatment","BASELINE (RAW)","Albumin (G/L)",2,20,7908,42,46,55,43.9,44,28,7832,2.88
+"54","Treatment","BASELINE [1]","Albumin (G/L)",2,25,7908,42,46,55,43.9,44,28,7899,2.88
+"55","Treatment","MONTH 1","Albumin (G/L)",2,30,7908,41,44,49,41.9,43,23,23,5.59
+"56","Treatment","MONTH 3","Albumin (G/L)",2,40,7908,42,46,54,43.7,44,27,7224,2.9
+"57","Treatment","MONTH 6","Albumin (G/L)",2,50,7908,42,46,56,44,44,28,6994,2.99
+"58","Treatment","MONTH 12","Albumin (G/L)",2,70,7908,42,46,56,43.9,44,29,6675,3.01
+"59","Treatment","MONTH 18","Albumin (G/L)",2,90,7908,42,46,55,44,44,21,6459,3
+"60","Treatment","MONTH 24","Albumin (G/L)",2,110,7908,42,46,55,43.9,44,28,6184,2.95
+"61","Treatment","MONTH 30","Albumin (G/L)",2,130,7908,42,46,56,43.9,44,27,6018,2.99
+"62","Treatment","MONTH 36","Albumin (G/L)",2,150,7908,42,46,54,43.8,44,22,5744,2.91
+"63","Treatment","MONTH 42","Albumin (G/L)",2,170,7908,42,46,59,44,44,27,3484,2.88
+"64","Treatment","MONTH 48","Albumin (G/L)",2,190,7908,43,45,45,44,44,43,2,1.41
+"65","Treatment","TRT END/EWD IP (Combined)","Albumin (G/L)",2,605,7908,42,46,54,44.4,44,25,5980,3.16
+"66","Treatment","FOLLOW-UP","Albumin (G/L)",2,700,7908,42,46,55,43.6,44,16,1335,3.67
+"67","Treatment","END-OF-TREATMENT (Derived) [2]","Albumin (G/L)",2,705,7908,42,46,54,44.1,44,25,7414,3.26
+"68","Treatment","END-OF-STUDY (Derived) [2]","Albumin (G/L)",2,710,7908,42,46,55,44,44,16,7668,3.35
+"69","Placebo","SCREENING","Alkaline Phosphatase (IU/L)",1,10,7894,60,88,263,76.1,73,15,6968,24.09
+"70","Placebo","BASELINE (RAW)","Alkaline Phosphatase (IU/L)",1,20,7894,59,88,677,76.1,73,11,7799,26.39
+"71","Placebo","BASELINE [1]","Alkaline Phosphatase (IU/L)",1,25,7894,59,88,677,76.1,73,11,7880,26.38
+"72","Placebo","MONTH 1","Alkaline Phosphatase (IU/L)",1,30,7894,57,103,172,83.3,80.5,41,26,33.5
+"73","Placebo","MONTH 3","Alkaline Phosphatase (IU/L)",1,40,7894,58,86,348,74.1,71,14,7232,23.85
+"74","Placebo","MONTH 6","Alkaline Phosphatase (IU/L)",1,50,7894,58,86,477,74.2,71,14,7007,24.21
+"75","Placebo","MONTH 12","Alkaline Phosphatase (IU/L)",1,70,7894,58,86,655,74.3,71,9,6704,25.66
+"76","Placebo","MONTH 18","Alkaline Phosphatase (IU/L)",1,90,7894,58,87,1594,75.2,71,13,6456,32.71
+"77","Placebo","MONTH 24","Alkaline Phosphatase (IU/L)",1,110,7894,58,87,828,75,71,17,6133,28.98
+"78","Placebo","MONTH 30","Alkaline Phosphatase (IU/L)",1,130,7894,59,87,385,75.4,72,14,5989,25.62
+"79","Placebo","MONTH 36","Alkaline Phosphatase (IU/L)",1,150,7894,59,87,1855,75.9,72,14,5741,39.67
+"80","Placebo","MONTH 42","Alkaline Phosphatase (IU/L)",1,170,7894,58,87,294,74.6,71,16,3496,23.83
+"81","Placebo","MONTH 48","Alkaline Phosphatase (IU/L)",1,190,7894,70,105,105,87.5,87.5,70,2,24.75
+"82","Placebo","TRT END/EWD IP (Combined)","Alkaline Phosphatase (IU/L)",1,605,7894,61,90,734,78.8,74,12,6042,31.03
+"83","Placebo","FOLLOW-UP","Alkaline Phosphatase (IU/L)",1,700,7894,59,92,391,80.2,74,23,1350,34
+"84","Placebo","END-OF-TREATMENT (Derived) [2]","Alkaline Phosphatase (IU/L)",1,705,7894,61,91,1855,79.9,75,12,7438,41.73
+"85","Placebo","END-OF-STUDY (Derived) [2]","Alkaline Phosphatase (IU/L)",1,710,7894,61,92,1855,80.3,75,12,7678,39.33
+"86","Treatment","SCREENING","Alkaline Phosphatase (IU/L)",2,10,7908,60,88,501,76,72,11,6969,24.13
+"87","Treatment","BASELINE (RAW)","Alkaline Phosphatase (IU/L)",2,20,7908,60,88,502,75.7,72,16,7830,24.26
+"88","Treatment","BASELINE [1]","Alkaline Phosphatase (IU/L)",2,25,7908,60,88,502,75.7,72,16,7899,24.23
+"89","Treatment","MONTH 1","Alkaline Phosphatase (IU/L)",2,30,7908,55,108,358,93,74,46,23,67.48
+"90","Treatment","MONTH 3","Alkaline Phosphatase (IU/L)",2,40,7908,58,85,458,73.7,70,14,7220,23.83
+"91","Treatment","MONTH 6","Alkaline Phosphatase (IU/L)",2,50,7908,58,86,453,73.8,71,9,6992,23.74
+"92","Treatment","MONTH 12","Alkaline Phosphatase (IU/L)",2,70,7908,58,86,881,74.1,70,18,6674,26.93
+"93","Treatment","MONTH 18","Alkaline Phosphatase (IU/L)",2,90,7908,58,86,1404,74.8,71,15,6456,30.34
+"94","Treatment","MONTH 24","Alkaline Phosphatase (IU/L)",2,110,7908,58,86,843,74.8,71,17,6184,28.94
+"95","Treatment","MONTH 30","Alkaline Phosphatase (IU/L)",2,130,7908,59,87,1479,75.6,71,19,6017,31.97
+"96","Treatment","MONTH 36","Alkaline Phosphatase (IU/L)",2,150,7908,59,87,950,75.8,72,13,5742,30.39
+"97","Treatment","MONTH 42","Alkaline Phosphatase (IU/L)",2,170,7908,59,87,1082,74.9,71,15,3484,29.68
+"98","Treatment","MONTH 48","Alkaline Phosphatase (IU/L)",2,190,7908,50,78,78,64,64,50,2,19.8
+"99","Treatment","TRT END/EWD IP (Combined)","Alkaline Phosphatase (IU/L)",2,605,7908,61,90,865,78.4,74,18,5984,31.53
+"100","Treatment","FOLLOW-UP","Alkaline Phosphatase (IU/L)",2,700,7908,61,91,744,80.6,74,27,1335,41.81
+"101","Treatment","END-OF-TREATMENT (Derived) [2]","Alkaline Phosphatase (IU/L)",2,705,7908,61,91,1479,79.6,75,18,7416,39.17
+"102","Treatment","END-OF-STUDY (Derived) [2]","Alkaline Phosphatase (IU/L)",2,710,7908,61,91,1479,79.9,75,18,7670,38.92
+"103","Placebo","SCREENING","Aspartate Amino Transferase (IU/L)",1,10,7894,18,26,686,22.9,21,7,6942,11.81
+"104","Placebo","BASELINE (RAW)","Aspartate Amino Transferase (IU/L)",1,20,7894,18,25,308,22.9,21,7,7785,10.49
+"105","Placebo","BASELINE [1]","Aspartate Amino Transferase (IU/L)",1,25,7894,18,25,308,22.9,21,7,7879,10.48
+"106","Placebo","MONTH 1","Aspartate Amino Transferase (IU/L)",1,30,7894,20,27,50,24.5,23,15,26,7.45
+"107","Placebo","MONTH 3","Aspartate Amino Transferase (IU/L)",1,40,7894,18,25,233,22.6,21,7,7215,8.92
+"108","Placebo","MONTH 6","Aspartate Amino Transferase (IU/L)",1,50,7894,18,25,732,22.9,21,2,7001,12.18
+"109","Placebo","MONTH 12","Aspartate Amino Transferase (IU/L)",1,70,7894,17,25,451,22.8,21,4,6690,10.64
+"110","Placebo","MONTH 18","Aspartate Amino Transferase (IU/L)",1,90,7894,18,25,216,22.9,21,2,6438,9.98
+"111","Placebo","MONTH 24","Aspartate Amino Transferase (IU/L)",1,110,7894,18,25,249,23,21,7,6121,10.4
+"112","Placebo","MONTH 30","Aspartate Amino Transferase (IU/L)",1,130,7894,18,26,835,23.6,21,6,5979,15.46
+"113","Placebo","MONTH 36","Aspartate Amino Transferase (IU/L)",1,150,7894,18,26,223,23.4,21,8,5735,10.38
+"114","Placebo","MONTH 42","Aspartate Amino Transferase (IU/L)",1,170,7894,18,26,190,23.6,21,6,3491,10.64
+"115","Placebo","MONTH 48","Aspartate Amino Transferase (IU/L)",1,190,7894,18,23,23,20.5,20.5,18,2,3.54
+"116","Placebo","TRT END/EWD IP (Combined)","Aspartate Amino Transferase (IU/L)",1,605,7894,18,26,875,23.9,21,7,6032,16.65
+"117","Placebo","FOLLOW-UP","Aspartate Amino Transferase (IU/L)",1,700,7894,18,27,492,25,21,7,1348,19.52
+"118","Placebo","END-OF-TREATMENT (Derived) [2]","Aspartate Amino Transferase (IU/L)",1,705,7894,18,26,1104,24.2,21,6,7437,24.75
+"119","Placebo","END-OF-STUDY (Derived) [2]","Aspartate Amino Transferase (IU/L)",1,710,7894,18,26,981,24.1,21,6,7676,20.95
+"120","Treatment","SCREENING","Aspartate Amino Transferase (IU/L)",2,10,7908,18,26,121,22.9,21,4,6937,8.83
+"121","Treatment","BASELINE (RAW)","Aspartate Amino Transferase (IU/L)",2,20,7908,18,25,226,22.9,21,6,7821,9.57
+"122","Treatment","BASELINE [1]","Aspartate Amino Transferase (IU/L)",2,25,7908,18,25,226,22.9,21,6,7896,9.55
+"123","Treatment","MONTH 1","Aspartate Amino Transferase (IU/L)",2,30,7908,19,27,58,24.6,21,13,23,10.17
+"124","Treatment","MONTH 3","Aspartate Amino Transferase (IU/L)",2,40,7908,18,26,545,22.9,21,6,7204,11.43
+"125","Treatment","MONTH 6","Aspartate Amino Transferase (IU/L)",2,50,7908,18,26,145,23,21,6,6990,9.16
+"126","Treatment","MONTH 12","Aspartate Amino Transferase (IU/L)",2,70,7908,18,25,561,22.9,21,6,6666,11.73
+"127","Treatment","MONTH 18","Aspartate Amino Transferase (IU/L)",2,90,7908,17,25,321,22.8,21,7,6450,10.75
+"128","Treatment","MONTH 24","Aspartate Amino Transferase (IU/L)",2,110,7908,18,26,526,23.1,21,7,6170,12.96
+"129","Treatment","MONTH 30","Aspartate Amino Transferase (IU/L)",2,130,7908,18,26,229,23.2,21,6,6006,10.15
+"130","Treatment","MONTH 36","Aspartate Amino Transferase (IU/L)",2,150,7908,18,26,346,23.2,21,7,5732,10.8
+"131","Treatment","MONTH 42","Aspartate Amino Transferase (IU/L)",2,170,7908,18,26,262,23.4,21,6,3476,10.24
+"132","Treatment","MONTH 48","Aspartate Amino Transferase (IU/L)",2,190,7908,21,22,22,21.5,21.5,21,2,0.71
+"133","Treatment","TRT END/EWD IP (Combined)","Aspartate Amino Transferase (IU/L)",2,605,7908,18,26,508,23.5,21,7,5978,12.93
+"134","Treatment","FOLLOW-UP","Aspartate Amino Transferase (IU/L)",2,700,7908,18,26,250,23.5,21,7,1332,12.36
+"135","Treatment","END-OF-TREATMENT (Derived) [2]","Aspartate Amino Transferase (IU/L)",2,705,7908,18,26,508,23.8,21,7,7415,14.9
+"136","Treatment","END-OF-STUDY (Derived) [2]","Aspartate Amino Transferase (IU/L)",2,710,7908,18,26,346,23.4,21,7,7670,12.23
+"137","Placebo","SCREENING","Total Bilirubin (MG/DL)",1,10,7894,0.5,0.8,4,0.7,0.6,0,6969,0.3
+"138","Placebo","BASELINE (RAW)","Total Bilirubin (MG/DL)",1,20,7894,0.5,0.8,3,0.7,0.6,0,7802,0.3
+"139","Placebo","BASELINE [1]","Total Bilirubin (MG/DL)",1,25,7894,0.5,0.8,3,0.7,0.6,0,7880,0.3
+"140","Placebo","MONTH 1","Total Bilirubin (MG/DL)",1,30,7894,0.5,0.8,2,0.8,0.6,0,26,0.43
+"141","Placebo","MONTH 3","Total Bilirubin (MG/DL)",1,40,7894,0.5,0.8,5,0.7,0.6,0,7234,0.32
+"142","Placebo","MONTH 6","Total Bilirubin (MG/DL)",1,50,7894,0.5,0.8,3,0.7,0.6,0,7010,0.31
+"143","Placebo","MONTH 12","Total Bilirubin (MG/DL)",1,70,7894,0.5,0.8,4,0.7,0.6,0,6705,0.31
+"144","Placebo","MONTH 18","Total Bilirubin (MG/DL)",1,90,7894,0.5,0.8,8,0.7,0.6,0,6457,0.32
+"145","Placebo","MONTH 24","Total Bilirubin (MG/DL)",1,110,7894,0.5,0.8,3,0.7,0.6,0,6136,0.3
+"146","Placebo","MONTH 30","Total Bilirubin (MG/DL)",1,130,7894,0.5,0.8,8,0.7,0.6,0,5991,0.32
+"147","Placebo","MONTH 36","Total Bilirubin (MG/DL)",1,150,7894,0.5,0.8,5,0.7,0.6,0,5743,0.31
+"148","Placebo","MONTH 42","Total Bilirubin (MG/DL)",1,170,7894,0.5,0.8,3,0.7,0.6,0,3496,0.29
+"149","Placebo","MONTH 48","Total Bilirubin (MG/DL)",1,190,7894,0.6,1.2,1,0.9,0.9,1,2,0.41
+"150","Placebo","TRT END/EWD IP (Combined)","Total Bilirubin (MG/DL)",1,605,7894,0.5,0.8,22,0.7,0.6,0,6035,0.49
+"151","Placebo","FOLLOW-UP","Total Bilirubin (MG/DL)",1,700,7894,0.5,0.8,20,0.7,0.6,0,1348,0.61
+"152","Placebo","END-OF-TREATMENT (Derived) [2]","Total Bilirubin (MG/DL)",1,705,7894,0.5,0.8,22,0.7,0.6,0,7438,0.47
+"153","Placebo","END-OF-STUDY (Derived) [2]","Total Bilirubin (MG/DL)",1,710,7894,0.5,0.8,22,0.7,0.6,0,7678,0.51
+"154","Treatment","SCREENING","Total Bilirubin (MG/DL)",2,10,7908,0.5,0.8,4,0.7,0.6,0,6972,0.29
+"155","Treatment","BASELINE (RAW)","Total Bilirubin (MG/DL)",2,20,7908,0.5,0.8,5,0.7,0.6,0,7833,0.31
+"156","Treatment","BASELINE [1]","Total Bilirubin (MG/DL)",2,25,7908,0.5,0.8,5,0.7,0.6,0,7899,0.31
+"157","Treatment","MONTH 1","Total Bilirubin (MG/DL)",2,30,7908,0.5,0.9,2,0.7,0.7,0,23,0.33
+"158","Treatment","MONTH 3","Total Bilirubin (MG/DL)",2,40,7908,0.5,0.8,4,0.7,0.6,0,7224,0.31
+"159","Treatment","MONTH 6","Total Bilirubin (MG/DL)",2,50,7908,0.5,0.8,3,0.7,0.6,0,6994,0.31
+"160","Treatment","MONTH 12","Total Bilirubin (MG/DL)",2,70,7908,0.5,0.8,4,0.7,0.6,0,6675,0.3
+"161","Treatment","MONTH 18","Total Bilirubin (MG/DL)",2,90,7908,0.5,0.8,4,0.7,0.6,0,6460,0.3
+"162","Treatment","MONTH 24","Total Bilirubin (MG/DL)",2,110,7908,0.5,0.8,4,0.7,0.6,0,6184,0.3
+"163","Treatment","MONTH 30","Total Bilirubin (MG/DL)",2,130,7908,0.5,0.8,4,0.7,0.6,0,6018,0.29
+"164","Treatment","MONTH 36","Total Bilirubin (MG/DL)",2,150,7908,0.5,0.8,4,0.7,0.6,0,5743,0.29
+"165","Treatment","MONTH 42","Total Bilirubin (MG/DL)",2,170,7908,0.5,0.8,4,0.7,0.6,0,3481,0.29
+"166","Treatment","MONTH 48","Total Bilirubin (MG/DL)",2,190,7908,0.6,0.6,1,0.6,0.6,1,2,0.04
+"167","Treatment","TRT END/EWD IP (Combined)","Total Bilirubin (MG/DL)",2,605,7908,0.5,0.8,6,0.7,0.6,0,5978,0.3
+"168","Treatment","FOLLOW-UP","Total Bilirubin (MG/DL)",2,700,7908,0.5,0.8,3,0.7,0.6,0,1335,0.3
+"169","Treatment","END-OF-TREATMENT (Derived) [2]","Total Bilirubin (MG/DL)",2,705,7908,0.5,0.8,6,0.7,0.6,0,7416,0.32
+"170","Treatment","END-OF-STUDY (Derived) [2]","Total Bilirubin (MG/DL)",2,710,7908,0.5,0.8,6,0.7,0.6,0,7670,0.31
+"171","Placebo","SCREENING","Total Bilirubin (UMOL/L)",1,10,7894,8,14,60,11.6,10,3,6969,5.14
+"172","Placebo","BASELINE (RAW)","Total Bilirubin (UMOL/L)",1,20,7894,8,14,59,12,11,2,7802,5.18
+"173","Placebo","BASELINE [1]","Total Bilirubin (UMOL/L)",1,25,7894,8,14,59,12,11,2,7880,5.17
+"174","Placebo","MONTH 1","Total Bilirubin (UMOL/L)",1,30,7894,8,14,34,12.9,11,4,26,7.35
+"175","Placebo","MONTH 3","Total Bilirubin (UMOL/L)",1,40,7894,8,14,78,12.2,11,3,7234,5.42
+"176","Placebo","MONTH 6","Total Bilirubin (UMOL/L)",1,50,7894,8,14,54,12.1,11,3,7010,5.35
+"177","Placebo","MONTH 12","Total Bilirubin (UMOL/L)",1,70,7894,8,14,63,12,11,3,6705,5.24
+"178","Placebo","MONTH 18","Total Bilirubin (UMOL/L)",1,90,7894,8,14,142,12,11,2,6457,5.47
+"179","Placebo","MONTH 24","Total Bilirubin (UMOL/L)",1,110,7894,8,14,54,11.7,10,2,6136,5.19
+"180","Placebo","MONTH 30","Total Bilirubin (UMOL/L)",1,130,7894,8,14,142,11.7,10,2,5991,5.48
+"181","Placebo","MONTH 36","Total Bilirubin (UMOL/L)",1,150,7894,8,14,90,11.5,10,2,5743,5.25
+"182","Placebo","MONTH 42","Total Bilirubin (UMOL/L)",1,170,7894,8,14,52,11.6,10,2,3496,5.02
+"183","Placebo","MONTH 48","Total Bilirubin (UMOL/L)",1,190,7894,10,20,20,15,15,10,2,7.07
+"184","Placebo","TRT END/EWD IP (Combined)","Total Bilirubin (UMOL/L)",1,605,7894,8,14,379,11.6,10,2,6035,8.36
+"185","Placebo","FOLLOW-UP","Total Bilirubin (UMOL/L)",1,700,7894,8,14,338,12,11,3,1348,10.44
+"186","Placebo","END-OF-TREATMENT (Derived) [2]","Total Bilirubin (UMOL/L)",1,705,7894,8,14,379,11.6,10,2,7438,7.97
+"187","Placebo","END-OF-STUDY (Derived) [2]","Total Bilirubin (UMOL/L)",1,710,7894,8,14,379,11.6,10,3,7678,8.69
+"188","Treatment","SCREENING","Total Bilirubin (UMOL/L)",2,10,7908,8,14,62,11.5,10,3,6972,4.97
+"189","Treatment","BASELINE (RAW)","Total Bilirubin (UMOL/L)",2,20,7908,8,14,88,11.9,11,3,7833,5.31
+"190","Treatment","BASELINE [1]","Total Bilirubin (UMOL/L)",2,25,7908,8,14,88,11.9,11,3,7899,5.31
+"191","Treatment","MONTH 1","Total Bilirubin (UMOL/L)",2,30,7908,9,15,33,12.6,12,6,23,5.64
+"192","Treatment","MONTH 3","Total Bilirubin (UMOL/L)",2,40,7908,8,14,66,12.1,11,3,7224,5.22
+"193","Treatment","MONTH 6","Total Bilirubin (UMOL/L)",2,50,7908,8,14,55,12,11,2,6994,5.25
+"194","Treatment","MONTH 12","Total Bilirubin (UMOL/L)",2,70,7908,8,14,62,11.9,11,3,6675,5.2
+"195","Treatment","MONTH 18","Total Bilirubin (UMOL/L)",2,90,7908,8,14,64,11.8,11,2,6460,5.14
+"196","Treatment","MONTH 24","Total Bilirubin (UMOL/L)",2,110,7908,8,14,68,11.5,10,3,6184,5.08
+"197","Treatment","MONTH 30","Total Bilirubin (UMOL/L)",2,130,7908,8,14,72,11.5,10,2,6018,5.02
+"198","Treatment","MONTH 36","Total Bilirubin (UMOL/L)",2,150,7908,8,14,69,11.4,10,2,5743,5
+"199","Treatment","MONTH 42","Total Bilirubin (UMOL/L)",2,170,7908,8,14,71,11.4,10,4,3481,5.04
+"200","Treatment","MONTH 48","Total Bilirubin (UMOL/L)",2,190,7908,10,11,11,10.5,10.5,10,2,0.71
+"201","Treatment","TRT END/EWD IP (Combined)","Total Bilirubin (UMOL/L)",2,605,7908,8,13,96,11.2,10,2,5978,5.15
+"202","Treatment","FOLLOW-UP","Total Bilirubin (UMOL/L)",2,700,7908,8,14,52,11.5,10,2,1335,5.13
+"203","Treatment","END-OF-TREATMENT (Derived) [2]","Total Bilirubin (UMOL/L)",2,705,7908,8,14,105,11.4,10,2,7416,5.44
+"204","Treatment","END-OF-STUDY (Derived) [2]","Total Bilirubin (UMOL/L)",2,710,7908,8,13,96,11.3,10,2,7670,5.26
+"205","Placebo","SCREENING","Total Protein (G/L)",1,10,7894,68,74,96,71.3,71,50,6969,4.5
+"206","Placebo","BASELINE (RAW)","Total Protein (G/L)",1,20,7894,69,74,95,71.5,71,49,7801,4.55
+"207","Placebo","BASELINE [1]","Total Protein (G/L)",1,25,7894,69,74,95,71.5,71,49,7880,4.55
+"208","Placebo","MONTH 1","Total Protein (G/L)",1,30,7894,67,72,77,69.8,70,61,25,3.87
+"209","Placebo","MONTH 3","Total Protein (G/L)",1,40,7894,68,74,98,70.8,71,50,7234,4.47
+"210","Placebo","MONTH 6","Total Protein (G/L)",1,50,7894,68,74,95,71,71,51,7010,4.49
+"211","Placebo","MONTH 12","Total Protein (G/L)",1,70,7894,67,73,96,70.3,70,49,6707,4.41
+"212","Placebo","MONTH 18","Total Protein (G/L)",1,90,7894,67,73,90,70.3,70,51,6458,4.46
+"213","Placebo","MONTH 24","Total Protein (G/L)",1,110,7894,67,73,97,70.3,70,38,6135,4.43
+"214","Placebo","MONTH 30","Total Protein (G/L)",1,130,7894,67,73,101,70.4,70,48,5992,4.53
+"215","Placebo","MONTH 36","Total Protein (G/L)",1,150,7894,67,73,103,70,70,41,5744,4.46
+"216","Placebo","MONTH 42","Total Protein (G/L)",1,170,7894,67,73,94,69.9,70,51,3496,4.56
+"217","Placebo","MONTH 48","Total Protein (G/L)",1,190,7894,64,78,78,71,71,64,2,9.9
+"218","Placebo","TRT END/EWD IP (Combined)","Total Protein (G/L)",1,605,7894,67,73,91,70.4,70,43,6040,4.65
+"219","Placebo","FOLLOW-UP","Total Protein (G/L)",1,700,7894,67,73,87,70,70,46,1348,4.76
+"220","Placebo","END-OF-TREATMENT (Derived) [2]","Total Protein (G/L)",1,705,7894,67,73,97,70.4,70,41,7436,4.69
+"221","Placebo","END-OF-STUDY (Derived) [2]","Total Protein (G/L)",1,710,7894,67,73,97,70.3,70,43,7676,4.73
+"222","Treatment","SCREENING","Total Protein (G/L)",2,10,7908,68,74,92,71.3,71,53,6972,4.46
+"223","Treatment","BASELINE (RAW)","Total Protein (G/L)",2,20,7908,68,74,97,71.4,71,47,7833,4.54
+"224","Treatment","BASELINE [1]","Total Protein (G/L)",2,25,7908,68,74,97,71.4,71,47,7899,4.54
+"225","Treatment","MONTH 1","Total Protein (G/L)",2,30,7908,68,72,80,71,71,63,23,4.48
+"226","Treatment","MONTH 3","Total Protein (G/L)",2,40,7908,68,74,96,70.8,71,51,7224,4.48
+"227","Treatment","MONTH 6","Total Protein (G/L)",2,50,7908,68,74,101,70.9,71,46,6994,4.54
+"228","Treatment","MONTH 12","Total Protein (G/L)",2,70,7908,67,73,92,70.2,70,48,6675,4.4
+"229","Treatment","MONTH 18","Total Protein (G/L)",2,90,7908,67,73,98,70.2,70,35,6460,4.44
+"230","Treatment","MONTH 24","Total Protein (G/L)",2,110,7908,67,73,93,70.2,70,45,6184,4.46
+"231","Treatment","MONTH 30","Total Protein (G/L)",2,130,7908,68,73,100,70.4,70,48,6018,4.5
+"232","Treatment","MONTH 36","Total Protein (G/L)",2,150,7908,67,73,99,69.9,70,48,5743,4.38
+"233","Treatment","MONTH 42","Total Protein (G/L)",2,170,7908,67,72,105,69.8,70,51,3484,4.37
+"234","Treatment","MONTH 48","Total Protein (G/L)",2,190,7908,69,71,71,70,70,69,2,1.41
+"235","Treatment","TRT END/EWD IP (Combined)","Total Protein (G/L)",2,605,7908,67,73,104,70.3,70,49,5982,4.53
+"236","Treatment","FOLLOW-UP","Total Protein (G/L)",2,700,7908,67,73,95,69.9,70,41,1335,4.74
+"237","Treatment","END-OF-TREATMENT (Derived) [2]","Total Protein (G/L)",2,705,7908,67,73,104,70.3,70,48,7414,4.63
+"238","Treatment","END-OF-STUDY (Derived) [2]","Total Protein (G/L)",2,710,7908,67,73,104,70.2,70,41,7668,4.62

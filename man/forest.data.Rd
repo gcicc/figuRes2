@@ -28,14 +28,10 @@ A data set for producting forest plots. }
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+No details.
 }
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
+
+
 \examples{
 data(forest.data)
 ## maybe str(forest.data) ; plot(forest.data) ...

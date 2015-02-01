@@ -39,13 +39,7 @@ The function annotate.page has been coded to optionally populate with blank entr
 \author{
 Greg Cicconetti
 }
-\references{
 
-}
 
 \keyword{ package }
-\seealso{
 
-}
-\examples{
-}

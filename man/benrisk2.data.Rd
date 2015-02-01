@@ -5,7 +5,7 @@
 benrisk2.data
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
+A benefit risk data set
 }
 \usage{data("benrisk2.data")}
 \format{
@@ -33,14 +33,9 @@ benrisk2.data
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+No details
 }
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
+
 \examples{
 data(benrisk2.data)
 ## maybe str(benrisk2.data) ; plot(benrisk2.data) ...

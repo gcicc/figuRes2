@@ -23,14 +23,9 @@ A data set for creating Kaplan-Meier curves.
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+No details.
 }
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
+
 \examples{
 data(km.data)
 ## maybe str(km.data) ; plot(km.data) ...

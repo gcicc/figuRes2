@@ -5,8 +5,7 @@
 demog.data
 }
 \description{
-%%  ~~ A concise (1-5 lines) description of the dataset. ~~
-}
+Demography data}
 \usage{data("demog.data")}
 \format{
   A data frame with 5000 observations on the following 15 variables.
@@ -29,14 +28,9 @@ demog.data
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+No details.
 }
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
+
 \examples{
 data(demog.data)
 ## maybe str(demog.data) ; plot(demog.data) ...

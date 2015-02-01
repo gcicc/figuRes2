@@ -153,6 +153,20 @@ writeLines(driver8, con=paste0(getwd(),"/code/","cdf_weight.r"))
 writeLines(driver9, con=paste0(getwd(),"/code/","priordens.r"))
 ```
 
+
+save(driver1, file="driver1.rda", compress="xz")
+save(driver2, file="driver2.rda", compress="xz")
+save(driver3, file="driver3.rda", compress="xz")
+save(driver4, file="driver4.rda", compress="xz")
+save(driver5, file="driver5.rda", compress="xz")
+save(driver6, file="driver6.rda", compress="xz")
+save(driver7, file="driver7.rda", compress="xz")
+save(driver8, file="driver8.rda", compress="xz")
+save(driver9, file="driver9.rda", compress="xz")
+save(driver10, file="driver1.rda", compress="xz")
+
+
+
 #### Getting R to build drivers with pattern replacement
 This approach might be considered if you need to create 15+ driver files that differ only in a few locations. The following code brings a skeletonized driver for building box plots into the code directory.
 ```{r, eval=FALSE}

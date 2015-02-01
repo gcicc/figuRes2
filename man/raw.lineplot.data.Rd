@@ -23,14 +23,9 @@ A data set for creating line plots.
   }
 }
 \details{
-%%  ~~ If necessary, more details than the __description__ above ~~
+No details.
 }
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
-}
+
 \examples{
 data(raw.lineplot.data)
 ## maybe str(raw.lineplot.data) ; plot(raw.lineplot.data) ...

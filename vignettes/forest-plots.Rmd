@@ -97,8 +97,8 @@ We will return to fine tuning these labels in post-processing because of the nee
 p1 <- forest.plot(parent.df = working.df.1, 
             y.rank.col = "rank",  # line segment's y-axis rank
             Point.Est = "hr",     # line segment's dot
-            Lower.CI = "low",     # line segment's lower endpoint
-            Upper.CI = "high",    # line segment's upper endpoint
+            lower.lim = "low",     # line segment's lower endpoint
+            upper.lim = "high",    # line segment's upper endpoint
             y.label.rank.col ="label.rank",  # label's y-axis rank
             y.label.col = "labels", # label's text value
             x.label = "Estimate", 
@@ -217,8 +217,8 @@ working.df.1$rank2 <- working.df.1$rank + duplicated(working.df.1$subgroup)*.5
 p3 <- forest.plot(parent.df = working.df.1, 
             y.rank.col = "rank2",  # line segment's y-axis rank
             Point.Est = "hr",     # line segment's dot
-            Lower.CI = "low",     # line segment's lower endpoint
-            Upper.CI = "high",    # line segment's upper endpoint
+            lower.lim = "low",     # line segment's lower endpoint
+            upper.lim = "high",    # line segment's upper endpoint
             y.label.rank.col ="rank2",  # label's y-axis rank
             y.label.col = "labels", # label's text value
             x.label = "Estimate", 
