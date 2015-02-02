@@ -51,7 +51,7 @@ km.plot(parent.df, censor.col = "CENSOR", centime.col = "CENTIME",
 \item{text.size}{value gets passed to geom_text}
 }
 \description{
-A function to create km plots
+A function for creating harmonized Kaplan-Meier plots and accompanying At Risk table.
 }
 \examples{
 \dontrun{
@@ -82,5 +82,8 @@ A function to create km plots
 }
 \author{
 Greg Cicconetti
+}
+\seealso{
+sync.ylab.widths, nsubj.plot
 }
 

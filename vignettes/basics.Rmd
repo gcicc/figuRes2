@@ -199,7 +199,7 @@ build.page(interior.h = c(1),
            interior.w = c(1),
            ncol=1, 
            nrow=1,
-           interior =list(ex.bar))
+           interior =list(ex.bar + ggtitle("\n\n\n\n")))
 annotate.page(override = "")
 ```
 
@@ -243,25 +243,7 @@ dev.off() # Shuts the pdf device
 
 In some applications using the annotate.page function is inconventient. (See the example above where page margins were shrunken to be negligible.) In these cases, build the title into your ggplot object rather than use blank titles.
 
-## Example 2: Assembling a figure with a 3x1 table of graphics
-
-### Density curve with rug plot
-Note that setting breaks to NULL removes the y-axis tick marks.
-
-```{r}
-ex.2a <- ggplot(data=working.df, aes(x=x, fill=group)) +
-  geom_density(alpha=.4) +
-  geom_rug(aes(color=group)) +
-  labs(x="X",y=NULL, title="\nSubplot title 1", fill="Group", color="Group") +
-  scale_y_continuous(breaks=NULL)
-```
-
-```{r, fig.cap="Example 2: Density and Rug Plot by Group"}
-print(ex.2a)
-```
-
-
-## Example 3: Assembling a scatterplot with marginal densities
+## Assembling a scatterplot with marginal densities
 Intialize a session and generate data similar to the previous bar chart example.
 
 ```{r, results='hide'}
@@ -374,11 +356,10 @@ build.page(interior.h = c(.35, .65),
            nrow=2,
            interior =list(
              density.plot.x+
-               theme(plot.margin= unit(c(0, -.1, -.1,0), unit="in")),
+               theme(plot.margin= unit(c(0, -.1, -.1, 0), unit="in")),
              blankPanel, 
-             main.plot+theme(plot.margin=unit(c(-.1, -.1, 0,0), unit="in")),
-             density.plot.y + theme(plot.margin=unit(c(-.1,0, 0, -.3), 
+             main.plot+theme(plot.margin=unit(c(-.1, -.1, 0, 0), unit="in")),
+             density.plot.y + theme(plot.margin=unit(c(-.1, 0, 0, -.3), 
                                                      unit="in"))))
 annotate.page(override = "", title=list("Title Line 1", "","","",""))
 ```
-

@@ -1,8 +1,7 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{build.page and annotate.page}
-# The figures2::km.plot and figures2::sync.ylab.widths functions
 
-## Example 1: Juxtaposing two Kaplan-Meier graphics and their At Risk tables
+# Example 1: Juxtaposing two Kaplan-Meier graphics and their At Risk tables
 Intialize a session:
 ```{r, results='hide'}
 remove(list=ls())
@@ -22,7 +21,7 @@ head(working.df)
 
 The Goal: Create Kaplan-Meier plots for Males and Females and juxtapose these.
 
-### Preprocessing
+## Preprocessing
 
 The centime variable is in days. This is to be converted to months.
 
@@ -30,7 +29,7 @@ The centime variable is in days. This is to be converted to months.
 working.df$centime <- working.df$centime/30.4375
 ```
 
-### Create the graphic components
+## Create the graphic components
 
 The km.plot function returns a list of objects.  The first two objects are ggplot objects for the Kaplan-Meier graphic and corresponding at risk table.
 
@@ -79,7 +78,7 @@ Second object:
 km.F[[2]]
 ```
 
-### Syncing the widths of the figures
+## Syncing the widths of the figures
 In this step we combine tasks of aligning the y axes of the KM curves & tables. The sync.ylab.widths function takes a list of ggplot objects and returns a list of the same length contain gtable objects.  These can objects are different than ggplot objects.  They can be visually inspected with grid.draw (grid package) and can be processed by the build.page function (as this is merely a wrapper for the grid.arrange function (gridExtra package)).
 
 In this example, the list of ggplot objects being supplied to sync.ylab.widths are manipulations of the graphs already reviewed.  In particular: 
@@ -109,7 +108,7 @@ comeback.F <- sync.ylab.widths(list(
   )
 ```
 
-### Assembling the page and discussion
+## Assembling the page and discussion
 One needs to iterate with minor changes until the final product is visually appealing. One needs to consider the dimensions allocated to the interior.h and interior.w below as well. E.g., this allocation seems to work well for the data set. However, if the treatment labels were shorter, the allocation of interior.w would need to change.  Similarly if more arms were included, more rows in the At Risk table would demand a different distribution of interior.h.  
 
 In manipulating the plot margins keep in mind that overlapping graphics can obscure the edges of adjacent graphics/tables.  E.g., note above that c(-3, 48) was passed to x.limits instead of c(0, 48).  With the latter in use, portions of the text in the At Risk table were obscured.  

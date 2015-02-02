@@ -65,7 +65,7 @@ line.plot(parent.df, category.palette = c("red", "blue"),
 \item{linetype.col}{name of parent.df column associated with linetype}
 }
 \description{
-A function to create lineplots.
+A function for creating harmonized line plots with optional errorbars.
 }
 \author{
 Greg Cicconetti/David Wade

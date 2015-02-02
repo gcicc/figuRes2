@@ -11,7 +11,7 @@ Description: This package takes the view that a figure is a collection of
     (titles, headers and footers).  Functions and supporting documentation are
     offered to streamline a variety of figure production task.
 License: GPL-2
-LazyLoad: yes
+LazyLoad: no
 Depends: R (>= 3.1.2)
 Imports: survival, ggplot2(>= 1.0.0), scales, stringr, plyr (>= 1.7.1), grid (>= 3.0.0), gridExtra, reshape2, gtable (>= 0.1.2) 
 Suggests: RColorBrewer

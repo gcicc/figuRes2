@@ -6,7 +6,7 @@
 \alias{theme_grey2_default_margins}
 \alias{theme_grey2_nomargins}
 \alias{theme_table_nomargins}
-\title{theme_grey2_nomargins}
+\title{figures2 themes}
 \usage{
 theme_grey2_nomargins(base_size = 12, base_family = "")
 

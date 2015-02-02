@@ -9,10 +9,10 @@ annotate.page(page.height = 8.5, page.width = 11, top.margin = 1 - 0.5,
   foot.size = 10, head.size = 10, title.size = 14, add.fignum = TRUE,
   fnote.buffer = 0, header.buffer = 0, fignum.buffer = 1,
   title.buffer = 2, fignum = "1.100",
-  title = list("Title Line 1: Printing atop of graphic to show location",
-  "Title Line 2: In practice ",
-  "Title Line 3: Graphic region height can be shunken",
-  "Title Line 4: to accomdate multiple title lines"),
+  title = list("If ggplot populates title, annotate.page's title argument gets a ",
+  "list of whitespace text strings. If annotate.page is populating titles,",
+  "use whitespaces and newline escape characters in ggplot titles",
+  "to ensure ggplot object is shrunken titles do not stamp over your graphs"),
   ulh = list("Upper Left Header 1", "Upper Left Header 2",
   "Upper Left Header 3"), urh = list("Upper Right Header 1",
   "Upper Right Header 2", "Upper Right Header 3"),
@@ -67,7 +67,7 @@ annotate.page(page.height = 8.5, page.width = 11, top.margin = 1 - 0.5,
 \item{addTime}{logical for ading time stamp (annotate.page)}
 }
 \description{
-Adds titles, headers, and footers
+Optionally adds up to 4 lines for titles, 3 lines for right and left headers, and 5 lines of footnotes
 }
 \author{
 Greg Cicconetti

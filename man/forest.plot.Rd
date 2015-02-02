@@ -50,7 +50,7 @@ forest.plot(parent.df, y.rank.col = "rank", Point.Est = "hr",
 \item{flip.palette}{logical; if TRUE it reverse the order of colors used for background (forest.plot)}
 }
 \description{
-A function for plotting forest plots offering compatiability with table.plot and dot.plot.
+A function for creating harmonized forest.plots via ggplot2 offering compatiability with table.plot and dot.plot.
 }
 \author{
 Greg Cicconetti

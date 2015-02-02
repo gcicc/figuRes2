@@ -14,4 +14,7 @@ get.top.xaxis(bottom.axis.version, top.axis.version)
 \description{
 This takes two ggplot objects, steals the bottom x-axis from 2nd object and returns a gtable object with that bottom x-axis per object 1 and top x-axis per object 2
 }
+\author{
+Greg Cicconetti
+}
 

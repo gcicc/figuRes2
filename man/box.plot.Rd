@@ -34,10 +34,7 @@ box.plot(parent.df, y.col = "VSBMI", y.label = "BMI (m/kg^2)",
 \item{text.size}{value gets passed to geom_text}
 }
 \description{
-Produces boxplots
-}
-\details{
-Adjust y.limits, y.ticks and y.digits at the the driver level. Note: This function computes summary statistics from raw data.
+A function for creating harmonized ggplot2 boxplots
 }
 \examples{
 \dontrun{

@@ -35,7 +35,7 @@ cdf.plot(parent.df, category.col, category.label, response.col, x.label = "",
 \item{category.palette}{colors assoicated with categorical variable}
 }
 \description{
-Function to produce Cumulative Distribution plot.  Statistics computed by stat_ecdf().
+A function for creating harmonized ggplot2 cumulative distribution plots. Statistics computed by stat_ecdf().
 }
 \examples{
 \dontrun{

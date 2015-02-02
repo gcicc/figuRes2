@@ -48,4 +48,7 @@ category="Standard Normal"), aes(x=x, y=y)) + geom_line()
 \author{
 Greg Cicconetti
 }
+\seealso{
+graphics::curve
+}
 

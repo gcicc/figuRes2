@@ -39,10 +39,7 @@ bar.plot(parent.df, category.col = "TRTGRP",
 \item{killMissing}{logical used by bar.plot}
 }
 \description{
-A function for creating bar charts; adds tabular data to bar chart.
-}
-\details{
-In building the driver files, manual adjustment of y.limits and y.ticks is required. Note that this function computes summary statistics from raw data.
+A function for creating harmonized ggplot2 bar charts
 }
 \examples{
 \dontrun{

@@ -39,7 +39,7 @@ dot.plot(parent.df = dot.df.melt, category.col = "Treatment",
 \item{category.palette}{colors assoicated with categorical variable}
 }
 \description{
-A function for plotting dotplots offering compatiability with table.plot and dot.plot.
+A function for creating harmonized ggplot2 dot plots with compatiability with table.plot and forest.plot.
 }
 \author{
 Greg Cicconetti

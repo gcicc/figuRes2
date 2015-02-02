@@ -1,11 +1,11 @@
 utils::globalVariables(c("outputplan", "od", "cd", "dd", "FigureNumber", "FigureStatus", "FigureTitle", "i" ))
+# Sys.setenv(R_GSCMD = "c:\\Rtools\\bin\\gs915w64.exe")
 
-# Graphics functions for figures2
-#-------------------
+# Graphics functions for figures2 ------
 
-# Standard Graphics Names -------------------------------------------------
+# Standard Graphics Names ------
 #' @title Standard graphics names
-#' @description This is a dummy function, purpose is to serve as repositiory for function parameter names.
+#' @description This is a dummy function whose purpose is to serve as repositiory for arguments used by figures2 functions.
 #' @param add.fignum logical (annotate.page)
 #' @param addBars logical to add error bars (line.plot)
 #' @param addTime logical for ading time stamp (annotate.page)
@@ -110,6 +110,7 @@ utils::globalVariables(c("outputplan", "od", "cd", "dd", "FigureNumber", "Figure
 #' @param y.ticks  passed to scale_y_continuous 
 #' @param ymax.col name of parent.df column associated with ymax (line.plot errorbars)
 #' @param ymin.col name of parent.df column assoicated with ymin (line.plot errorbars)
+#' @author Greg Cicconetti
 
 graphic.params <- function(
         add.fignum        ,
@@ -222,8 +223,7 @@ return("Hello, this function is just a convient location to store argument names
 
 # bar.plot -------
 #' @title bar.plot
-#' @description A function for creating bar charts; adds tabular data to bar chart.
-#' @details In building the driver files, manual adjustment of y.limits and y.ticks is required. Note that this function computes summary statistics from raw data.
+#' @description A function for creating harmonized ggplot2 bar charts
 #' @inheritParams graphic.params
 #' @examples 
 #' \dontrun{
@@ -286,10 +286,9 @@ Var1 <- Var2 <- Freq <- Prop <- Prop.text <- CATEGORY <- RESPONSE <- LOWER <- UP
   return(p1)
   }
 
-# Box.plot ---------------------------------------
+# Box.plot -------------
 #' @title box.plot
-#' @description Produces boxplots 
-#' @details Adjust y.limits, y.ticks and y.digits at the the driver level. Note: This function computes summary statistics from raw data.
+#' @description A function for creating harmonized ggplot2 boxplots
 #' @inheritParams graphic.params
 #' @examples 
 #' \dontrun{
@@ -384,9 +383,9 @@ CATEGORY <- RESPONSE <- LOWER <- UPPER <- MEDIAN <- NULL
     return(p1)
   }
 
-# cdf.plot ----------------------------------------------------------------
+# cdf.plot ------
 #' @title cdf.plot
-#' @description Function to produce Cumulative Distribution plot.  Statistics computed by stat_ecdf().
+#' @description A function for creating harmonized ggplot2 cumulative distribution plots. Statistics computed by stat_ecdf().
 #' @inheritParams graphic.params
 #' @examples 
 #' \dontrun{
@@ -451,9 +450,9 @@ cdf.plot <-
     return(p1)
   }
 
-# dot.plot ----------------
+# dot.plot ------
 #' @title dot.plot
-#' @description A function for plotting dotplots offering compatiability with table.plot and dot.plot. 
+#' @description A function for creating harmonized ggplot2 dot plots with compatiability with table.plot and forest.plot. 
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti
 dot.plot <- function (parent.df = dot.df.melt, category.col = "Treatment", 
@@ -494,9 +493,9 @@ dot.df.melt <- RANK <- POINT.EST <- CATEGORY <- NULL
         return(for.return)
 }
 
-# forest.plot -----------
+# forest.plot ------
 #' @title forest.plot
-#' @description A function for plotting forest plots offering compatiability with table.plot and dot.plot. 
+#' @description A function for creating harmonized forest.plots via ggplot2 offering compatiability with table.plot and dot.plot. 
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti
 forest.plot <-
@@ -607,7 +606,7 @@ forest.plot <-
     return(for.return)
   }
 
-# gcurve ----
+# gcurve ------
 #' @title gcurve 
 #' @description A function to exploit base R's curve function.  This returns a data.frame holding x and y values returned from a call to curve, but suppress the plotting of that function
 #' @inheritParams graphic.params
@@ -623,7 +622,7 @@ forest.plot <-
 #' @param xlab inherited from curve
 #' @param xlim inherited from curve
 #' @param ... inherited from curve
-
+#' @seealso graphics::curve
 #' @examples 
 #' \dontrun{
 #' curve(dnorm(x, mean=0, sd=1), from=-4, to = 4, n= 1001)
@@ -697,9 +696,9 @@ gcurve <- function (expr, from = NULL, to = NULL, n = 101, add = FALSE,
         return(for.return)
 }
 
-# km.plot ----------
+# km.plot ------
 #' @title km.plot 
-#' @description A function to create km plots
+#' @description A function for creating harmonized Kaplan-Meier plots and accompanying At Risk table.
 #' @inheritParams graphic.params
 #' @examples 
 #' \dontrun{
@@ -727,6 +726,7 @@ gcurve <- function (expr, from = NULL, to = NULL, n = 101, add = FALSE,
 #' #             interior = list(comeback[[1]], 
 #' #                             comeback[[2]]))
 #'  }
+#' @seealso sync.ylab.widths, nsubj.plot
 #' @author Greg Cicconetti
 km.plot <- 
         function (parent.df, 
@@ -902,9 +902,9 @@ p2 <- nsubj.plot(parent.df = at.risk,
 return(list(p1, p2, at.risk))}
         }
 
-# line.plot --------------------
+# line.plot ------
 #' @title line.plot 
-#' @description A function to create lineplots.
+#' @description A function for creating harmonized line plots with optional errorbars.
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti/David Wade
 line.plot <- function (parent.df,
@@ -985,7 +985,7 @@ XVALUES <- YVALUES <- YMIN <- YMAX <- CATEGORY <- LTYPE <- NULL
         return(p1)
 }
 
-# nsubj.plot --------------------------------------------------------------
+# nsubj.plot ------
 #' @title nsubj.plot 
 #' @description A function to create tables to accompany KMs and lineplots
 #' @inheritParams graphic.params
@@ -1028,9 +1028,10 @@ XVALUES <- YVALUES <- CATEGORY.COLOR <- TEXT <- NULL
                 
                 return(p1)}              
 
-# table.plot --------------------------------------------------------------
+# table.plot ------
 #' @title table.plot
-#' @description A function for plotting columns of text in a figure offering compatiability with forest.plot and dot.plot. 
+#' @description A function for creating harmonized table plots with 
+#' A function for plotting columns of text in a figure offering compatiability with forest.plot and dot.plot. 
 #' @inheritParams graphic.params
 #' @param xtick.labs xtick labels
 #' @author Greg Cicconetti
@@ -1140,123 +1141,11 @@ category.color <- toupper(category.color)
                 return(for.return)
         }
 
-#' @title table.plot2
-#' @description A function for plotting columns of text in a figure offering compatiability with forest.plot and dot.plot. 
-#' @inheritParams graphic.params
-#' @param xtick.labs xtick labels
-
-#' @author Greg Cicconetti
-table.plot2 <-
-        function(
-                parent.df,
-                y.rank.col="Subcategory",
-                category.color="Treatment",
-                text.col1 = "Point_Est",
-                text.col2 = "LCI",
-                text.col3 = "UCI",
-                text.col4 = NULL,
-                text.size = 12,
-                xtick.labs = c("Estimate", "LCI", "UCI"),
-                x.ticks = 1:3,
-                x.limits=NULL,
-                y.limits=NULL,
-                x.label="Text",
-                y.label="Item",
-                y.label.rank.col ="rank",  #  this identifies the y-axis values for labels
-                y.label.col = "subcategory", 
-                category.palette = c("red", "blue")){
-
-CATEGORY <- RANK <- TEXT.COL1 <- TEXT.COL2 <- TEXT.COL3 <- TEXT.COL4 <- NULL
-                
-                if(is.null(y.limits) ) {
-                        y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
-                                     max(parent.df[,y.rank.col], na.rm=T)+.25) 
-                        cat("y.limits are set to NULL; defaults are used.\n")
-                }
-                if(is.null(x.limits) || is.null(x.ticks)) {
-                        x.limits = 1:(4-sum(c(is.null(text.col4),is.null(text.col3),is.null(text.col2))))
-                        x.ticks <- 1:(4-sum(c(is.null(text.col4),is.null(text.col3),is.null(text.col2))))
-                        cat("x.limits are set to NULL; defaults are used.\n")
-                        
-                }
-                # Cap names
-                names(parent.df) <- toupper(names(parent.df))
-                category.color <- toupper(category.color)
-                y.rank.col <- toupper(y.rank.col)
-                text.col1 <- toupper(text.col1)
-                if(is.null(text.col2)==F) text.col2 <- toupper(text.col2)
-                if(is.null(text.col3)==F)text.col3 <- toupper(text.col3)
-                if(is.null(text.col4)==F) text.col4 <- toupper(text.col4)
-                y.label.rank.col <- toupper(y.label.rank.col)
-                y.label.col <- toupper(y.label.col)
-                y.label.rank.col <- toupper(y.label.rank.col)
-                
-                table.df <- data.frame(
-                        RANK = parent.df[, y.rank.col],
-                        CATEGORY = parent.df[, category.color],
-                        TEXT.COL1 = parent.df[, text.col1],
-                        TEXT.COL2 = parent.df[, text.col2],
-                        TEXT.COL3 = parent.df[, text.col3],
-                        TEXT.COL4 = parent.df[, text.col4],
-                        LABEL.RANKS = parent.df[, y.label.rank.col],
-                        LABEL.VALUES = parent.df[, y.label.col])
-                
-                for.return <-  ggplot()+
-                        geom_text(data = table.df,  size=text.size,
-                                  aes(x = x.ticks[1],
-                                      colour = CATEGORY,
-                                      y = RANK, 
-                                      label = TEXT.COL1, hjust = 0.5))
-                
-                if(is.null(text.col2)==F)
-                        for.return <- for.return +
-                        geom_text(data = table.df,   size=text.size,
-                                  aes(x = x.ticks[2], 
-                                      colour = CATEGORY, 
-                                      y = RANK, 
-                                      label = TEXT.COL2, hjust = 0.5))
-                
-                if(is.null(text.col3)==F)
-                        for.return <- for.return +
-                        geom_text(data = table.df,   size=text.size,
-                                  aes(x = x.ticks[3],  
-                                      colour = CATEGORY, 
-                                      y = RANK, 
-                                      label = TEXT.COL3, hjust = 0.5))
-                
-                if(is.null(text.col4)==F)
-                        for.return <- for.return +
-                        geom_text(data = table.df,  size=text.size,
-                                  aes(x = x.ticks[4],   
-                                      colour = CATEGORY, 
-                                      y = RANK, 
-                                      label = TEXT.COL4, hjust = 0.5))
-                
-                for.return <- for.return +
-                        scale_x_continuous(limits = x.limits, 
-                                           breaks=x.ticks) + 
-                        scale_y_continuous(limits=y.limits,
-                                           breaks=table.df$LABEL.RANKS, 
-                                           labels=table.df$LABEL.VALUES)+
-                        guides(size=FALSE, color=FALSE)+
-                        labs(x=x.label, y=y.label)+
-                        scale_color_manual(values=rev(category.palette))+
-                        theme(plot.background = element_rect(colour = "white"), 
-                              panel.background = element_rect(fill = "white", colour = NA), 
-                              axis.text.x = element_text(vjust = 1, colour = "black"), 
-                              axis.ticks.x = element_line(colour = "transparent"), 
-                              axis.ticks.y = element_line(color="transparent"),
-                              panel.grid.minor = element_line(colour = "white", size = 0.25)
-                        )
-                
-                return(for.return)
-        }
-
-
 # Global functions for figures2 
-# -----------------------------
 
-# default.settins----
+#  Session Starters -------
+
+# default.settings -------
 #' @title default.settings
 #' @description Global Defaults
 #' @details Global Defaults
@@ -1309,14 +1198,14 @@ default.settings <- function(pos = 1,
         assign("bottom.margin", 1.75-.5, envir = envir)
         #   graph.region.h <<- page.height - (right.margin + left.margin)
         #   graph.region.w <<- page.width - (top.margin + bottom.margin)
-        assign("blankPanel",grid.rect(gp=gpar(col="white"), draw=FALSE), envir = envir)
+        assign("blankPanel", grid.rect(gp=gpar(col="white"), draw=FALSE), envir = envir)
         
         
         theme_set(theme_grey2_nomargins())
         cat("\nThe default theme: theme_grey2_nomargins", "\n")
 }
 
-# default.settings2----
+# default.settings2 -------
 #' @title default.settings2 - next iteration of default.settings
 #' @description Global Defaults
 #' @details Global Defaults
@@ -1393,10 +1282,10 @@ default.settings2 <- function(pos = 1,
         cat(paste("\nThe default theme:", main.theme, "\n"))
 }
 
-# Custom Themes ----------------------------------------
+# Custom Themes -------
 
-# theme_grey2_nomargins----
-#' @title theme_grey2_nomargins
+# theme_grey2_nomargins -------
+#' @title figures2 themes
 #' @description Adapts theme_grey() found in ggplot2 
 #' @details axis.text colour changed from "grey50" to "black"; legend.position changed from "right" to "bottom"; legend.direction changed to "horizontal"; plot.margin changed from default unit(c(1, 1, 0.5, 0.5), "lines") to unit(c(0, 0, 0, 0), "in")
 #' @inheritParams graphic.params
@@ -1466,7 +1355,7 @@ theme_grey2_nomargins <-  function (base_size = 12, base_family = ""){
               complete = TRUE)
 }
 
-# theme_grey2_default_margins----
+# theme_grey2_default_margins -------
 #' @describeIn theme_grey2_nomargins Same as theme_grey2_nomargins but with margins set to ggplot defaults, unit(c(1, 1, 0.5, 0.5), "lines")
 theme_grey2_default_margins <-  function (base_size = 12, base_family = ""){
         theme(line = element_line(colour = "black", 
@@ -1529,7 +1418,7 @@ theme_grey2_default_margins <-  function (base_size = 12, base_family = ""){
               complete = TRUE)
 }
 
-# theme_grey2_nomargins----
+# theme_grey2_nomargins -------
 #' @describeIn theme_grey2_nomargins Similar to theme_grey2
 theme_bw2_nomargins <- function (base_size = 12, base_family = "") 
 {
@@ -1575,7 +1464,10 @@ theme_table_nomargins <- function (base_size = 12, base_family = "") {
 
 
 # This file holds functions associated with assembling figures on a page
-#-----build.page-----
+
+# Builders  -------
+
+# build.page -------
 #' @title build.page
 #' @description  Takes page dimensions, figure layout dimenesions and an ordered list of grobs/ggplot objects orients them on a page
 #' @inheritParams graphic.params
@@ -1641,9 +1533,9 @@ build.page <-
                 }
         }
 
-# annotate.page ----
+# annotate.page -------
 #' @title annotate.page
-#' @description Adds titles, headers, and footers
+#' @description Optionally adds up to 4 lines for titles, 3 lines for right and left headers, and 5 lines of footnotes
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti
 
@@ -1664,10 +1556,10 @@ annotate.page <- function (
         title.buffer = 2, 
         fignum = "1.100", 
         title = list(
-                "Title Line 1: Printing atop of graphic to show location", 
-                "Title Line 2: In practice ", 
-                "Title Line 3: Graphic region height can be shunken", 
-                "Title Line 4: to accomdate multiple title lines"), 
+                "If ggplot populates title, annotate.page's title argument gets a ", 
+                "list of whitespace text strings. If annotate.page is populating titles,", 
+                "use whitespaces and newline escape characters in ggplot titles", 
+                "to ensure ggplot object is shrunken titles do not stamp over your graphs"), 
         ulh = list(
                 "Upper Left Header 1",
                 "Upper Left Header 2", 
@@ -1757,7 +1649,7 @@ annotate.page <- function (
                   fnote[[1]], gp = gpar(fontsize = foot.size))
 }
 
-# sync.ylab.widths -----
+# sync.ylab.widths -------
 #' @title sync.ylab.widths
 #' @description Aligns the widths of ggplot objects to ensure common plot regions. The maximum length required for y-axis labels among the list is determined and applied to the other plots. This assists in syncing the widths of ggplot objects for the purpose of align figures on a page.
 #' @inheritParams graphic.params
@@ -1778,10 +1670,11 @@ sync.ylab.widths <-
                 return(gtable.list)
         }
 
-# get.top.xaxis ----
+# get.top.xaxis -------
 #' @title get.top.xaxis
 #' @description This takes two ggplot objects, steals the bottom x-axis from 2nd object and returns a gtable object with that bottom x-axis per object 1 and top x-axis per object 2
 #' @inheritParams graphic.params
+#' @author Greg Cicconetti
 get.top.xaxis <- function(bottom.axis.version, top.axis.version){
         name <- r <- NULL
         # Extract gtable
@@ -1818,11 +1711,9 @@ get.top.xaxis <- function(bottom.axis.version, top.axis.version){
         return(g)
 }
 
+# Helper functions for working with outputplan -------
 
-
-# Helper functions for working with outputplan -----------
-
-# refresh.outputplan----
+# refresh.outputplan -------
 #' @title Refresh the Output Plan
 #' @description Reloads outputplan_study.csv file and applies canonical formatting changes.
 #' @details Ensure all columns are read in as character vectors. Ensure all missing entries are replaced with blank character string. Ensure all escape characters for carrige returns are respected. Grabs the 'modified time' from file attributes associated with .csv files named in the outputplan.
@@ -1907,8 +1798,10 @@ refresh.outputplan <-
                                   outputplan$rcode[duplicated(outputplan$rcode)]), 
                             "\n")
         }
-# Functions for Output control -----------------------
-# run.specific-----
+
+# Output control -------
+
+# run.specific -------
 #' @title run.specific
 #' @description This function sources a .r driver file and sends its product to a newly opened 8.5in x 11in screen or a pdf file with 8.5in x 11in dimensions.
 #' @inheritParams graphic.params
@@ -1937,12 +1830,12 @@ run.specific <-
                         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {        
                                 myError <<- e$message        
                                 # this first message goes into the R history file        
-                                cat("\n\nfiguRes Error: A fatal error ocurred causing the function to stop running\n")        
+                                cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")        
                                 cat("********************************************************************************\n")        
                                 cat(paste("  The error message was: ",myError))        
                                 closeAllConnections()        
                                 # this second message goes to the console to alert the user        
-                                cat("figuRes Error: A fatal error ocurred causing the function to stop running")        
+                                cat("figures2 Error: A fatal error ocurred causing the function to stop running")        
                                 cat(paste("\n  The error message was: ",myError))        
                         })      
                         dev.off()      
@@ -1957,12 +1850,12 @@ run.specific <-
                         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {        
                                 myError <<- e$message        
                                 # this first message goes into the R history file        
-                                cat("\n\nfiguRes Error: A fatal error ocurred causing the function to stop running\n")        
+                                cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")        
                                 cat("********************************************************************************\n")        
                                 cat(paste("  The error message was: ",myError))        
                                 closeAllConnections()        
                                 # this second message goes to the console to alert the user        
-                                cat("figuRes Error: A fatal error ocurred causing the function to stop running")        
+                                cat("figures2 Error: A fatal error ocurred causing the function to stop running")        
                                 cat(paste("\n  The error message was: ",myError))        
                         })      
                         dev.off()      
@@ -1977,12 +1870,12 @@ run.specific <-
                         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {        
                                 myError <<- e$message        
                                 # this first message goes into the R history file        
-                                cat("\n\nfiguRes Error: A fatal error ocurred causing the function to stop running\n")        
+                                cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")        
                                 cat("********************************************************************************\n")        
                                 cat(paste("  The error message was: ",myError))        
                                 closeAllConnections()        
                                 # this second message goes to the console to alert the user        
-                                cat("figuRes Error: A fatal error ocurred causing the function to stop running")        
+                                cat("figures2 Error: A fatal error ocurred causing the function to stop running")        
                                 cat(paste("\n  The error message was: ",myError))       
                         })      
                         dev.off()      
@@ -1997,12 +1890,12 @@ run.specific <-
                         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {        
                                 myError <<- e$message        
                                 # this first message goes into the R history file        
-                                cat("\n\nfiguRes Error: A fatal error ocurred causing the function to stop running\n")        
+                                cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")        
                                 cat("********************************************************************************\n")        
                                 cat(paste("  The error message was: ",myError))        
                                 closeAllConnections()        
                                 # this second message goes to the console to alert the user        
-                                cat("figuRes Error: A fatal error ocurred causing the function to stop running")        
+                                cat("figures2 Error: A fatal error ocurred causing the function to stop running")        
                                 cat(paste("\n  The error message was: ",myError))        
                         })      
                         dev.off()      
@@ -2016,12 +1909,12 @@ run.specific <-
                         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {        
                                 myError <<- e$message        
                                 # this first message goes into the R history file        
-                                cat("\n\nfiguRes Error: A fatal error ocurred causing the function to stop running\n")        
+                                cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")        
                                 cat("********************************************************************************\n")        
                                 cat(paste("  The error message was: ",myError))        
                                 closeAllConnections()        
                                 # this second message goes to the console to alert the user        
-                                cat("figuRes Error: A fatal error ocurred causing the function to stop running")        
+                                cat("figures2 Error: A fatal error ocurred causing the function to stop running")        
                                 cat(paste("\n  The error message was: ",myError))        
                         })      
                         dev.off()      
@@ -2036,12 +1929,12 @@ run.specific <-
                         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {        
                                 myError <<- e$message        
                                 # this first message goes into the R history file        
-                                cat("\n\nfiguRes Error: A fatal error ocurred causing the function to stop running\n")        
+                                cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")        
                                 cat("********************************************************************************\n")        
                                 cat(paste("  The error message was: ",myError))        
                                 closeAllConnections()        
                                 # this second message goes to the console to alert the user        
-                                cat("figuRes Error: A fatal error ocurred causing the function to stop running")        
+                                cat("figures2 Error: A fatal error ocurred causing the function to stop running")        
                                 cat(paste("\n  The error message was: ",myError))        
                         })      
                         dev.off()      
@@ -2051,12 +1944,12 @@ run.specific <-
                                 tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {          
                                         myError <<- e$message          
                                         # this first message goes into the R history file          
-                                        cat("\n\nfiguRes Error: A fatal error ocurred causing the function to stop running\n")          
+                                        cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")          
                                         cat("********************************************************************************\n")          
                                         cat(paste("  The error message was: ",myError))          
                                         closeAllConnections()          
                                         # this second message goes to the console to alert the user          
-                                        cat("figuRes Error: A fatal error ocurred causing the function to stop running")
+                                        cat("figures2 Error: A fatal error ocurred causing the function to stop running")
                                         cat(paste("\n  The error message was: ",myError))
                                 })
                         else {
@@ -2065,21 +1958,21 @@ run.specific <-
                                 tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {
                                         myError <<- e$message
                                         # this first message goes into the R history file
-                                        cat("\n\nfiguRes Error: A fatal error ocurred causing the function to stop running\n")
+                                        cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")
                                         cat("********************************************************************************\n")
                                         cat(paste("  The error message was: ",myError))
                                         closeAllConnections()
                                         # this second message goes to the console to alert the user
-                                        cat("figuRes Error: A fatal error ocurred causing the function to stop running")
+                                        cat("figures2 Error: A fatal error ocurred causing the function to stop running")
                                         cat(paste("\n  The error message was: ",myError))
                                 }) 
                         } 
                 }
         }
 
-# all.in.one ----
+# all.in.one -------
 #' @title all.in.one
-#' @description Produces pdf files with batches of graphics based on flags in outputplan. A progress bar is displayed.
+#' @description Produces a single pdf file with based on rows in the outputplan whose UseSubset column is equals 'Y'. A progress bar is displayed.
 #' @details Prerequisites: You need to have output, code, data directory paths defined in your workspace. These should take variable names od, cd, dd, respectively. This can be done by running a personalized set of the following commands:
 #' 
 #' Code directory needs to hold the .r files associated with the subset of figures to be produced.
@@ -2133,7 +2026,9 @@ all.in.one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE)
         elasped
 }
 
-# Utility Functions -----------------------
+# Utility Functions -------
+
+# fmt  -------
 #' @title fmt
 #' @description A function to control number of digits used in graphics.
 #' @details This function is used within ggplot, e.g. (scale_y_continuous(labels=fmt(digits=3))) to control the number of digits presented. By default, axis labels will truncate zeros so that labels might read: 0, 2.5, 5, 7.5. Using this will result in labels: 0.0, 2.5, 5.0, 7.5.
@@ -2145,7 +2040,7 @@ fmt <- function(digits=2){
 
 #' @title FacetLabelAdjuster
 #' @description This function takes a 'facet wrapped' ggplot and adds axis labels when a rxc grid is incomplete  
-#' @details Adapted from: http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot
+#' @references Adapted from: http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot
 #' @param x a ggplot object
 #' @param pos maintain default
 #' @param newpage maintain default
@@ -2153,7 +2048,7 @@ fmt <- function(digits=2){
 facetAdjust <-
         function (x, pos = c("up", "down"), newpage = is.null(vp), vp = NULL) 
         {
-                # ggplot2:::set_last_plot(x) # Bit sure if this is needed!!!
+                # ggplot2:::set_last_plot(x) # Not sure if this is needed!!!
                 if (newpage) 
                         grid.newpage()
                 pos <- match.arg(pos)
@@ -2190,8 +2085,9 @@ facetAdjust <-
                 invisible(list(p, gtable))
         }
 
-# David's functions-----
-# start.session.log----
+# Log functions -------
+
+# start.session.log -------
 #' @title start.session.log
 #' @description A function to start logging the session history for a graphic driver run 
 #' @details Note that the stop.session.log function is used to stop the logging and save the log file.
@@ -2263,3 +2159,208 @@ stop.session.log<-function()
         sink()
 }
 
+# DRIVER DATA SET DOCUMENTATION -------
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver1 
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver2
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver3
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver4
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver5
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver6
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver7
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver8
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver9
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name driver10
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+#' This holds lines to a driver file created by the large-scale vignette
+#'
+#' @name boxplot.driver
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords drivers
+NULL
+
+# DATA SET DOCUMENTATION -------
+
+#' This is a dataset structured for building figures using forest.plot
+#'
+#' @name benrisk2.data
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, forest.plot
+NULL
+
+#' This is a dataset structured for building figures using cdf.plot
+#'
+#' @name cdf.data
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, cdf.plot
+NULL
+
+#' This is a dataset structured for building figures using bar.plot, box.plot, and cdf.plot
+#'
+#' @name demog.data
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, bar.plot, box.plot, cdf.plot
+NULL
+
+#' This is a dataset structured for building figures using forest.plot
+#'
+#' @name forest.data
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, forest.plot
+NULL
+
+#' This is a dataset structured for building figures using km.plot
+#'
+#' @name forest.data
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, km.plot
+NULL
+
+#' This is a dataset structured to facilitate mass figure production
+#'
+#' @name outputplan
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, run.specific, all.in.one
+NULL
+
+#' This is a dataset that would need some pre-processing ahead of using line.plot
+#'
+#' @name raw.line.plot.data
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, line.plot
+NULL
+
+#' This is a dataset that would need some pre-processing ahead of using line.plot
+#'
+#' @name summary.line.plot.data
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, line.plot
+NULL
+
+# PACKAGE DOCUMENTATION -------
+
+#' figures2: A package for building and annotating mult-panel figures with application to large scale figure production
+#'
+#'This package takes the view that a figure is a collection of graphs/tables assembled on a page and optionally annotated with metadata (titles, headers and footers). The steps to figure building can then be chunked as follows: \enumerate{
+#'   \item Data importation
+#'   \item Data pre-processing
+#'   \item Graph/table building (with subsequent processing necessary)
+#'   \item Assembling graph/tables on a page
+#'   \item Optional annotation to complete the figure
+#'   }
+#'   
+#' The figures2 package provides a suite of functions for producing harmonized figures using the ggplot2 packages. Additional ggplot themes are included. The package provides functions to assist with assembling multiple graphics on a page and annotating the page with headers and footnotes.  Functions to facilitate data processing and mass figure production are included.  Data sets are included to demonstrate how the functions work and this document contains a section that walks through the workflow for large scale figure production. 
+#' 
+#' All graphing functions in this package presume a data.frame is supplied with a specific data structure.  In practice these can be either imported (e.g., as a .csv file) or generated with R (e.g., output of simulation or call to a probability distirbution function). 
+#' 
+#' Data pre-processing of imported files may be required to ensure the data.frames are organized properly, factors are properly organized and labeled appropriatel, etc. To handle this, the user may wish to author functions to assist with this pre-processing. The demog.data data set and related process.bslchar function provide an example. 
+#' 
+#' The the build.page function is designed to help visualize how graphics are organized on a page, as well as execute the task. The graphics passed to this function can be created with the functions in this package or by the user. With the former, keep in mind that these are merely functions that facilitate the construction of ggplot objects. 
+#' 
+#' In the simplest case a figure will consist of a single graphic.
+#' 
+#' Some figures call for augmenting a graphic with a table (e.g., forest plots, Kaplan-Meier curves). In these cases, the tables are built using either table.plot or nsubj.plot (or again, the user coded ggplot text table). In the case of Kaplan-Meier curves, it is standard practice to arrange the KM curve on top of a table reporting the Number at Risk. Other figures call for juxtaposing two figures. In these cases, the task is either to arrange 2 graphics in a 1 (row) x 2 (col) or a 2 x 1 grid. More generally, the task is to arrange a dashboard of graphics/tables on an nrow x ncol grid and place them on page with predefined margins.
+#' 
+#' Once the individual graphs/tables have been created for a figure, pre-processing may be required. E.g., there may be a need to align the y-axes when stacking graphics: if Graph A has the longest y-axis tick label, Graph B will need to be adjusted so graphics are aligned when arranging them on a 2 x 1 grid.
+#' 
+#' When the collection of graphs/tables have been pre-processed, they can be passed to the build.page function. This function requires the user to specify how the row widths and column heights should be specified as well as the order in which to populate the cells of the grid of graphics.
+#' 
+#' The defaults presume figures are being displayed on an 8.5 inch x 11 inch page, with landscape orientation and margins of 1.5 inches at the top and bottom and 1 inch margins at the left and right. These dimensions provide sufficient room for 2 lines of headers, 4 lines of footnotes and a effective central region for graphs and tables of size (8.5 - 3) inch x (11 - 2) inch.  Generalizing from the defaults is straightforward.  Trial and error will be required to fine tune aesthetic aspects. 
+#' 
+#' The function annotate.page has been coded to optionally populate with blank entries (helpful when building graphics that don't require annotation and where margins are minimized), dummy entries (helpful in developement phases) or entries coming from a data.frame called outputplan (helpful for mass figure production).  
+#' 
+#' @docType package
+#' @author Greg Cicconetti
+#' @name figures2
+NULL
+
+
+# NOTES:
+# Updating vignette process: update the .rmd file in vignettes. Start new markdown pdf file.  Add bells and whistles and build pdf.  Paste that pdf file with same root name and place in the vignette folder.
+
+# ```{r, results='hide', message=FALSE, warning=FALSE, echo=FALSE}
+# require(knitr)
+# opts_chunk$set(echo=TRUE, cache=FALSE, warning=FALSE, dev='pdf',
+#                message=FALSE, fig.width=11, fig.height=8.5, comment=NA)
+# ```
+
+# Paste back to the .rd file in vignettes dir
+# Update package with build and reload and iterate as needed - when all's finished to check.  

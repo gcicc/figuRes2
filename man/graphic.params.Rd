@@ -232,6 +232,9 @@ graphic.params(add.fignum, addBars, addTime, at.risk.palette,
 \item{ymin.col}{name of parent.df column assoicated with ymin (line.plot errorbars)}
 }
 \description{
-This is a dummy function, purpose is to serve as repositiory for function parameter names.
+This is a dummy function whose purpose is to serve as repositiory for arguments used by figures2 functions.
+}
+\author{
+Greg Cicconetti
 }
 

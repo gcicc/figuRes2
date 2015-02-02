@@ -1,12 +1,9 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Mass Figure Production Demo}
 
+# Prerequisistes
 
-# Using the figures2 package to assist with large scale figure production
-
-## Prerequisistes
-
-### Recommended directory structure
+## Recommended directory structure
 
 The default.settings function places text objects with default paths to some of these locations.
 
@@ -19,7 +16,7 @@ The default.settings function places text objects with default paths to some of 
     * log: a directory to hold log files
  etc.
 
-### Driver files
+## Driver files
 The purpose of these files is single fold: Produce a figure. Recall a figure is considered to be a collection of graphics/tables assembled on a page and annotated with headers/footers/titles. The examples that follow divide this process into the following tasks:
 
 * Begin tracking newly created objects, sync with outputplan and start log file
@@ -32,7 +29,7 @@ The purpose of these files is single fold: Produce a figure. Recall a figure is 
 * A call annotate.page to added headers/footers/titles
 * Removal of objects created and close of log file
 
-### The outputplan and the refresh.outputplan function
+## The outputplan and the refresh.outputplan function
 In practice, the outputplan is read from a .csv file that may be centrally located (to facilitate editing by team members). One can populate the outputplan in excel to facilitate syncing with related files (e.g., the qcplan).  
 
 The outputplan holds metadata for each figure.  One row is allocated to each figure.  The outputplan can have superfluous columns. As a rule, entries in the outputfile are intended to be unique. This allows the driver files, the files stored in the directory and whose names are in stored also stored in the rcode column of the outputplan, to uniquely identify the row associated with the figure being produced allowing the annotate.page function to populate the figure's headers and footers.  Superfluous columns are ok (and may prove helpful if you are using the outputplan to help populate driver files). See annotate.page code for the minimum subset of columns required in addition to outputfile and rocde columns. 
@@ -61,19 +58,19 @@ names(outputplan)
 
 This function can also read an outputplan stored in an external .csv file, preprocess it, and store the resultant data.frame, called outputplan, in the Global Environment. Regarding the uniqueness of names found in the outputfile column mentioned above, one can subset the outputplan at this point in a way that assures this at this point.  E.g., if the external outputplan holds metadata for multiple projects and these projects are intended to produce files with common names, one could subset the outputplan to isolate a single project, thus ensuring that the outputplan used by R meets the constraint.   
 
-### The run.specific function
+## The run.specific function
 This function takes a driver name and optionally outputs it to the screen or any number of file formats. This function presumes the driver is located in the code directory mentioned above and that files are sent to the output directory.  
 
 This and all.in.one are wrapper functions for grDevices::pdf and related functions.
 
-### all.in.one
+## all.in.one
 
 This function loops through an outputplan producing figures whenever a row entry for a stated column takes the value "Y". The driver file name used for sourcing is obtained from the rcode column of the outputplan.
 
-## Mimicking the workflow used by darapldib and PHI programs 
-The following outlines the gestalt approach taken by the darapladib and PHI programs. 
+# Large scale production workflow
+The following outlines the gestalt approach successfully employed in clinical trial reporting. 
 
-### Set up local directory structure
+## Set up local directory structure
 Warning the following code will create directories on your computer for the purpose of demonstration!! Ensure your working directory is pointing to a folder that you can use for experimenting. 
 
 ```{r, eval=FALSE}
@@ -92,7 +89,7 @@ dir.create(file.path(getwd(), "output"), showWarnings = FALSE)
 dir.create(file.path(getwd(), "log"), showWarnings = FALSE)
 ```
 
-### Populating the data folder with mock .csv files
+## Populating the data folder with mock .csv files
 The following code brings data sets stored in the figuRes packages into Global Environment.
 
 ```{r, eval=FALSE}
@@ -123,9 +120,9 @@ write.csv(file=file.path(getwd(), "dddata", "raw.lineplot.data.csv"), raw.linepl
 write.csv(file=file.path(getwd(), "dddata", "lineplot_example.csv"), raw.lineplot.data)
 ```
 
-### Populating the code directory with driver files
+## Populating the code directory with driver files
 
-#### Mimicking the creation of authoring individual driver files
+### Mimicking the creation of authoring individual driver files
 Let's populate with some other prefabricated driver files stored in the figuRes package as datasets.  These are first loading them into R's Global Environment.
 
 ```{r, eval=FALSE}
@@ -153,21 +150,7 @@ writeLines(driver8, con=paste0(getwd(),"/code/","cdf_weight.r"))
 writeLines(driver9, con=paste0(getwd(),"/code/","priordens.r"))
 ```
 
-
-save(driver1, file="driver1.rda", compress="xz")
-save(driver2, file="driver2.rda", compress="xz")
-save(driver3, file="driver3.rda", compress="xz")
-save(driver4, file="driver4.rda", compress="xz")
-save(driver5, file="driver5.rda", compress="xz")
-save(driver6, file="driver6.rda", compress="xz")
-save(driver7, file="driver7.rda", compress="xz")
-save(driver8, file="driver8.rda", compress="xz")
-save(driver9, file="driver9.rda", compress="xz")
-save(driver10, file="driver1.rda", compress="xz")
-
-
-
-#### Getting R to build drivers with pattern replacement
+### Getting R to build drivers with pattern replacement
 This approach might be considered if you need to create 15+ driver files that differ only in a few locations. The following code brings a skeletonized driver for building box plots into the code directory.
 ```{r, eval=FALSE}
 # Write boxplot.driver file to code directory
@@ -198,7 +181,7 @@ outputplan.bp <- subset(outputplan, PlotStyle == "Boxplot" & Response != "")
  }
 ```
 
-### Simulating a session
+## Simulating a session
 At this point, all of the components are in place to create figurs. First, items are cleared from the Global Environment to mimic a fresh session start.  
 ```{r, eval=FALSE}
 remove(list=ls())
@@ -211,7 +194,7 @@ require(figures2)
 default.settings()
 ```
 
-#### Importing the outputplan
+### Importing the outputplan
 In practice, the outputplan would be read in from .csv file.
 ```{r, eval=FALSE}
 data(outputplan)
@@ -219,7 +202,7 @@ head(outputplan)
 refresh.outputplan(loadplan=F)
 ```
 
-#### Running individual .pdf files
+### Running individual .pdf files
 Apply run.specific:
 ```{r, eval=FALSE}
 run.specific(as.character(outputplan$rcode[1]), toPDF=T)
@@ -242,7 +225,7 @@ run.specific("continuous_by_visit_and_treatment.r", toPDF=T)
 
 At this point, the output directory should have 15 pdf files. 
 
-#### Populating a single .pdf file with multiple figures
+### Populating a single .pdf file with multiple figures
 Finally, here is a call to produce a single pdf with all figures.
 ```{r, eval=FALSE}
 all.in.one(UseSubset = "RunThis", filename= "allinone.PDF" , reportNR=FALSE)

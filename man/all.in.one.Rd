@@ -15,7 +15,7 @@
 \item{reportNR}{If TRUE, a plot with missing figure numbers and titles is produced}
 }
 \description{
-Produces pdf files with batches of graphics based on flags in outputplan. A progress bar is displayed.
+Produces a single pdf file with based on rows in the outputplan whose UseSubset column is equals 'Y'. A progress bar is displayed.
 }
 \details{
 Prerequisites: You need to have output, code, data directory paths defined in your workspace. These should take variable names od, cd, dd, respectively. This can be done by running a personalized set of the following commands:

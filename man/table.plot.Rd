@@ -45,6 +45,7 @@ table.plot(parent.df, y.rank.col = "Subcategory",
 \item{category.palette}{colors assoicated with categorical variable}
 }
 \description{
+A function for creating harmonized table plots with
 A function for plotting columns of text in a figure offering compatiability with forest.plot and dot.plot.
 }
 \author{
