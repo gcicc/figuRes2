@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Forest Plots}
+%\VignetteIndexEntry{The forest.plot and table.plot functions}
 
 
 # The figures2::forest.plot and figures2::table.plot functions

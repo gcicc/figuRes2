@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Mass Figure Production Demo}
+%\VignetteIndexEntry{Mass figure production workflow demo}
 
 # Prerequisistes
 

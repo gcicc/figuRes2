@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{build.page and annotate.page}
+%\VignetteIndexEntry{The km.plot and sync.ylab.widths functions}
 
 # Example 1: Juxtaposing two Kaplan-Meier graphics and their At Risk tables
 Intialize a session:
