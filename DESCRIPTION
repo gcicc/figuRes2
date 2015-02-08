@@ -5,7 +5,7 @@ Version: 1.00
 Date: 2015-01-26
 Author: Greg Cicconetti, David Wade
 URL: https://github.com/gcicc/figures2
-Maintainer: Greg Cicconetti <greg.2.cicconetti@gsk.com>
+Maintainer: Greg Cicconetti <gcicconetti@gmail.com>
 Description: This package takes the view that a figure is a collection of
     graphs/tables assembled on a page and optionally annotated with metadata
     (titles, headers and footers).  Functions and supporting documentation are
