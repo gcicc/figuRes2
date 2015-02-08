@@ -59,7 +59,7 @@ A function for creating harmonized Kaplan-Meier plots and accompanying At Risk t
 # working.df <- km.data
 # head(working.df)
 # working.df$centime <- working.df$centime/30.4375
-# km.M <- km.plot(parent.df = subset(working.df, SEX=="M"),
+# km.M <- km.plot(parent.df = subset(working.df, SEX== "M"),
 #       category.col = "TRTGRP",
 #       category.palette = ("red", "blue"),
 #       at.risk.palette = c("red","blue"),
@@ -70,14 +70,14 @@ A function for creating harmonized Kaplan-Meier plots and accompanying At Risk t
 #       x.ticks=seq(0,48,6))
 # print(km.M[[1]])
 # print(km.M[[2]])
-# grid.arrange(km.M[[1]] + theme(legend.position="bottom"), km.M[[2]], ncol=1)
-# comeback <- sync.ylab.widths(list(km.M[[1]]+ theme(legend.position="bottom"), km.M[[2]]))
+# grid.arrange(km.M[[1]] + theme(legend.position= "bottom"), km.M[[2]], ncol=1)
+# comeback <- sync.ylab.widths(list(km.M[[1]]+ theme(legend.position= "bottom"), km.M[[2]]))
 # grid.arrange(comeback[[1]] , comeback[[2]], ncol=1)
 # build.page(interior.h = c(.8, .2),
-#            interior.w = c(1),
-#             ncol=1, nrow=2,
-#             interior = list(comeback[[1]],
-#                             comeback[[2]]))
+#      interior.w = c(1),
+#       ncol=1, nrow=2,
+#       interior = list(comeback[[1]],
+#           comeback[[2]]))
  }
 }
 \author{

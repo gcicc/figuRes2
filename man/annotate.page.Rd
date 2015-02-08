@@ -16,10 +16,10 @@ annotate.page(page.height = 8.5, page.width = 11, top.margin = 1 - 0.5,
   ulh = list("Upper Left Header 1", "Upper Left Header 2",
   "Upper Left Header 3"), urh = list("Upper Right Header 1",
   "Upper Right Header 2", "Upper Right Header 3"),
-  fnote = list("Footnote1: Printing all footnote levels to demonstrate position",
+  fnote = list("Footnote1: Up to five lines of footnotes can be annotated.",
   "Footnote2: Graphic region height can be flexed.", "Footnote3", "Footnote4",
-  "Footnote5: reserved for filepath and reference to table"),
-  fileloc = "gfileloc", override = "", addTime = TRUE)
+  "Footnote5: In large-scale production, this may hold file name, time stamp, etc."),
+  override = "", addTime = TRUE)
 }
 \arguments{
 \item{page.height}{used by build.page and annotate.page; presumed to be inches}
@@ -59,8 +59,6 @@ annotate.page(page.height = 8.5, page.width = 11, top.margin = 1 - 0.5,
 \item{urh}{vector for upper right headers (annotate.page)}
 
 \item{fnote}{vector of 5 footnotes. 5th row is traditionally reserved for filepath, table reference and time stamp. Populate from bottom up. (annotate.page)}
-
-\item{fileloc}{text string for file location (annotate.page)}
 
 \item{override}{override}
 

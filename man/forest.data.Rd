@@ -6,15 +6,10 @@
 \title{This is a dataset structured for building figures using forest.plot}
 \description{
 This is a dataset structured for building figures using forest.plot
-
-This is a dataset structured for building figures using km.plot
 }
 \author{
-Greg Cicconetti
-
 Greg Cicconetti
 }
 \keyword{dataset,}
 \keyword{forest.plot}
-\keyword{km.plot}
 

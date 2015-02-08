@@ -42,7 +42,7 @@ A function to exploit base R's curve function.  This returns a data.frame holdin
 \dontrun{
 curve(dnorm(x, mean=0, sd=1), from=-4, to = 4, n= 1001)
 ggplot(gcurve(expr = dnorm(x, mean=0, sd=1),from=-4, to = 4, n= 1001,
-category="Standard Normal"), aes(x=x, y=y)) + geom_line()
+category= "Standard Normal"), aes(x=x, y=y)) + geom_line()
 }
 }
 \author{

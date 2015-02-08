@@ -8,19 +8,18 @@ graphic.params(add.fignum, addBars, addTime, at.risk.palette,
   background.palette, bar.position, bar.width, base_family, base_size,
   bottom.axis.version, bottom.margin, category, category.color, category.col,
   category.label, category.symbol.col, category.palette, cd, censor.col,
-  centime.col, dd, envir, fignum, fignum.buffer, fileloc, filename,
-  flip.palette, fnote, fnote.buffer, foot.size, fromthetop, gg.list, head.size,
-  header.buffer, interior, interior.h, interior.w, killMissing, left.margin,
-  linetype.col, line.size, linetype.palette, loadplan, logd, log.trans,
-  lower.lim, main.theme, my.path, ncol, nrow, nsubj.plot.label, od, outfile,
-  override, page.height, page.width, parent.df, pdval, Point.Est, pos, reportNR,
-  response.col, right.margin, shape.label, shape.palette, source.code,
-  text.buffer, test.dim, text.col, text.col1, text.col2, text.col3, text.col4,
-  text.size, title, title.buffer, title.size, toBMP, toEPS, toJPEG,
-  top.axis.version, top.margin, toPDF, toPNG, toWMF, ulh, upper.lim, urh,
-  UseSubset, x.col, x.label, x.limits, x.ticks, x.ticks.labels, y.col, y.digits,
-  y.label, y.label.col, y.label.rank.col, y.limits, y.rank.col, y.ticks,
-  ymax.col, ymin.col)
+  centime.col, dd, envir, fignum, fignum.buffer, filename, flip.palette, fnote,
+  fnote.buffer, foot.size, fromthetop, gg.list, head.size, header.buffer,
+  interior, interior.h, interior.w, killMissing, left.margin, linetype.col,
+  line.size, linetype.palette, loadplan, logd, log.trans, lower.lim, main.theme,
+  my.path, ncol, nrow, nsubj.plot.label, od, outfile, override, page.height,
+  page.width, parent.df, pdval, Point.Est, pos, reportNR, response.col,
+  right.margin, shape.label, shape.palette, source.code, text.buffer, test.dim,
+  text.col, text.col1, text.col2, text.col3, text.col4, text.size, title,
+  title.buffer, title.size, toBMP, toEPS, toJPEG, top.axis.version, top.margin,
+  toPDF, toPNG, toWMF, ulh, upper.lim, urh, UseSubset, x.col, x.label, x.limits,
+  x.ticks, x.ticks.labels, y.col, y.digits, y.label, y.label.col,
+  y.label.rank.col, y.limits, y.rank.col, y.ticks, ymax.col, ymin.col)
 }
 \arguments{
 \item{add.fignum}{logical (annotate.page)}
@@ -70,8 +69,6 @@ graphic.params(add.fignum, addBars, addTime, at.risk.palette,
 \item{fignum}{figure number (annotate.page)}
 
 \item{fignum.buffer}{fine-control of vertical position (annotate.page)}
-
-\item{fileloc}{text string for file location (annotate.page)}
 
 \item{filename}{common_root.pdf or common_root.csv}
 
@@ -127,7 +124,7 @@ graphic.params(add.fignum, addBars, addTime, at.risk.palette,
 
 \item{od}{directory where output files are sent}
 
-\item{outfile}{If (toPDF==T & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.}
+\item{outfile}{If (toPDF==T & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode ==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.}
 
 \item{override}{override}
 

@@ -1,6 +1,7 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{The km.plot and sync.ylab.widths functions}
 
+
 # Example 1: Juxtaposing two Kaplan-Meier graphics and their At Risk tables
 Intialize a session:
 ```{r, results='hide'}
@@ -8,6 +9,8 @@ remove(list=ls())
 require(figures2) 
 require(survival)
 require(ggplot2)
+require(plyr)
+require(scales)
 default.settings()
 ```
 
@@ -21,28 +24,23 @@ head(working.df)
 
 The Goal: Create Kaplan-Meier plots for Males and Females and juxtapose these.
 
-## Preprocessing
-
-The centime variable is in days. This is to be converted to months.
-
-```{r}
-working.df$centime <- working.df$centime/30.4375
-```
-
 ## Create the graphic components
 
 The km.plot function returns a list of objects.  The first two objects are ggplot objects for the Kaplan-Meier graphic and corresponding at risk table.
 
 ```{r}
 km.M <- km.plot(parent.df = subset(working.df, SEX=="M"),
+                censor.col = "CENSOR", 
+                centime.col = "CENTIME.MON",
                 category.col = "TRTGRP",
                 category.palette = c("red", "blue"),
                 at.risk.palette = c("red","blue"),                       
                 linetype.palette = c("solid","dotted"), 
-                y.limits=c(0,.25), 
-                y.ticks=seq(0,.25,.05), 
+                x.label = "Time Since Randomization (months)", 
                 x.limits=c(-3,48),
-                x.ticks=seq(0,48,6))
+                x.ticks=seq(0,48,6),
+                y.limits=c(0,.25), 
+                y.ticks=seq(0,.25,.05))
 ```
 
 Inspecting the Kaplan-Meier Graphic:
@@ -58,14 +56,17 @@ km.M[[2]]
 A similar call for the females:
 ```{r}
 km.F <- km.plot(parent.df = subset(working.df, SEX=="F"),
+                censor.col = "CENSOR", 
+                centime.col = "CENTIME.MON",
                 category.col = "TRTGRP",
                 category.palette = c("red", "blue"),
                 at.risk.palette = c("red","blue"),
                 linetype.palette = c("solid","dotted"), 
-                y.limits=c(0,.25), 
-                y.ticks=seq(0,.25,.05), 
+                x.label = "Time Since Randomization (months)",
                 x.limits=c(-3,48),
-                x.ticks=seq(0,48,6))
+                x.ticks=seq(0,48,6),
+                y.limits=c(0,.25), 
+                y.ticks=seq(0,.25,.05))
 ```
 
 First object:

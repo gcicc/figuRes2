@@ -1,5 +1,5 @@
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{The build.page and annotate.page functions}
+%\VignetteIndexEntry{Basics: The build.page and annotate.page functions}
 
 # Introduction to the figures2 package 
 This package takes the view that a figure is a collection of graphs/tables assembled on a page and optionally annotated with metadata (titles, headers and footers). The steps to figure building can then be chunked as follows:
@@ -16,20 +16,14 @@ What follows emphasizes figures2 functions that facilitate steps 4 and 5.
 The build.page function is a wrapper for the the gridExtra::grid.arrange function.  It can be used to help visualize how a page will be partitioned. However, its primary purpose is to arrange a list of graphic objects on a page.
 
 ## Visualizing page partitioning
-Recall the working definition for a figure is a collection of 1 or more graphics/tables assembled on a page with optional supporting metadata. Throughout this document we work under the assumption that figures are assembled on an 8.5 x 11 inch page with landscape orientation, though generalizing to other dimensions is straightforward. In the simplest case, a single graphic populates the page. The defaults of the build.page function allocate a predetermined value for left, right, top and bottom margins. These defaults provide sufficient space for the 3 lines of headers and the 5 lines for footnotes presumed by the the figures2::annotate.page function. By adding a call to annotate.page, we can see how page division looks together with dummy headers and footers.
+Throughout this document we work under the assumption that figures are assembled on an 8.5 x 11 inch page with landscape orientation, though generalizing to other dimensions is straightforward. In the simplest case, a single graphic populates the page. The defaults of the build.page function allocate a predetermined value for left, right, top and bottom margins. These defaults provide sufficient space for the 3 lines of headers and the 5 lines for footnotes presumed by the the figures2::annotate.page function. By adding a call to annotate.page, we can see how page division looks together with dummy headers and footers.
 
 ```{r, fig.cap="A figure built using a single graphic with top and bottom margins set default values", message=FALSE}
 require(figures2)
-require(survival)
-require(ggplot2)
-require(scales)
-require(stringr)
-require(plyr)
 require(grid)
 require(gridExtra)
-require(reshape2)
-require(gtable)
-require(RColorBrewer)
+require(ggplot2)
+require(scales)
 
 #pdf("figure1 - testing dimensions.pdf", h=8.5, w=11)
 build.page(interior.h=c(1),
@@ -43,11 +37,11 @@ annotate.page(override="" )
 Note: Expect distortion when running this code. The ultimate destination is the 8.5 in x 11 in page. Uncomment the pdf and dev.off calls to see what final product looks like. 
 
 ### Tweaking the arguments of the build.page function
-Suppose two graphics are to populate a figure.  E.g., forest plots typically juxtapose a graphic reporting on a stacked collection of confidence intervals with a table to to the right or left reporting summary statistics.  In designing a forest plot, one needs to decide
+Suppose two graphics are to populate a figure.  E.g., forest plots typically juxtapose a graphic reporting on a stacked collection of confidence intervals with a table to the right or left reporting summary statistics.  In designing a forest plot, one needs to decide how to
 
-* how to allocate the page's real estate for the graphic, table, and margins 
-* ensure proper alignment of labels, line segments and text,
-* how to annotate the page with footnotes, headers, etc.
+* allocate the page's real estate for the graphic, table, and margins, 
+* ensure proper alignment of labels, line segments and text, and
+* annotate the page with footnotes, headers, etc.
 
 Alternatively, a Kaplan-Meier figure may stack a graphic of the survival curves and a table reporting Number of Subjects at Risk. In this case, it is important to ensure proper alignment of the x-axes. 
 
@@ -126,6 +120,8 @@ annotate.page(override="", title=list(bm,"title2","title3","title4"))
 dev.off()
 ```
 
+By working along similar lines, one could determine the build.page and annotate.page margin parameters that would be suited using other page dimension and orientations, e.g., legal page with portrait orientation.
+
 ## The plot.margin theme option and its relation to build.page
 The figures2::default.settings functions includes a call to the following ggplot2 function:
 ```{r}
@@ -137,8 +133,8 @@ The figures2 package includes a handful of themes which are slight variations on
 * axis.text color changed from "grey50" to "black"
 * legend.position changed from "right" to "bottom"
 * legend.direction changed to "horizontal"
-* theme\_grey2\_default\_margins retains: plot.margin = unit(c(1, 1, 0.5, 0.5), "lines")
-* theme\_grey2\_nomargins changes: plot.margin = unit(c(0, 0, 0, 0), "in")
+* theme\_grey2\_default\_margins __retains__: plot.margin = unit(c(1, 1, 0.5, 0.5), "lines")
+* theme\_grey2\_nomargins __changes__: plot.margin = unit(c(0, 0, 0, 0), "in")
 
 The default.settings functions sets the theme to theme\_grey2\_nomargins since the build.page function controls global page margins. By setting plot.margins to zero the page real estate available for graphics is maximized relative to the page layout scheme and margins dictated to build.page. Should there be a need to alter the plot.margins of the individual graphics objects being passed to build.page, one can do so within the build of those graphics or by reseting the theme used. 
 
@@ -243,7 +239,7 @@ dev.off() # Shuts the pdf device
 
 In some applications using the annotate.page function is inconventient. (See the example above where page margins were shrunken to be negligible.) In these cases, build the title into your ggplot object rather than use blank titles.
 
-## Assembling a scatterplot with marginal densities
+## Example 2: Assembling a scatterplot with marginal densities
 Intialize a session and generate data similar to the previous bar chart example.
 
 ```{r, results='hide'}
@@ -337,6 +333,7 @@ print(density.plot.y)
 #### Assembly of figure
 The three graphics are now assembled and annotated to complete the figure. Note that object blankPanel is an object placed in the global environment by figures2::default.settings.
 ```{r, fig.cap="The final assembled figure"}
+# blankPanel <- grid.rect(gp=gpar(col="white"), draw=FALSE) # created by default.settings
 build.page(interior.h = c(.35, .65), 
            interior.w = c(.75, .25),
            ncol=2, 

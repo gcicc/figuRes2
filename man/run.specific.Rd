@@ -6,12 +6,12 @@
 \usage{
 run.specific(source.code = "g_AErr2.r", outfile = "", toPDF = F,
   toWMF = F, toJPEG = F, toPNG = F, toBMP = F, toEPS = F,
-  dpires = 600)
+  dpires = 600, use.log = FALSE)
 }
 \arguments{
 \item{source.code}{This is intended to be a darapladib graphics driver file returning a graphic possibly with complete headers and footers.}
 
-\item{outfile}{If (toPDF==T & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.}
+\item{outfile}{If (toPDF==T & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode ==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.}
 
 \item{toPDF}{Logical. If TRUE a .pdf file will be created. If FALSE graphic is sent to screen. (run.specific)}
 
@@ -26,6 +26,8 @@ run.specific(source.code = "g_AErr2.r", outfile = "", toPDF = F,
 \item{toEPS}{Logical. If TRUE a .eps file will be created. (run.specific)}
 
 \item{dpires}{passed to devices}
+
+\item{use.log}{logical to write a log file}
 }
 \description{
 This function sources a .r driver file and sends its product to a newly opened 8.5in x 11in screen or a pdf file with 8.5in x 11in dimensions.

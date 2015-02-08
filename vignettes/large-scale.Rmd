@@ -1,6 +1,7 @@
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Mass figure production workflow demo}
 
+
 # Prerequisistes
 
 ## Recommended directory structure
@@ -34,7 +35,7 @@ In practice, the outputplan is read from a .csv file that may be centrally locat
 
 The outputplan holds metadata for each figure.  One row is allocated to each figure.  The outputplan can have superfluous columns. As a rule, entries in the outputfile are intended to be unique. This allows the driver files, the files stored in the directory and whose names are in stored also stored in the rcode column of the outputplan, to uniquely identify the row associated with the figure being produced allowing the annotate.page function to populate the figure's headers and footers.  Superfluous columns are ok (and may prove helpful if you are using the outputplan to help populate driver files). See annotate.page code for the minimum subset of columns required in addition to outputfile and rocde columns. 
 
-The figuRes package has a dummy outputplan stored as a data set.
+The figures2 package has a dummy outputplan stored as a data set.
 ```{r}
 require(figures2); require(stringr)
 data(outputplan)
@@ -42,7 +43,7 @@ data(outputplan)
 # head(outputplan)
 ```
 
-The figuRes::refresh.outputplan function is used to process a data.frame sharing a subset of these column names. In addition to handling some pre-processing tasks when the outputplan is read from a .csv file, this funtion:
+The figures2::refresh.outputplan function is used to process a data.frame sharing a subset of these column names. In addition to handling some pre-processing tasks when the outputplan is read from a .csv file, this funtion:
 
 * counts the number of lines to allocate for titles: nTitleLines
 * counts the number of lines to allocate for footnotes: nFootLines
@@ -65,7 +66,7 @@ This and all.in.one are wrapper functions for grDevices::pdf and related functio
 
 ## all.in.one
 
-This function loops through an outputplan producing figures whenever a row entry for a stated column takes the value "Y". The driver file name used for sourcing is obtained from the rcode column of the outputplan.
+This function loops through an outputplan producing figures2 whenever a row entry for a stated column takes the value "Y". The driver file name used for sourcing is obtained from the rcode column of the outputplan.
 
 # Large scale production workflow
 The following outlines the gestalt approach successfully employed in clinical trial reporting. 
@@ -90,7 +91,7 @@ dir.create(file.path(getwd(), "log"), showWarnings = FALSE)
 ```
 
 ## Populating the data folder with mock .csv files
-The following code brings data sets stored in the figuRes packages into Global Environment.
+The following code brings data sets stored in the figures2 packages into Global Environment.
 
 ```{r, eval=FALSE}
 data(outputplan)
@@ -123,7 +124,7 @@ write.csv(file=file.path(getwd(), "dddata", "lineplot_example.csv"), raw.lineplo
 ## Populating the code directory with driver files
 
 ### Mimicking the creation of authoring individual driver files
-Let's populate with some other prefabricated driver files stored in the figuRes package as datasets.  These are first loading them into R's Global Environment.
+Let's populate with some other prefabricated driver files stored in the figures2 package as datasets.  These are first loading them into R's Global Environment.
 
 ```{r, eval=FALSE}
 data(continuous_by_visit_and_treatment)
@@ -225,8 +226,8 @@ run.specific("continuous_by_visit_and_treatment.r", toPDF=T)
 
 At this point, the output directory should have 15 pdf files. 
 
-### Populating a single .pdf file with multiple figures
-Finally, here is a call to produce a single pdf with all figures.
+### Populating a single .pdf file with multiple figures2
+Finally, here is a call to produce a single pdf with all figures2.
 ```{r, eval=FALSE}
 all.in.one(UseSubset = "RunThis", filename= "allinone.PDF" , reportNR=FALSE)
 ```
