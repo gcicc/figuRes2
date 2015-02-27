@@ -1654,6 +1654,228 @@ annotate.page <- function (
       fnote[[1]], gp = gpar(fontsize = foot.size))
 }
 
+# ggplot helper functions ----
+
+#' @title check.ggplot.outliers
+#' @description Reports via cat statements when ggplot windows truncate data
+#' @details Used in conjunction with log files created with start.session.log
+#' @inheritParams graphic.params
+#' @author David Wade
+check.ggplot.outliers <- function(plot.object=NULL) {
+        
+        
+        
+        if (class(plot.object)[1]=="gg") {
+                
+                
+                
+                # build <- ggplot_build(plot.object)
+                
+                cat(paste("Checking ggplot object for out of range points in",length(plot.object$layers),"layer(s):\n"))
+                
+                
+                
+                # identify the x and y axis limits 
+                
+                for (scale.i in seq(1:length(plot.object$scales$scales))){
+                        
+                        
+                        
+                        if (line.build$scales$scales[[scale.i]]$aesthetics[1]=="y"){
+                                
+                                scale.y.min <- line.build$scales$scales[[scale.i]]$limits[1]
+                                
+                                scale.y.max <- line.build$scales$scales[[scale.i]]$limits[2]
+                                
+                        }
+                        
+                        if (line.build$scales$scales[[scale.i]]$aesthetics[1]=="x"){
+                                
+                                scale.x.min <- line.build$scales$scales[[scale.i]]$limits[1]
+                                
+                                scale.x.max <- line.build$scales$scales[[scale.i]]$limits[2]
+                                
+                        }      
+                        
+                } # end for scale.i loop
+                
+                
+                
+                
+                
+                # identify the range of the x and y data points in each layer of the plot
+                
+                for (layer.i in seq(1:length(plot.object$layers))){
+                        
+                        
+                        
+                        layer.name<-plot.object$layers[[layer.i]]$geom$objname
+                        
+                        
+                        
+                        geom.found<-FALSE
+                        
+                        if (layer.name %in% c("line","point","errorbar")){
+                                
+                                
+                                
+                                geom.found<-TRUE
+                                
+                                
+                                
+                                # first confirm that these are simple single variable plotting definitions
+                                
+                                valid.x.variable.found<-TRUE
+                                
+                                valid.y.variable.found<-TRUE
+                                
+                                x.name <- as.character(plot.object$layers[[layer.i]]$mapping$x)
+                                
+                                if (!(length(x.name)==1)){valid.x.variable.found<-FALSE}
+                                
+                                
+                                
+                                if (layer.name %in% c("line","point")){
+                                        
+                                        y.name <- as.character(plot.object$layers[[layer.i]]$mapping$y)
+                                        
+                                        if (!(length(y.name)==1)){valid.y.variable.found<-FALSE}
+                                        
+                                }
+                                
+                                if (layer.name %in% c("errorbar")){
+                                        
+                                        ymin.name <- as.character(plot.object$layers[[layer.i]]$mapping$ymin)
+                                        
+                                        ymax.name <- as.character(plot.object$layers[[layer.i]]$mapping$ymax)
+                                        
+                                        if (!(length(y.name)==1)){valid.y.variable.found<-FALSE}
+                                        
+                                        if (!(length(y.name)==1)){valid.y.variable.found<-FALSE}
+                                        
+                                }
+                                
+                                
+                                
+                                if (valid.x.variable.found==TRUE){
+                                        
+                                        data.x.min <- min(plot.object$data[,x.name],na.rm=TRUE)
+                                        
+                                        data.x.max <- max(plot.object$data[,x.name],na.rm=TRUE)
+                                        
+                                }
+                                
+                                if (valid.x.variable.found==FALSE){cat("   Layer ",layer.i," (",layer.name,") has an equation for x so x is not scanned for outliers.\n",sep="")}
+                                
+                                
+                                
+                                if (valid.y.variable.found==TRUE){         
+                                        
+                                        if (layer.name %in% c("line","point")){
+                                                
+                                                y.name <- as.character(plot.object$layers[[layer.i]]$mapping$y)
+                                                
+                                                data.y.min <- min(plot.object$data[,y.name],na.rm=TRUE)
+                                                
+                                                data.y.max <- max(plot.object$data[,y.name],na.rm=TRUE)
+                                                
+                                        }
+                                        
+                                        if (layer.name %in% c("errorbar")){
+                                                
+                                                ymin.name <- as.character(plot.object$layers[[layer.i]]$mapping$ymin)
+                                                
+                                                ymax.name <- as.character(plot.object$layers[[layer.i]]$mapping$ymax)
+                                                
+                                                data.y.min <- min(plot.object$data[,ymin.name],na.rm=TRUE)
+                                                
+                                                data.y.max <- max(plot.object$data[,ymax.name],na.rm=TRUE)
+                                                
+                                        }
+                                        
+                                }
+                                
+                                if (valid.y.variable.found==FALSE){cat("   Layer ",layer.i," (",layer.name,") has an equation for y so y is not scanned for outliers.\n",sep="")}
+                                
+                                
+                                
+                                if (valid.x.variable.found==TRUE){
+                                        
+                                        scale.problem.found <- FALSE
+                                        
+                                        if ( data.x.min < scale.x.min ){cat("   figuRes Warning: x point below x scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                                                        
+                                                                        scale.problem.found<-TRUE
+                                                                        
+                                        }
+                                        
+                                        if ( data.x.max > scale.x.max ){cat("   figuRes Warning: x point above x scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                                                        
+                                                                        scale.problem.found<-TRUE
+                                                                        
+                                        }
+                                        
+                                        if (scale.problem.found==FALSE){cat("   No points found beyond x scale limits in layer ",layer.i," (",layer.name,").\n",sep="")}
+                                        
+                                }
+                                
+                                
+                                
+                                if (valid.y.variable.found==TRUE){
+                                        
+                                        scale.problem.found <- FALSE
+                                        
+                                        if ( data.x.min < scale.x.min ){cat("   figuRes Warning: x point below x scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                                                        
+                                                                        scale.problem.found<-TRUE
+                                                                        
+                                        }
+                                        
+                                        if ( data.x.max > scale.x.max ){cat("   figuRes Warning: x point above x scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                                                        
+                                                                        scale.problem.found<-TRUE
+                                                                        
+                                        }
+                                        
+                                        if ( data.y.min < scale.y.min ){cat("   figuRes Warning: y point below y scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                                                        
+                                                                        scale.problem.found<-TRUE
+                                                                        
+                                        }
+                                        
+                                        if ( data.y.max > scale.y.max ){cat("   figuRes Warning: y point above y scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                                                        
+                                                                        scale.problem.found<-TRUE
+                                                                        
+                                        }
+                                        
+                                        if (scale.problem.found==FALSE){cat("   No points found beyond y scale limits in layer ",layer.i," (",layer.name,").\n",sep="")}
+                                        
+                                }
+                                
+                                
+                                
+                        }  # end if geom is valid statement
+                        
+                        
+                        
+                        if (geom.found==FALSE){cat("   Layer ",layer.i," (",layer.name,") y axis is not from a geom type that is scanned for outliers.\n",sep="")}
+                        
+                        
+                        
+                } # end for layer.i loop   
+                
+        }   
+        
+        else {cat("   figuRes Error: The object attempted to check was not a ggplot object.\n")}
+        
+        
+        
+        cat(paste("Checking ggplot object for out of range points has completed.\n\n"))
+        
+        
+        
+}
 # sync.ylab.widths -------
 #' @title sync.ylab.widths
 #' @description Aligns the widths of ggplot objects to ensure common plot regions. The maximum length required for y-axis labels among the list is determined and applied to the other plots. This assists in syncing the widths of ggplot objects for the purpose of align figures on a page.

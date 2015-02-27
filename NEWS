@@ -1,21 +1,15 @@
-# figures2 1.01
--------------
-* revised bar.plot and added example
-* Lean verions of default.settings - need to see if this impacts
-* added vignettes
-* reorganized and trimmed back number of functions
-
 # figures2 1.00
 -------------
-* Reboot of figuRes 
-* github integration
+* A complete reboot of figuRes
+* Vignettes added
+* Built with Checks to satisfy submission to CRAN
 
-# Figures 1.55
+# figuRes 1.55
 ----------------
 * Begun work on trimmed version of default setting
 * Added logical to annotate.page for time stamp
 
-# figures 1.54
+# figuRes 1.54
 -------------
 * Added lasso.plot - one needs to separately run model using glmnet::glmnet
 * Removed RcolorBrewer from DESCRIPTION depends statement since scales imports it - test.

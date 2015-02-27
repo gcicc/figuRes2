@@ -276,12 +276,12 @@ ymax <- max(working.df$y)
 #### Scatterplot
 The following build: 
 
-* associates color with group and shape
-* alters the size and tranparency of the symbols
+* associates color and shape with group
+* alters the size and tranparency of the points
 * adds OLS lines with confidence bands
 * alters labels
 * changes symbols and colors
-* manipulates teh limits and tick mark locations of the axes
+* manipulates the limits and tick mark locations of the axes
 * the expand argument removes padding (remove this argument and contrast result)
 * repositions the legend
 

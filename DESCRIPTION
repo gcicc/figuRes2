@@ -2,7 +2,7 @@ Package: figures2
 Type: Package
 Title: A package to support a variety of figure production tasks
 Version: 1.00
-Date: 2015-01-26
+Date: 2015-02-09
 Author: Greg Cicconetti, David Wade
 URL: https://github.com/gcicc/figures2
 Maintainer: Greg Cicconetti <gcicconetti@gmail.com>
