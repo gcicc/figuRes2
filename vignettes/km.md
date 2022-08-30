@@ -8,7 +8,7 @@ editor_options:
 ---
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{The km.plot and sync.ylab.widths functions}
-
+%\VignetteDepends{tidyverse, figuRes2}
 
 # Example 1: Juxtaposing two Kaplan-Meier graphics and their At Risk tables
 
@@ -17,86 +17,15 @@ Intialize a session:
 
 ```r
 remove(list=ls())
-require(figures2)
-```
-
-```
-## Loading required package: figures2
-```
-
-```
-## 
-## Attaching package: 'figures2'
-```
-
-```
-## The following objects are masked from 'package:figuRes2':
-## 
-##     annotate.page, bar.plot, box.plot, build.page, cdf.plot,
-##     default.settings, dot.plot, facetAdjust, forest.plot, gcurve,
-##     get.top.xaxis, graphic.params, km.plot, nsubj.plot,
-##     refresh.outputplan, run.specific, start.session.log,
-##     stop.session.log, sync.ylab.widths, table.plot,
-##     theme_bw2_default_margins, theme_bw2_nomargins,
-##     theme_grey2_default_margins, theme_grey2_nomargins,
-##     theme_table_nomargins
-```
-
-```r
+require(figuRes2)
 require(survival)
-```
-
-```
-## Loading required package: survival
-```
-
-```r
 require(ggplot2)
 require(plyr)
-```
-
-```
-## Loading required package: plyr
-```
-
-```
-## ------------------------------------------------------------------------------
-```
-
-```
-## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)
-```
-
-```
-## ------------------------------------------------------------------------------
-```
-
-```
-## 
-## Attaching package: 'plyr'
-```
-
-```
-## The following objects are masked from 'package:dplyr':
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-```
-
-```
-## The following object is masked from 'package:purrr':
-## 
-##     compact
-```
-
-```r
 require(scales)
 default.settings()
 ```
 
-A data set included in the figures2 package is loaded. Note that this data contains one row per subject and has a censor column and a centime column.
+A data set included in the figuRes2 package is loaded. Note that this data contains one row per subject and has a censor column and a centime column.
 
 
 ```r

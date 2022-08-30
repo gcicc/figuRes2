@@ -8,9 +8,9 @@ editor_options:
 ---
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{The forest.plot and table.plot functions}
+%\VignetteDepends{tidyverse, figuRes2}
 
-
-# The figures2::forest.plot and figures2::table.plot functions
+# The figuRes2::forest.plot and figuRes2::table.plot functions
 
 The forest.plot, dot.plot and table.plot functions share some similarities. These are simple figures to describe, but labeling, idiosyncrasies in data structure, and aesthetic considerations complicate their construction. To get these figures to look appealing, one must have a good understanding of the incoming data structure and iterate towards a final product. These can be very time consuming in terms of design and execution.
 
@@ -19,32 +19,7 @@ This first example will demonstrate that pre-processing and post-processing are 
 
 ```r
 remove(list=ls())
-require(figures2)
-```
-
-```
-## Loading required package: figures2
-```
-
-```
-## 
-## Attaching package: 'figures2'
-```
-
-```
-## The following objects are masked from 'package:figuRes2':
-## 
-##     annotate.page, bar.plot, box.plot, build.page, cdf.plot,
-##     default.settings, dot.plot, facetAdjust, forest.plot, gcurve,
-##     get.top.xaxis, graphic.params, km.plot, nsubj.plot,
-##     refresh.outputplan, run.specific, start.session.log,
-##     stop.session.log, sync.ylab.widths, table.plot,
-##     theme_bw2_default_margins, theme_bw2_nomargins,
-##     theme_grey2_default_margins, theme_grey2_nomargins,
-##     theme_table_nomargins
-```
-
-```r
+require(figuRes2)
 require(survival)
 ```
 

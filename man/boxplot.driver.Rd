@@ -10,4 +10,3 @@ This holds lines to a driver file created by the large-scale vignette
 \author{
 Greg Cicconetti
 }
-\keyword{drivers}

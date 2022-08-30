@@ -8,7 +8,7 @@ editor_options:
 ---
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Mass figure production workflow demo}
-
+%\VignetteDepends{tidyverse, figuRes2}
 
 # Prerequisistes
 

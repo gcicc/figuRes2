@@ -8,7 +8,7 @@ editor_options:
 ---
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Basics: The build.page and annotate.page functions}
-
+%\VignetteDepends{tidyverse, figuRes2}
 # Introduction to the figuRes2 package 
 
 This package takes the view that a figure is a collection of graphs/tables assembled on a page and optionally annotated with metadata (titles, headers and footers). The steps to figure building can then be broken into the following stes:

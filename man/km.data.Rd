@@ -10,5 +10,3 @@ This is a dataset structured for building figures using km.plot
 \author{
 Greg Cicconetti
 }
-\keyword{dataset,}
-\keyword{km.plot}

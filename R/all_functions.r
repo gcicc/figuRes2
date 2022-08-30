@@ -1753,7 +1753,7 @@ annotate.page <- function (
 #' @title check.ggplot.outliers
 #' @param plot.object the ggplot object to check
 #' @description Reports via cat statements when ggplot windows truncate data
-#' @details Used in conjunction with log files created with start.session.log
+#' @details Used in conjunction with log files created with start_session_log
 #' @author David Wade
 check.ggplot.outliers <- function(plot.object=NULL) {
         
@@ -2131,7 +2131,7 @@ refresh.outputplan <-
 #' @author David wade
 run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toWMF=F, toJPEG=F, toPNG=F, toBMP=F, toEPS=F, dpires=600, use.log=FALSE)  { 
   if (use.log==TRUE) {
-    start.session.log(paste0(str_split(string = "g_AErr2.r",pattern = "\\.", n=2)[[1]][1], ".PDF")) }
+    start_session_log(paste0(str_split(string = "g_AErr2.r",pattern = "\\.", n=2)[[1]][1], ".PDF")) }
     
     myError <- NULL    
     
@@ -2291,7 +2291,7 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       } 
     }
 
-if (use.log==TRUE) {   stop.session.log() }
+if (use.log==TRUE) {   stop_session_log() }
 }
 
 # all_in_one -------
@@ -2408,10 +2408,10 @@ facetAdjust <-
 
 # Log functions -------
 
-# start.session.log -------
-#' @title start.session.log
+# start_session_log -------
+#' @title start_session_log
 #' @description A function to start logging the session history for a graphic driver run 
-#' @details Note that the stop.session.log function is used to stop the logging and save the log file.
+#' @details Note that the stop_session_log function is used to stop the logging and save the log file.
 #' @param outputfile passed to name the session history log file
 #' @param x used internally
 #' @param ... additional params
@@ -2421,7 +2421,7 @@ facetAdjust <-
 #' No objects are returned by this function.
 #' }
 #' @author David Wade
-start.session.log<-function(x, outputfile = "example.PDF", pos=1, envir=as.environment(pos), ...)
+start_session_log<-function(x, outputfile = "example.PDF", pos=1, envir=as.environment(pos), ...)
 {
   logd <- log.start.time <- NULL
   # Strip the extension off of outputfile and replace with .rhis
@@ -2457,15 +2457,15 @@ start.session.log<-function(x, outputfile = "example.PDF", pos=1, envir=as.envir
   cat(" \n") 
 }
 
-#' @title stop.session.log
+#' @title stop_session_log
 #' @description A function to stop logging the session history for a graphic driver run and save the session history file
-#' @details Note that the start.session.log function is used to start the logging, and it must be called first.
+#' @details Note that the start_session_log function is used to start the logging, and it must be called first.
 #' @section Value: 
 #' \describe{
 #' No objects are returned by this function.
 #' }
 #' @author David Wade
-stop.session.log<-function()
+stop_session_log<-function()
 {
   log.start.time <- NULL
   cat(" \n")
@@ -2487,7 +2487,6 @@ stop.session.log<-function()
 #' @name driver1 
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2495,7 +2494,6 @@ NULL
 #' @name driver2
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2503,7 +2501,6 @@ NULL
 #' @name driver3
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2511,7 +2508,6 @@ NULL
 #' @name driver4
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2519,7 +2515,6 @@ NULL
 #' @name driver5
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2527,7 +2522,6 @@ NULL
 #' @name driver6
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2535,7 +2529,6 @@ NULL
 #' @name driver7
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2543,7 +2536,6 @@ NULL
 #' @name driver8
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2551,7 +2543,6 @@ NULL
 #' @name driver9
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2559,7 +2550,6 @@ NULL
 #' @name driver10
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 #' This holds lines to a driver file created by the large-scale vignette
@@ -2567,7 +2557,6 @@ NULL
 #' @name boxplot.driver
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords drivers
 NULL
 
 # DATA SET DOCUMENTATION -------
@@ -2577,7 +2566,6 @@ NULL
 #' @name benrisk2.data
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, forest.plot
 NULL
 
 #' This is a dataset structured for building figures using cdf.plot
@@ -2585,7 +2573,6 @@ NULL
 #' @name cdf.data
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, cdf.plot
 NULL
 
 #' This is a dataset structured for building figures using bar.plot, box.plot, and cdf.plot
@@ -2593,7 +2580,6 @@ NULL
 #' @name demog.data
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, bar.plot, box.plot, cdf.plot
 NULL
 
 #' This is a dataset structured for building figures using forest.plot
@@ -2601,7 +2587,6 @@ NULL
 #' @name forest.data
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, forest.plot
 NULL
 
 #' This is a dataset structured for building figures using km.plot
@@ -2609,7 +2594,6 @@ NULL
 #' @name km.data
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, km.plot
 NULL
 
 #' This is a dataset structured to facilitate mass figure production
@@ -2617,7 +2601,6 @@ NULL
 #' @name outputplan
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, run.specific, all_in_one
 NULL
 
 #' This is a dataset that would need some pre-processing ahead of using line.plot
@@ -2625,7 +2608,6 @@ NULL
 #' @name raw.lineplot.data
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, line.plot
 NULL
 
 #' This is a dataset that would need some pre-processing ahead of using line.plot
@@ -2633,7 +2615,6 @@ NULL
 #' @name summary.lineplot.data
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, line.plot
 NULL
 
 
@@ -2642,7 +2623,6 @@ NULL
 #' @name category_by_visit
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, category_by_visit
 NULL
 # PACKAGE DOCUMENTATION -------
 

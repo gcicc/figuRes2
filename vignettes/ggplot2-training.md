@@ -8,6 +8,7 @@ editor_options:
 ---
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Data Manipulation & ggplot2 Training Session}
+%\VignetteDepends{tidyverse, figuRes2}
 
 # Load packages
 
@@ -22,60 +23,29 @@ require(tidyverse)
 
 ```
 ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-## ✔ tibble  3.1.8     ✔ dplyr   1.0.9
-## ✔ tidyr   1.2.0     ✔ stringr 1.4.1
+## ✔ tibble  3.1.8     ✔ purrr   0.3.4
+## ✔ tidyr   1.2.0     ✔ dplyr   1.0.9
 ## ✔ readr   2.1.2     ✔ forcats 0.5.2
 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::arrange()    masks figuRes2::arrange()
-## ✖ readr::col_factor() masks figuRes2::col_factor()
-## ✖ dplyr::combine()    masks figuRes2::combine()
-## ✖ purrr::compact()    masks figuRes2::compact()
-## ✖ dplyr::count()      masks figuRes2::count()
-## ✖ purrr::discard()    masks figuRes2::discard()
-## ✖ dplyr::failwith()   masks figuRes2::failwith()
+## ✖ dplyr::arrange()    masks plyr::arrange(), figuRes2::arrange()
+## ✖ readr::col_factor() masks scales::col_factor(), figuRes2::col_factor()
+## ✖ dplyr::combine()    masks gridExtra::combine(), figuRes2::combine()
+## ✖ purrr::compact()    masks plyr::compact(), figuRes2::compact()
+## ✖ dplyr::count()      masks plyr::count(), figuRes2::count()
+## ✖ purrr::discard()    masks scales::discard(), figuRes2::discard()
+## ✖ dplyr::failwith()   masks plyr::failwith(), figuRes2::failwith()
 ## ✖ dplyr::filter()     masks stats::filter()
-## ✖ dplyr::id()         masks figuRes2::id()
+## ✖ dplyr::id()         masks plyr::id(), figuRes2::id()
 ## ✖ dplyr::lag()        masks stats::lag()
-## ✖ dplyr::mutate()     masks figuRes2::mutate()
-## ✖ dplyr::rename()     masks figuRes2::rename()
-## ✖ dplyr::summarise()  masks figuRes2::summarise()
-## ✖ dplyr::summarize()  masks figuRes2::summarize()
+## ✖ dplyr::mutate()     masks plyr::mutate(), figuRes2::mutate()
+## ✖ dplyr::rename()     masks plyr::rename(), figuRes2::rename()
+## ✖ dplyr::summarise()  masks plyr::summarise(), figuRes2::summarise()
+## ✖ dplyr::summarize()  masks plyr::summarize(), figuRes2::summarize()
 ```
 
 ```r
 require(gridExtra)
-```
-
-```
-## Loading required package: gridExtra
-## 
-## Attaching package: 'gridExtra'
-## 
-## The following object is masked from 'package:dplyr':
-## 
-##     combine
-```
-
-```r
 require(scales)
-```
-
-```
-## Loading required package: scales
-## 
-## Attaching package: 'scales'
-## 
-## The following object is masked from 'package:purrr':
-## 
-##     discard
-## 
-## The following object is masked from 'package:readr':
-## 
-##     col_factor
-```
-
-```r
 require(figuRes2)
 ```
 
@@ -1795,6 +1765,16 @@ This function is a hack of the graphics::curve function.  It suppresses graphic 
 head(figuRes2::gcurve(expr = dnorm(x), from=-6, to=6, n=101, category="Standard Normal"))
 ```
 
+```
+##       x            y        category
+## 1 -6.00 6.075883e-09 Standard Normal
+## 2 -5.88 1.239294e-08 Standard Normal
+## 3 -5.76 2.491643e-08 Standard Normal
+## 4 -5.64 4.937910e-08 Standard Normal
+## 5 -5.52 9.645989e-08 Standard Normal
+## 6 -5.40 1.857362e-07 Standard Normal
+```
+
 By using multiple calls to gcurve and using dplyr::bind_rows we can quickly create graphics with multiple functions.
 
 Note the use of color within ggplot2::aes.  
@@ -1808,6 +1788,8 @@ my.df <- rbind(
 
 ggplot(data=my.df, aes(x=x, y=y, color=category))+geom_line()
 ```
+
+![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26-1.png)
 
 Here's a punched-up version:
 
@@ -1843,6 +1825,8 @@ ggplot(data=my.df, aes(x=x, y=y, color=category))+
 )
 ```
 
+![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
+
 # Histograms
 
 Let's start from scratch:
@@ -1850,8 +1834,65 @@ Let's start from scratch:
 
 ```r
 head(demog.data)
+```
+
+```
+##       CENTREID SUBJID AGE SEX    TRTGRP         REGION HEIGHT WEIGHT DIABET
+## 5699     60016  17380  58   M Treatment   Asia/Pacific    165   65.0      1
+## 8622     67458  24040  62   M   Placebo Western Europe    181   88.0      0
+## 11716    58401  30384  63   M   Placebo Western Europe    175   77.0      0
+## 9633     57867  26373  63   F   Placebo Western Europe    159   81.4      0
+## 13562    59286  34327  70   M Treatment Western Europe    160   81.3      1
+## 4004     59512  13390  80   M Treatment   Asia/Pacific    151   62.0      0
+##       SYSBP DIABP      BMI      BMI.GRP GFR.GRP HDLC        REGION2
+## 5699    116    78 23.87511    <25 kg/m2    Mild 1.04   Asia/Pacific
+## 8622    132    79 26.86121 25-<30 kg/m2    Mild 1.14 Western Europe
+## 11716   140    81 25.14286 25-<30 kg/m2  Normal 1.83 Western Europe
+## 9633    165   101 32.19809   >=30 kg/m2    Mild 1.82 Western Europe
+## 13562   132    78 31.75781   >=30 kg/m2    Mild 1.30 Western Europe
+## 4004    144    83 27.19179 25-<30 kg/m2    Mild 1.38   Asia/Pacific
+##              REGION3
+## 5699    Asia/Pacific
+## 8622  Western Europe
+## 11716 Western Europe
+## 9633  Western Europe
+## 13562 Western Europe
+## 4004    Asia/Pacific
+```
+
+```r
 str(demog.data)
+```
+
+```
+## 'data.frame':	5000 obs. of  17 variables:
+##  $ CENTREID: int  60016 67458 58401 57867 59286 59512 61504 59325 57028 60016 ...
+##  $ SUBJID  : int  17380 24040 30384 26373 34327 13390 28260 18671 39222 17376 ...
+##  $ AGE     : int  58 62 63 63 70 80 48 66 75 69 ...
+##  $ SEX     : Factor w/ 2 levels "F","M": 2 2 2 1 2 2 2 1 1 2 ...
+##  $ TRTGRP  : Factor w/ 2 levels "Placebo","Treatment": 2 1 1 1 2 2 1 1 2 1 ...
+##  $ REGION  : Factor w/ 5 levels "Asia/Pacific",..: 1 5 5 5 5 1 2 1 3 1 ...
+##  $ HEIGHT  : int  165 181 175 159 160 151 156 152 170 160 ...
+##  $ WEIGHT  : num  65 88 77 81.4 81.3 62 75 57 79 62.7 ...
+##  $ DIABET  : int  1 0 0 0 1 0 0 0 0 0 ...
+##  $ SYSBP   : int  116 132 140 165 132 144 158 169 134 130 ...
+##  $ DIABP   : int  78 79 81 101 78 83 99 92 86 70 ...
+##  $ BMI     : num  23.9 26.9 25.1 32.2 31.8 ...
+##  $ BMI.GRP : Factor w/ 4 levels "<25 kg/m2",">=30 kg/m2",..: 1 3 3 2 2 3 2 1 3 1 ...
+##  $ GFR.GRP : Factor w/ 5 levels "Mild","Missing",..: 1 1 4 1 1 1 4 4 1 4 ...
+##  $ HDLC    : num  1.04 1.14 1.83 1.82 1.3 1.38 1.34 1.76 1.75 1.53 ...
+##  $ REGION2 : Factor w/ 5 levels "South America",..: 2 5 5 5 5 2 3 2 4 2 ...
+##  $ REGION3 : Factor w/ 5 levels "Western Europe",..: 4 1 1 1 1 4 3 4 2 4 ...
+```
+
+```r
 sort(names(demog.data))
+```
+
+```
+##  [1] "AGE"      "BMI"      "BMI.GRP"  "CENTREID" "DIABET"   "DIABP"   
+##  [7] "GFR.GRP"  "HDLC"     "HEIGHT"   "REGION"   "REGION2"  "REGION3" 
+## [13] "SEX"      "SUBJID"   "SYSBP"    "TRTGRP"   "WEIGHT"
 ```
 
 ## Basic historgram
@@ -1861,7 +1902,25 @@ Here's a histogram from heights.
 
 ```r
 ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram()
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29-1.png)
+
+```r
 summary(demog.data$HEIGHT)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA's 
+##   121.0   163.0   170.0   169.5   176.0   203.0      12
 ```
 
 ###  Investigating the warning message
@@ -1875,10 +1934,42 @@ Removed 27 rows containing non-finite values (stat_bin).
 ```r
 # note na.rm = T is needed
 max(demog.data$HEIGHT, na.rm=T) - min(demog.data$HEIGHT, na.rm=T)
+```
+
+```
+## [1] 82
+```
+
+```r
 median(demog.data$HEIGHT)
+```
+
+```
+## [1] NA
+```
+
+```r
 mean(demog.data$HEIGHT)
+```
+
+```
+## [1] NA
+```
+
+```r
 median(demog.data$HEIGHT, na.rm=T)
+```
+
+```
+## [1] 170
+```
+
+```r
 mean(demog.data$HEIGHT, na.rm=T)
+```
+
+```
+## [1] 169.4918
 ```
 
 ### binwidth options
@@ -1892,6 +1983,15 @@ ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 2.5)+ ggtitle
 ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 25)+ ggtitle("binwidth = 25"),
 ncol=2)
 ```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+```
+
+![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
 
 
 ## Understanding color and fill options **within the geom_historgram function**
@@ -1907,6 +2007,15 @@ ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 2.5, color="r
 ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 25, color="red", fill="blue")+ ggtitle("binwidth = 25"),
 ncol=2)
 ```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+```
+
+![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
 
 ## Understanding alpha option for controling fill transparency
 
@@ -1924,6 +2033,17 @@ grid.arrange(
 )
 ```
 
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+## Removed 12 rows containing non-finite values (stat_bin).
+```
+
+![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
+
 ## manipulating tick marks with breaks and plot window with limits
 
 
@@ -1933,6 +2053,16 @@ grid.arrange(
   scale_y_continuous(breaks=seq(0, 3000, 250)) +
   labs(subtitle = "alpha = 0.6", caption="Scaling of axes accomplished with:\nscale_x_continuous(breaks=seq(0,500,10), limits=c(100,225))\nscale_y_continuous(breaks=seq(0, 3000, 250))")
 ```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## Warning: Removed 2 rows containing missing values (geom_bar).
+```
+
+![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-1.png)
 
 ## Histograms with two categories of subjects
 
@@ -1944,14 +2074,54 @@ In the first graphic, Females occupy the first factor level and we see this resu
 demog.data$SEX <- factor(demog.data$SEX, c("F", "M")) # Alphabetical ordering
 demog.data$SEX2 <- factor(demog.data$SEX, c("M", "F")) # Preferred order
 table(demog.data$SEX)
-table(demog.data$SEX2)
+```
 
+```
+## 
+##    F    M 
+##  968 4032
+```
+
+```r
+table(demog.data$SEX2)
+```
+
+```
+## 
+##    M    F 
+## 4032  968
+```
+
+```r
 grid.arrange(
 ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
   geom_histogram(bin=2.5),
 ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX2)) + 
   geom_histogram(bin=2.5))
 ```
+
+```
+## Warning: Ignoring unknown parameters: bin
+## Ignoring unknown parameters: bin
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35-1.png)
 
 I.e., transparency is not an issue here.
 
@@ -1962,6 +2132,29 @@ ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
 ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX2)) + 
   geom_histogram(bin=2.5, alpha=.2))
 ```
+
+```
+## Warning: Ignoring unknown parameters: bin
+## Ignoring unknown parameters: bin
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
 
 ## Histograms with facet_wrap
 
@@ -1978,7 +2171,50 @@ ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
   geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_y") + ggtitle('scales="free_y"'),
 ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
   geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free") + ggtitle('scales="free"'), ncol=2)
+```
 
+```
+## Warning: Ignoring unknown parameters: bin
+## Ignoring unknown parameters: bin
+## Ignoring unknown parameters: bin
+## Ignoring unknown parameters: bin
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-1.png)
+
+```r
 grid.arrange(
 ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
   geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, ncol=1) + ggtitle("facet_wrap default, ncol=1"),
@@ -1990,9 +2226,52 @@ ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
   geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free", ncol=1) + ggtitle('scales="free", ncol=1'), ncol=2)
 ```
 
+```
+## Warning: Ignoring unknown parameters: bin
+## Ignoring unknown parameters: bin
+## Ignoring unknown parameters: bin
+## Ignoring unknown parameters: bin
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+```
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_bin).
+```
+
+![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-2.png)
+
 ## HOMEWORK!!! Go look online for solution - how do you create a relative frequency histogram??
 
 # Boxplot
+
+*GREG: Bring in HSCRP data*
 
 Boxplot/Historgram are right skewed suggesting a log transformation
 
@@ -2007,9 +2286,24 @@ This can be accomplished in line by passing log(HSCRP) to y in the aesthetic map
 
 
 ```r
-ggplot(data=demog.data, aes(x=factor("All Subjects"), y=log(HSCRP)))+geom_boxplot()
-ggplot(data=demog.data, aes(x=SEX, y=log(HSCRP)))+geom_boxplot()
+ggplot(data=demog.data, aes(x=factor("All Subjects"), y=exp(HDLC)))+geom_boxplot()
 ```
+
+```
+## Warning: Removed 7 rows containing non-finite values (stat_boxplot).
+```
+
+![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-1.png)
+
+```r
+ggplot(data=demog.data, aes(x=SEX, y=exp(HDLC)))+geom_boxplot()
+```
+
+```
+## Warning: Removed 7 rows containing non-finite values (stat_boxplot).
+```
+
+![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39-2.png)
 
 
 ## Goal: get a side-by-side boxplot of HSCRP on original and log scales
@@ -2099,16 +2393,75 @@ ggplot(data=demog.data2.melt, aes(x=TRTGRP, y=value, fill=TRTGRP)) +
 
 ```r
 ggplot(data=demog.data, aes(x=factor(""), y=HEIGHT)) + geom_violin() 
-ggplot(data=demog.data, aes(x=factor(""), y=HEIGHT)) + geom_violin() + labs(x="All Patients", y="Height")
-ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=VSBMIG)) + geom_violin()
-
-ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(~REGION)
-ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(~REGION, nrow=1)
-ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(VSBMIG~REGION)
-ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~VSBMIG)
 ```
 
-## Problems: need to reorder levels of VSBMIG
+```
+## Warning: Removed 12 rows containing non-finite values (stat_ydensity).
+```
+
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-1.png)
+
+```r
+ggplot(data=demog.data, aes(x=factor(""), y=HEIGHT)) + geom_violin() + labs(x="All Patients", y="Height")
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_ydensity).
+```
+
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-2.png)
+
+```r
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=BMI.GRP)) + geom_violin()
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_ydensity).
+```
+
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-3.png)
+
+```r
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(~REGION)
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_ydensity).
+```
+
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-4.png)
+
+```r
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(~REGION, nrow=1)
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_ydensity).
+```
+
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-5.png)
+
+```r
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(BMI.GRP~REGION)
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_ydensity).
+```
+
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-6.png)
+
+```r
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~BMI.GRP)
+```
+
+```
+## Warning: Removed 12 rows containing non-finite values (stat_ydensity).
+```
+
+![plot of chunk unnamed-chunk-43](figure/unnamed-chunk-43-7.png)
+
+## Problems: need to reorder levels of BMI.GRP
 
 * Need to suppress the missing group
 * Need to move the legend to make better use of real estate
@@ -2116,15 +2469,15 @@ ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_
 
 ```r
 # First get rid of missing category
-demog.data2 <- subset(demog.data, VSBMIG != "Missing")
-levels(demog.data$VSBMIG)
+demog.data2 <- subset(demog.data, BMI.GRP != "Missing")
+levels(demog.data$BMI.GRP)
 # Problem 1 - levels are out of order
-demog.data2$VSBMIG <- factor(demog.data2$VSBMIG, c("<25 kg/m2", "25-<30 kg/m2", ">=30 kg/m2" , "Missing"))
-levels(demog.data2$VSBMIG)
+demog.data2$BMI.GRP <- factor(demog.data2$BMI.GRP, c("<25 kg/m2", "25-<30 kg/m2", ">=30 kg/m2" , "Missing"))
+levels(demog.data2$BMI.GRP)
 # Better
-ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~VSBMIG)
+ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~BMI.GRP)
 # Punching it up; Note use of escape character '\n' for new line.
-p <- ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~VSBMIG)+
+p <- ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~BMI.GRP)+
   theme(legend.position="none", strip.text=element_text(size=13)) + labs(x="Gender", y="Height", title="Violin plots of Height by Gender\nfor each BMI Group and Region")
 p
 ```
@@ -2139,7 +2492,7 @@ p
 temp1 <- expression(paste(phantom()<=25," kg/",m^2))
 temp2 <- expression(paste("25-<30 kg/", m^2))
 temp3 <- expression(paste(phantom() >= 30, " kg/", m^2))
-demog.data2$VSBMIG2 <- factor(demog.data2$VSBMIG, levels=c("<25 kg/m2", "25-<30 kg/m2", ">=30 kg/m2"),labels=c(temp1, temp2, temp3))
+demog.data2$BMI.GRP2 <- factor(demog.data2$BMI.GRP, levels=c("<25 kg/m2", "25-<30 kg/m2", ">=30 kg/m2"),labels=c(temp1, temp2, temp3))
 ```
 
 # Unfortunately this step is required since 'label_parsed' is being used in the facet_grid command below
@@ -2160,7 +2513,7 @@ demog.data2$REGION2 <- factor(demog.data2$REGION, levels =levels(demog.data2$REG
 
 d <- ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + 
   geom_violin() + 
-  facet_grid(REGION~VSBMIG2,labeller="label_parsed")+
+  facet_grid(REGION2~BMI.GRP2,labeller="label_parsed")+
   labs(x="Gender", y="Height", title=expression(paste("Gender vs. Height by Region and BMI Group" )))+
   theme(legend.position="none", strip.text=element_text(size=13)) + 
   labs(x="Gender", y="Height", title="Violin plots of Height by Gender\nfor each BMI Group and Region")
@@ -2174,7 +2527,7 @@ d
 ```r
 ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + 
   geom_boxplot() + 
-  facet_grid(REGION2~VSBMIG2,labeller="label_parsed")+
+  facet_grid(REGION2~BMI.GRP2,labeller="label_parsed")+
   labs(x="Gender", y="Height", title=expression(paste("Gender vs. Height by Region and BMI Group" )))+
   theme(legend.position="none", strip.text=element_text(size=13)) + labs(x="Gender", y="Height", title="Violin plots of Height by Gender\nfor each BMI Group and Region")
 ```
@@ -2189,7 +2542,7 @@ ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)
 ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)+facet_wrap(~REGION)
 ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)+facet_wrap(~REGION, nrow=1) + theme(legend.position="bottom")
 # Making use of the work we did earlier for superscripts
-ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)+facet_grid(VSBMIG2~REGION2, label=label_parsed) + theme(legend.position="bottom")
+ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)+facet_grid(BMI.GRP2~REGION2, label=label_parsed) + theme(legend.position="bottom")
 ```
 
 
@@ -2234,23 +2587,22 @@ ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX)) + geo
 ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX)) + geom_point(size=3)
 
 # We can map size to a factor
-ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(VSBMIGCD))) + geom_point()
+ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(BMI.GRP))) + geom_point()
 ```
 
 # We can manipulate the how size is mapped
 
 
 ```r
-ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(VSBMIGCD))) + geom_point()+
-  scale_size_manual(breaks=c(1,2,3,9), values=c(2,3, 4,5))
+ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=(factor(BMI.GRP)))) + geom_point()+  scale_size_manual(breaks=levels(demog.data2$BMI.GRP), values=c(1,2,3,10))
 
 #We can map size to a continuous endpoint
-ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=VSBMI)) + geom_point()
+ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=BMI)) + geom_point()
 
 # Facetting works
-ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(VSBMIGCD))) + geom_point()+
-  scale_size_manual(breaks=c(1,2,3, 9), values=c(2,3, 4, 5)) + 
-  facet_grid(SEX~VSBMIG)+
+ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(BMI.GRP))) + geom_point()+
+  scale_size_manual(breaks=levels(demog.data2$BMI.GRP), values=c(1,2,3,10)) + 
+  facet_grid(SEX~BMI.GRP)+
   labs(x="Height", y="Weight", color="Region", size="BMI Group", shape="Gender")+
   theme(legend.position="bottom")+
   guides(shape="none", size="none")+
@@ -2274,7 +2626,7 @@ ggplot(data=demog.data, aes(x=HEIGHT, y=WEIGHT, color=SEX,linetype=SEX)) + geom_
 # Finding Outliers
 
 ```r
-help(mahalanobis)
+# help(mahalanobis)
 # Assign the mahalanobis distance to the dataframe
 # MD is chi-sq when data is MV normal distributed.
 demog.data.sub <- subset(demog.data, select=c("HEIGHT", "WEIGHT"))
@@ -2302,7 +2654,16 @@ ggplot(data=demog.data, aes(x=HEIGHT, y=WEIGHT, color=MD.HW, size=MD.HW, shape=S
   facet_wrap(~SEX)
 ```
 
-# Line plot 000000000000000000000000000000000000000000
+
+# Add a section dedicated to theme manipulation
+
+
+# Add a section on Color palattes
+
+
+# Below here needs to be scrapped
+
+
 
 
 ```r

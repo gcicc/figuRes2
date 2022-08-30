@@ -13,7 +13,7 @@ Encoding: UTF-8
 LazyLoad: no
 Depends: R (>= 3.5.0)
 Imports: survival, ggplot2, scales, stringr, plyr, grid, gridExtra, gtable, reshape2, grDevices, utils
-Suggests: RColorBrewer, knitr, rmarkdown
+Suggests: RColorBrewer, knitr, rmarkdown, tidyverse
 ByteCompile: TRUE
 VignetteBuilder: knitr
 RoxygenNote: 7.2.1

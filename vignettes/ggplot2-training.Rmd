@@ -8,6 +8,7 @@ editor_options:
 ---
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{Data Manipulation & ggplot2 Training Session}
+%\VignetteDepends{tidyverse, figuRes2}
 
 # Load packages
 

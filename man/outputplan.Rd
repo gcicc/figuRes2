@@ -10,6 +10,3 @@ This is a dataset structured to facilitate mass figure production
 \author{
 Greg Cicconetti
 }
-\keyword{all_in_one}
-\keyword{dataset,}
-\keyword{run.specific,}

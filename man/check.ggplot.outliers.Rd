@@ -13,7 +13,7 @@ check.ggplot.outliers(plot.object = NULL)
 Reports via cat statements when ggplot windows truncate data
 }
 \details{
-Used in conjunction with log files created with start.session.log
+Used in conjunction with log files created with start_session_log
 }
 \author{
 David Wade

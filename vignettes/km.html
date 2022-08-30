@@ -202,79 +202,23 @@ hr {
 
 <body>
 <p>%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{The km.plot and sync.ylab.widths functions}</p>
+%\VignetteIndexEntry{The km.plot and sync.ylab.widths functions}
+%\VignetteDepends{tidyverse, figuRes2}</p>
 
 <h1>Example 1: Juxtaposing two Kaplan-Meier graphics and their At Risk tables</h1>
 
 <p>Intialize a session:</p>
 
 <pre><code class="r">remove(list=ls())
-require(figures2)
-</code></pre>
-
-<pre><code>## Loading required package: figures2
-</code></pre>
-
-<pre><code>## 
-## Attaching package: &#39;figures2&#39;
-</code></pre>
-
-<pre><code>## The following objects are masked from &#39;package:figuRes2&#39;:
-## 
-##     annotate.page, bar.plot, box.plot, build.page, cdf.plot,
-##     default.settings, dot.plot, facetAdjust, forest.plot, gcurve,
-##     get.top.xaxis, graphic.params, km.plot, nsubj.plot,
-##     refresh.outputplan, run.specific, start.session.log,
-##     stop.session.log, sync.ylab.widths, table.plot,
-##     theme_bw2_default_margins, theme_bw2_nomargins,
-##     theme_grey2_default_margins, theme_grey2_nomargins,
-##     theme_table_nomargins
-</code></pre>
-
-<pre><code class="r">require(survival)
-</code></pre>
-
-<pre><code>## Loading required package: survival
-</code></pre>
-
-<pre><code class="r">require(ggplot2)
+require(figuRes2)
+require(survival)
+require(ggplot2)
 require(plyr)
-</code></pre>
-
-<pre><code>## Loading required package: plyr
-</code></pre>
-
-<pre><code>## ------------------------------------------------------------------------------
-</code></pre>
-
-<pre><code>## You have loaded plyr after dplyr - this is likely to cause problems.
-## If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
-## library(plyr); library(dplyr)
-</code></pre>
-
-<pre><code>## ------------------------------------------------------------------------------
-</code></pre>
-
-<pre><code>## 
-## Attaching package: &#39;plyr&#39;
-</code></pre>
-
-<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
-## 
-##     arrange, count, desc, failwith, id, mutate, rename, summarise,
-##     summarize
-</code></pre>
-
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     compact
-</code></pre>
-
-<pre><code class="r">require(scales)
+require(scales)
 default.settings()
 </code></pre>
 
-<p>A data set included in the figures2 package is loaded. Note that this data contains one row per subject and has a censor column and a centime column.</p>
+<p>A data set included in the figuRes2 package is loaded. Note that this data contains one row per subject and has a censor column and a centime column.</p>
 
 <pre><code class="r">data(km.data)
 working.df &lt;- km.data

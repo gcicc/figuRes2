@@ -145,142 +145,144 @@ str(temp)
 ## ----eval=F-------------------------------------------------------------------
 #  head(data.frame(temp))
 
-## ----eval=F-------------------------------------------------------------------
-#  head(figuRes2::gcurve(expr = dnorm(x), from=-6, to=6, n=101, category="Standard Normal"))
+## -----------------------------------------------------------------------------
+head(figuRes2::gcurve(expr = dnorm(x), from=-6, to=6, n=101, category="Standard Normal"))
 
-## ----eval=F-------------------------------------------------------------------
-#  my.df <- rbind(
-#    gcurve(expr = dnorm(x), from=-6, to=6, n=101, category="N(0, 1)"),
-#    gcurve(expr = dnorm(x, -1, 1), from=-6, to=6, n=101, category="N(-1, 1)"),
-#    gcurve(expr = dnorm(x, 1, 1), from=-6, to=6, n=101, category="N(1, 1)"))
-#  
-#  ggplot(data=my.df, aes(x=x, y=y, color=category))+geom_line()
+## -----------------------------------------------------------------------------
+my.df <- rbind(
+  gcurve(expr = dnorm(x), from=-6, to=6, n=101, category="N(0, 1)"),
+  gcurve(expr = dnorm(x, -1, 1), from=-6, to=6, n=101, category="N(-1, 1)"),
+  gcurve(expr = dnorm(x, 1, 1), from=-6, to=6, n=101, category="N(1, 1)"))
 
-## ----eval=F-------------------------------------------------------------------
-#  grid.arrange(
-#  ggplot(data=my.df, aes(x=x, y=y, color=category))+
-#    geom_line(size=.75)+
-#    labs(x="x", y="",
-#         title="Normal Density Functions",
-#         color="Density")+
-#    theme(legend.position="bottom"),
-#  
-#  ggplot(data=my.df, aes(x=x, y=y, color=category))+
-#    geom_line(size=.75)+
-#    labs(x="x", y=NULL,
-#         title="Normal Density Functions",
-#         color="Density")+
-#    theme(legend.position="bottom"),
-#  ggplot(data=my.df, aes(x=x, y=y, color=category))+
-#    geom_line(size=.75)+
-#    labs(x="x", y=NULL,
-#         title="Normal Density Functions",
-#         color="Density")+
-#    theme(legend.position="bottom")+
-#    scale_y_continuous(breaks=NULL)
-#  )
+ggplot(data=my.df, aes(x=x, y=y, color=category))+geom_line()
 
-## ----eval=F-------------------------------------------------------------------
-#  
-#  head(demog.data)
-#  str(demog.data)
-#  sort(names(demog.data))
+## -----------------------------------------------------------------------------
+grid.arrange(
+ggplot(data=my.df, aes(x=x, y=y, color=category))+
+  geom_line(size=.75)+
+  labs(x="x", y="", 
+       title="Normal Density Functions", 
+       color="Density")+
+  theme(legend.position="bottom"),
 
-## ----eval=F-------------------------------------------------------------------
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram()
-#  summary(demog.data$HEIGHT)
+ggplot(data=my.df, aes(x=x, y=y, color=category))+
+  geom_line(size=.75)+
+  labs(x="x", y=NULL, 
+       title="Normal Density Functions", 
+       color="Density")+
+  theme(legend.position="bottom"),
+ggplot(data=my.df, aes(x=x, y=y, color=category))+
+  geom_line(size=.75)+
+  labs(x="x", y=NULL, 
+       title="Normal Density Functions", 
+       color="Density")+
+  theme(legend.position="bottom")+
+  scale_y_continuous(breaks=NULL)
+)
 
-## ----eval=F-------------------------------------------------------------------
-#  # note na.rm = T is needed
-#  max(demog.data$HEIGHT, na.rm=T) - min(demog.data$HEIGHT, na.rm=T)
-#  median(demog.data$HEIGHT)
-#  mean(demog.data$HEIGHT)
-#  median(demog.data$HEIGHT, na.rm=T)
-#  mean(demog.data$HEIGHT, na.rm=T)
+## -----------------------------------------------------------------------------
 
-## ----eval=F-------------------------------------------------------------------
-#  grid.arrange(
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = .5) + ggtitle("binwidth = .5"),
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 1)+ ggtitle("binwidth = 1"),
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 2.5)+ ggtitle("binwidth = 2.5"),
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 25)+ ggtitle("binwidth = 25"),
-#  ncol=2)
+head(demog.data)
+str(demog.data)
+sort(names(demog.data))
 
-## ----eval=F-------------------------------------------------------------------
-#  grid.arrange(
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = .5, color="red", fill="blue") + ggtitle("binwidth = .5"),
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 1, color="red", fill="blue")+ ggtitle("binwidth = 1"),
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 2.5, color="red", fill="blue")+ ggtitle("binwidth = 2.5"),
-#  ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 25, color="red", fill="blue")+ ggtitle("binwidth = 25"),
-#  ncol=2)
+## -----------------------------------------------------------------------------
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram()
+summary(demog.data$HEIGHT)
 
-## ----eval=F-------------------------------------------------------------------
-#  q <- ggplot(data=demog.data, aes(x=HEIGHT)) +  ggtitle("binwidth = 2.5")
-#  
-#  grid.arrange(
-#    q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=0) + labs(subtitle = "alpha = 0"),
-#    q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.2) + labs(subtitle = "alpha = 0.2"),
-#    q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.4) + labs(subtitle = "alpha = 0.4"),
-#    q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.6) + labs(subtitle = "alpha = 0.6"),
-#    q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.8) + labs(subtitle = "alpha = 0.8"),
-#    q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=1) + labs(subtitle = "alpha = 1.0")
-#  )
+## ----eval=T-------------------------------------------------------------------
+# note na.rm = T is needed
+max(demog.data$HEIGHT, na.rm=T) - min(demog.data$HEIGHT, na.rm=T)
+median(demog.data$HEIGHT)
+mean(demog.data$HEIGHT)
+median(demog.data$HEIGHT, na.rm=T)
+mean(demog.data$HEIGHT, na.rm=T)
 
-## ----eval=F-------------------------------------------------------------------
-#   q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.6) +
-#    scale_x_continuous(breaks=seq(0,500,10), limits=c(100,225)) +
-#    scale_y_continuous(breaks=seq(0, 3000, 250)) +
-#    labs(subtitle = "alpha = 0.6", caption="Scaling of axes accomplished with:\nscale_x_continuous(breaks=seq(0,500,10), limits=c(100,225))\nscale_y_continuous(breaks=seq(0, 3000, 250))")
+## ----eval=T-------------------------------------------------------------------
+grid.arrange(
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = .5) + ggtitle("binwidth = .5"),
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 1)+ ggtitle("binwidth = 1"),
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 2.5)+ ggtitle("binwidth = 2.5"),
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 25)+ ggtitle("binwidth = 25"),
+ncol=2)
 
-## ----eval=F-------------------------------------------------------------------
-#  demog.data$SEX <- factor(demog.data$SEX, c("F", "M")) # Alphabetical ordering
-#  demog.data$SEX2 <- factor(demog.data$SEX, c("M", "F")) # Preferred order
-#  table(demog.data$SEX)
-#  table(demog.data$SEX2)
-#  
-#  grid.arrange(
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5),
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX2)) +
-#    geom_histogram(bin=2.5))
+## ----eval=T-------------------------------------------------------------------
+grid.arrange(
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = .5, color="red", fill="blue") + ggtitle("binwidth = .5"),
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 1, color="red", fill="blue")+ ggtitle("binwidth = 1"),
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 2.5, color="red", fill="blue")+ ggtitle("binwidth = 2.5"),
+ggplot(data=demog.data, aes(x=HEIGHT)) + geom_histogram(binwidth = 25, color="red", fill="blue")+ ggtitle("binwidth = 25"),
+ncol=2)
 
-## ----eval=F-------------------------------------------------------------------
-#  grid.arrange(
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2),
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX2)) +
-#    geom_histogram(bin=2.5, alpha=.2))
-#  
+## ----eval=T-------------------------------------------------------------------
+q <- ggplot(data=demog.data, aes(x=HEIGHT)) +  ggtitle("binwidth = 2.5") 
 
-## ----eval=F-------------------------------------------------------------------
-#  grid.arrange(
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX) + ggtitle("facet_wrap default"),
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_x") + ggtitle('scales="free_x"'),
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_y") + ggtitle('scales="free_y"'),
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free") + ggtitle('scales="free"'), ncol=2)
-#  
-#  grid.arrange(
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, ncol=1) + ggtitle("facet_wrap default, ncol=1"),
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_x", ncol=1) + ggtitle('scales="free_x", ncol=1'),
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_y", ncol=1) + ggtitle('scales="free_y", ncol=1'),
-#  ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) +
-#    geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free", ncol=1) + ggtitle('scales="free", ncol=1'), ncol=2)
+grid.arrange(
+  q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=0) + labs(subtitle = "alpha = 0"),
+  q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.2) + labs(subtitle = "alpha = 0.2"),
+  q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.4) + labs(subtitle = "alpha = 0.4"),
+  q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.6) + labs(subtitle = "alpha = 0.6"),
+  q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.8) + labs(subtitle = "alpha = 0.8"),
+  q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=1) + labs(subtitle = "alpha = 1.0")
+)
+
+## ----eval=T-------------------------------------------------------------------
+ q + geom_histogram(binwidth = 2.5, color="red", fill="blue", alpha=.6) + 
+  scale_x_continuous(breaks=seq(0,500,10), limits=c(100,225)) + 
+  scale_y_continuous(breaks=seq(0, 3000, 250)) +
+  labs(subtitle = "alpha = 0.6", caption="Scaling of axes accomplished with:\nscale_x_continuous(breaks=seq(0,500,10), limits=c(100,225))\nscale_y_continuous(breaks=seq(0, 3000, 250))")
+
+## ----eval=T-------------------------------------------------------------------
+demog.data$SEX <- factor(demog.data$SEX, c("F", "M")) # Alphabetical ordering
+demog.data$SEX2 <- factor(demog.data$SEX, c("M", "F")) # Preferred order
+table(demog.data$SEX)
+table(demog.data$SEX2)
+
+grid.arrange(
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5),
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX2)) + 
+  geom_histogram(bin=2.5))
+
+## ----eval=T-------------------------------------------------------------------
+grid.arrange(
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2),
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX2)) + 
+  geom_histogram(bin=2.5, alpha=.2))
+
+
+## ----eval=T-------------------------------------------------------------------
+grid.arrange(
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX) + ggtitle("facet_wrap default"),
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_x") + ggtitle('scales="free_x"'),
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_y") + ggtitle('scales="free_y"'),
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free") + ggtitle('scales="free"'), ncol=2)
+
+grid.arrange(
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, ncol=1) + ggtitle("facet_wrap default, ncol=1"),
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_x", ncol=1) + ggtitle('scales="free_x", ncol=1'),
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free_y", ncol=1) + ggtitle('scales="free_y", ncol=1'),
+ggplot(data=demog.data, aes(x=HEIGHT, fill=SEX)) + 
+  geom_histogram(bin=2.5, alpha=.2) + facet_wrap(~SEX, scales="free", ncol=1) + ggtitle('scales="free", ncol=1'), ncol=2)
 
 ## ----eval=F-------------------------------------------------------------------
 #  summary(demog.data$HSCRP) # Note we have: Mean >> median
 #  ggplot(data=demog.data, aes(x=factor("All Subjects"), y=HSCRP))+geom_boxplot()
 #  ggplot(data=demog.data, aes(x=HSCRP))+geom_histogram()
 
-## ----eval=F-------------------------------------------------------------------
-#  ggplot(data=demog.data, aes(x=factor("All Subjects"), y=log(HSCRP)))+geom_boxplot()
-#  ggplot(data=demog.data, aes(x=SEX, y=log(HSCRP)))+geom_boxplot()
+## ----eval=T-------------------------------------------------------------------
+ggplot(data=demog.data, aes(x=factor("All Subjects"), y=exp(HDLC)))+geom_boxplot()
+ggplot(data=demog.data, aes(x=SEX, y=exp(HDLC)))+geom_boxplot()
+
+
 
 ## ----eval=F-------------------------------------------------------------------
 #  p1 <- ggplot(data=demog.data, aes(x=factor("All Subjects"), y=HSCRP))+geom_boxplot()
@@ -352,28 +354,28 @@ str(temp)
 #    facet_wrap(~variable, scales="free_y")+theme(legend.position="bottom", axis.text.x=element_text(angle=45, hjust=1,vjust=1) )+
 #    scale_y_continuous(breaks= c(seq(-5,5,1), seq(0,150,25)))
 
-## ----eval=F-------------------------------------------------------------------
-#  ggplot(data=demog.data, aes(x=factor(""), y=HEIGHT)) + geom_violin()
-#  ggplot(data=demog.data, aes(x=factor(""), y=HEIGHT)) + geom_violin() + labs(x="All Patients", y="Height")
-#  ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=VSBMIG)) + geom_violin()
-#  
-#  ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(~REGION)
-#  ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(~REGION, nrow=1)
-#  ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(VSBMIG~REGION)
-#  ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~VSBMIG)
-#  
+## ----eval=T-------------------------------------------------------------------
+ggplot(data=demog.data, aes(x=factor(""), y=HEIGHT)) + geom_violin() 
+ggplot(data=demog.data, aes(x=factor(""), y=HEIGHT)) + geom_violin() + labs(x="All Patients", y="Height")
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=BMI.GRP)) + geom_violin()
+
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(~REGION)
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(~REGION, nrow=1)
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_wrap(BMI.GRP~REGION)
+ggplot(data=demog.data, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~BMI.GRP)
+
 
 ## ----eval=F-------------------------------------------------------------------
 #  # First get rid of missing category
-#  demog.data2 <- subset(demog.data, VSBMIG != "Missing")
-#  levels(demog.data$VSBMIG)
+#  demog.data2 <- subset(demog.data, BMI.GRP != "Missing")
+#  levels(demog.data$BMI.GRP)
 #  # Problem 1 - levels are out of order
-#  demog.data2$VSBMIG <- factor(demog.data2$VSBMIG, c("<25 kg/m2", "25-<30 kg/m2", ">=30 kg/m2" , "Missing"))
-#  levels(demog.data2$VSBMIG)
+#  demog.data2$BMI.GRP <- factor(demog.data2$BMI.GRP, c("<25 kg/m2", "25-<30 kg/m2", ">=30 kg/m2" , "Missing"))
+#  levels(demog.data2$BMI.GRP)
 #  # Better
-#  ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~VSBMIG)
+#  ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~BMI.GRP)
 #  # Punching it up; Note use of escape character '\n' for new line.
-#  p <- ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~VSBMIG)+
+#  p <- ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) + geom_violin() + facet_grid(REGION~BMI.GRP)+
 #    theme(legend.position="none", strip.text=element_text(size=13)) + labs(x="Gender", y="Height", title="Violin plots of Height by Gender\nfor each BMI Group and Region")
 #  p
 
@@ -385,7 +387,7 @@ str(temp)
 #  temp1 <- expression(paste(phantom()<=25," kg/",m^2))
 #  temp2 <- expression(paste("25-<30 kg/", m^2))
 #  temp3 <- expression(paste(phantom() >= 30, " kg/", m^2))
-#  demog.data2$VSBMIG2 <- factor(demog.data2$VSBMIG, levels=c("<25 kg/m2", "25-<30 kg/m2", ">=30 kg/m2"),labels=c(temp1, temp2, temp3))
+#  demog.data2$BMI.GRP2 <- factor(demog.data2$BMI.GRP, levels=c("<25 kg/m2", "25-<30 kg/m2", ">=30 kg/m2"),labels=c(temp1, temp2, temp3))
 #  
 #  
 
@@ -401,7 +403,7 @@ str(temp)
 #  
 #  d <- ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) +
 #    geom_violin() +
-#    facet_grid(REGION~VSBMIG2,labeller="label_parsed")+
+#    facet_grid(REGION2~BMI.GRP2,labeller="label_parsed")+
 #    labs(x="Gender", y="Height", title=expression(paste("Gender vs. Height by Region and BMI Group" )))+
 #    theme(legend.position="none", strip.text=element_text(size=13)) +
 #    labs(x="Gender", y="Height", title="Violin plots of Height by Gender\nfor each BMI Group and Region")
@@ -411,7 +413,7 @@ str(temp)
 ## ----eval=F-------------------------------------------------------------------
 #  ggplot(data=demog.data2, aes(x=SEX, y=HEIGHT, fill=SEX)) +
 #    geom_boxplot() +
-#    facet_grid(REGION2~VSBMIG2,labeller="label_parsed")+
+#    facet_grid(REGION2~BMI.GRP2,labeller="label_parsed")+
 #    labs(x="Gender", y="Height", title=expression(paste("Gender vs. Height by Region and BMI Group" )))+
 #    theme(legend.position="none", strip.text=element_text(size=13)) + labs(x="Gender", y="Height", title="Violin plots of Height by Gender\nfor each BMI Group and Region")
 #  
@@ -424,10 +426,9 @@ str(temp)
 #  ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)+facet_wrap(~REGION)
 #  ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)+facet_wrap(~REGION, nrow=1) + theme(legend.position="bottom")
 #  # Making use of the work we did earlier for superscripts
-#  ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)+facet_grid(VSBMIG2~REGION2, label=label_parsed) + theme(legend.position="bottom")
+#  ggplot(data=demog.data2, aes(x=HEIGHT, fill=SEX))+geom_density(alpha=.3)+facet_grid(BMI.GRP2~REGION2, label=label_parsed) + theme(legend.position="bottom")
 
 ## ----eval=F-------------------------------------------------------------------
-#  
 #  # explore csv file
 #  head(demog.data)
 #  
@@ -460,20 +461,19 @@ str(temp)
 #  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX)) + geom_point(size=3)
 #  
 #  # We can map size to a factor
-#  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(VSBMIGCD))) + geom_point()
+#  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(BMI.GRP))) + geom_point()
 #  
 
 ## ----eval=F-------------------------------------------------------------------
-#  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(VSBMIGCD))) + geom_point()+
-#    scale_size_manual(breaks=c(1,2,3,9), values=c(2,3, 4,5))
+#  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=(factor(BMI.GRP)))) + geom_point()+  scale_size_manual(breaks=levels(demog.data2$BMI.GRP), values=c(1,2,3,10))
 #  
 #  #We can map size to a continuous endpoint
-#  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=VSBMI)) + geom_point()
+#  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=BMI)) + geom_point()
 #  
 #  # Facetting works
-#  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(VSBMIGCD))) + geom_point()+
-#    scale_size_manual(breaks=c(1,2,3, 9), values=c(2,3, 4, 5)) +
-#    facet_grid(SEX~VSBMIG)+
+#  ggplot(data=demog.data2, aes(x=HEIGHT, y=WEIGHT, color=REGION, shape=SEX, size=factor(BMI.GRP))) + geom_point()+
+#    scale_size_manual(breaks=levels(demog.data2$BMI.GRP), values=c(1,2,3,10)) +
+#    facet_grid(SEX~BMI.GRP)+
 #    labs(x="Height", y="Weight", color="Region", size="BMI Group", shape="Gender")+
 #    theme(legend.position="bottom")+
 #    guides(shape="none", size="none")+
@@ -492,7 +492,7 @@ str(temp)
 #    theme(legend.position="bottom")
 
 ## ----eval=F-------------------------------------------------------------------
-#  help(mahalanobis)
+#  # help(mahalanobis)
 #  # Assign the mahalanobis distance to the dataframe
 #  # MD is chi-sq when data is MV normal distributed.
 #  demog.data.sub <- subset(demog.data, select=c("HEIGHT", "WEIGHT"))

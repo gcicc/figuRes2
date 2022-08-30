@@ -1,6 +1,6 @@
 ## ---- results='hide'----------------------------------------------------------
 remove(list=ls())
-require(figures2)
+require(figuRes2)
 require(survival)
 require(ggplot2)
 require(plyr)

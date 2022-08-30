@@ -10,5 +10,3 @@ This is a dataset structured for building figures using cdf.plot
 \author{
 Greg Cicconetti
 }
-\keyword{cdf.plot}
-\keyword{dataset,}

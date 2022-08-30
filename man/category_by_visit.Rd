@@ -10,5 +10,3 @@ This is a dataset that would need some pre-processing ahead of using line.plot
 \author{
 Greg Cicconetti
 }
-\keyword{category_by_visit}
-\keyword{dataset,}

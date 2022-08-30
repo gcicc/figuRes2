@@ -10,7 +10,3 @@ This is a dataset structured for building figures using bar.plot, box.plot, and 
 \author{
 Greg Cicconetti
 }
-\keyword{bar.plot,}
-\keyword{box.plot,}
-\keyword{cdf.plot}
-\keyword{dataset,}
