@@ -1,11 +1,10 @@
-export(all.in.one)
+export(all_in_one)
 export(annotate.page)
 export(bar.plot)
 export(box.plot)
 export(build.page)
 export(cdf.plot)
 export(default.settings)
-export(default.settings2)
 export(dot.plot)
 export(facetAdjust)
 export(forest.plot)
@@ -34,3 +33,9 @@ import(reshape2)
 import(scales)
 import(survival)
 import(stringr)
+importFrom("grDevices", "bmp", "dev.cur", "dev.off", "extendrange",
+             "graphics.off", "jpeg", "pdf", "png", "postscript",
+             "rainbow")
+importFrom("graphics", "boxplot", "par")
+importFrom("utils", "read.csv", "sessionInfo", "setWinProgressBar",
+             "winProgressBar")

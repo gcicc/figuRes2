@@ -1,10 +1,18 @@
+---
+title: "The forest.plot and table.plot functions"
+author: "Greg Cicconetti"
+date: '2022-08-15'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{The forest.plot and table.plot functions}
 
 
 # The figures2::forest.plot and figures2::table.plot functions
 
-The forest.plot, dot.plot and table.plot functions share some similarites. These are simple figures to describe, but labeling, idiosyncracies in data structure, and aesthetic considerations complicate their construction. To get these figures to look appealing, one must have a good understanding of the incoming data structure and iterate towards a final product. These can be very time consuming in terms of design and execution.
+The forest.plot, dot.plot and table.plot functions share some similarities. These are simple figures to describe, but labeling, idiosyncrasies in data structure, and aesthetic considerations complicate their construction. To get these figures to look appealing, one must have a good understanding of the incoming data structure and iterate towards a final product. These can be very time consuming in terms of design and execution.
 
 This first example will demonstrate that pre-processing and post-processing are essential steps. First, start a session:
 
@@ -24,6 +32,7 @@ default.settings()
 ```
 
 ## Example 1: Labels for each line segments
+
 Suppose we are handed the following data set with the task of producing a 1x2 panel of 2 graphics - a forest plot on the left and a table plot on the left. Let's inspect the data:
 
 ```{r}
@@ -50,11 +59,13 @@ Suppose this data.frame is sorted as we'd like to see it in the forest plot. (If
 * labels for the y-axis
 
 First, we assign ranks for the line segments.
+
 ```{r}
 working.df.1$rank <- rev(1:16)
 ```
 
 Next we assign a column for color.  In this example, the color of all line segments will be the same, so we are creating a dummy column holding a factor with a single value.  (In the next example, we'll see multiple colors.)
+
 ```{r}
 working.df.1$category <- factor(0)
 ```
@@ -66,6 +77,7 @@ working.df.1$label.rank <- rev(1:16)
 ```
 
 The actual labels to be used can be deduced from the data.frame. These will need to be a combination of values from subgroup and level columns.   
+
 ```{r}
 working.df.1$labels <- paste(working.df.1$subgroup, working.df.1$level)
 working.df.1

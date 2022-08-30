@@ -1,20 +1,19 @@
-Package: figures2
+Package: figuRes2
 Type: Package
-Title: A package to support a variety of figure production tasks
-Version: 1.00
-Date: 2015-02-09
+Title: A Package to Support a Variety of Figure Production Tasks
+Version: 1.0.0
+Date: 2022-08-29
 Author: Greg Cicconetti, David Wade
 URL: https://github.com/gcicc/figures2
-Maintainer: Greg Cicconetti <gcicconetti@gmail.com>
-Description: This package takes the view that a figure is a collection of
-    graphs/tables assembled on a page and optionally annotated with metadata
-    (titles, headers and footers).  Functions and supporting documentation are
-    offered to streamline a variety of figure production task.
+Maintainer: Greg Cicconetti <greg.cicconetti@takeda.com>
+Description: We view a figure as a collection of graphs/tables assembled on a page and optionally annotated with metadata
+    (titles, headers and footers). Functions and supporting documentation are offered to streamline a variety of figure production task.
 License: GPL-2
+Encoding: UTF-8
 LazyLoad: no
-Depends: R (>= 3.1.2)
-Imports: survival, ggplot2(>= 1.0.0), scales, stringr, plyr (>= 1.7.1), grid (>= 3.0.0), gridExtra, reshape2, gtable (>= 0.1.2) 
-Suggests: RColorBrewer
+Depends: R (>= 3.5.0)
+Imports: survival, ggplot2, scales, stringr, plyr, grid, gridExtra, gtable, reshape2, grDevices, utils
+Suggests: RColorBrewer, knitr, rmarkdown
 ByteCompile: TRUE
 VignetteBuilder: knitr
-Suggests: knitr, rmarkdown
+RoxygenNote: 7.2.1

@@ -1,11 +1,17 @@
-utils::globalVariables(c("outputplan", "od", "cd", "dd", "FigureNumber", "FigureStatus", "FigureTitle", "i" ))
+utils::globalVariables(c("outputplan", "od", "cd", "dd", "logd", "FigureNumber", "graph.region.h", "graph.region.w", "FigureStatus", "FigureTitle", "i" ))
 # Sys.setenv(R_GSCMD = "c:\\Rtools\\bin\\gs915w64.exe")
 
-# Graphics functions for figures2 ------
+
+# How to fix "Unable to find GhostScript executable to run checks on size reduction" error upon package check in R?
+# https://stackoverflow.com/questions/37197603/how-to-fix-unable-to-find-ghostscript-executable-to-run-checks-on-size-reductio
+# I don't have this installed...
+# Sys.setenv(R_GSCMD = "C:\\Program Files (x86)\\gs\\gs9.19\\bin\\gswin32c.exe")
+
+# Graphics functions for figuRes2 ------
 
 # Standard Graphics Names ------
 #' @title Standard graphics names
-#' @description This is a dummy function whose purpose is to serve as repositiory for arguments used by figures2 functions.
+#' @description This is a dummy function whose purpose is to serve as repositiory for arguments used by figuRes2 functions.
 #' @param add.fignum logical (annotate.page)
 #' @param addBars logical to add error bars (line.plot)
 #' @param addTime logical for ading time stamp (annotate.page)
@@ -93,7 +99,7 @@ utils::globalVariables(c("outputplan", "od", "cd", "dd", "FigureNumber", "Figure
 #' @param ulh vector for upper left headers (annotate.page)
 #' @param upper.lim column holding upper limit of CI (forest.plot)
 #' @param urh vector for upper right headers (annotate.page)
-#' @param UseSubset Corresponds to a column name in outputplan holding flags (all.in.one)
+#' @param UseSubset Corresponds to a column name in outputplan holding flags (all_in_one)
 #' @param x.col parent.df column associated with response vairable (line.plot, nsubj.plot)
 #' @param x.label value gets passed to labs 
 #' @param x.limits value gets passed to scale_x_continuous 
@@ -219,6 +225,7 @@ graphic.params <- function(
 return("Hello, this function is just a convient location to store argument names.")
 }
 
+# Plot standards -----------------------------------------
 # bar.plot -------
 #' @title bar.plot
 #' @description A function for creating harmonized ggplot2 bar charts
@@ -309,77 +316,92 @@ Var1 <- Var2 <- Freq <- Prop <- Prop.text <- CATEGORY <- RESPONSE <- LOWER <- UP
 #' # print(p1)
 #' }
 #' @author Greg Cicconetti
-box.plot <- function (
-        parent.df, 
-        y.col = "VSBMI", 
-      y.label = "BMI (m/kg^2)", 
-      category.col = "TRTGRP",
-      category.label = "Treatment Group", 
-      y.limits = c(10, 100), 
-      y.ticks = seq(10, 100, 10), 
-      y.digits = 0,
-      shape.palette = c(1,2),
-      category.palette = c("red", "blue"),
-      text.size = 3) {
-CATEGORY <- RESPONSE <- LOWER <- UPPER <- MEDIAN <- NULL 
-    
-    get.whiskers <- function(dframe) {
-      bplot <- boxplot(dframe$RESPONSE ~ dframe$CATEGORY, plot = F)
-      whiskers <- with(bplot, 
-           data.frame(CATEGORY = names, 
-          LOWER = stats[1, ], 
-          MEDIAN = stats[3, ], 
-          UPPER = stats[5, ],
-          N=n))
-      return(whiskers)
-    }
+box.plot <- function (parent.df, 
+                      y.col = "AGE", 
+                      y.label = "AGE",
+                      category.col = "TRTGRP", 
+                      category.label = "Treatment Group",
+                      y.limits = NULL, 
+                      y.ticks = NULL, 
+                      y.digits = 0,
+                      shape.palette = c(21,22), 
+                      category.palette = c(2,3),
+                      text.size = 4) {
+        CATEGORY <- RESPONSE <- LOWER <- UPPER <- MEDIAN <- NULL 
+        
+        get.whiskers <- function(dframe) {
+                bplot <- boxplot(dframe$RESPONSE ~ dframe$CATEGORY, plot = F)
+                whiskers <- with(bplot, 
+                                 data.frame(CATEGORY = names, 
+                                            LOWER = stats[1, ], 
+                                            MEDIAN = stats[3, ], 
+                                            UPPER = stats[5, ],
+                                            N=n))
+                return(whiskers)
+        }
+        
+        names(parent.df) <- toupper(names(parent.df))
+        
+        boxplot.df <- data.frame(
+                RESPONSE = parent.df[, y.col],
+                CATEGORY= parent.df[, category.col])
+        
+        # Set resonable default limits and ticks if NULL
+        if(is.null(y.limits) || is.null(y.ticks)) {
+                y.limits = c(min(boxplot.df$RESPONSE, na.rm=T),
+                             max(boxplot.df$RESPONSE, na.rm=T)); 
+                y.ticks <- pretty(boxplot.df$RESPONSE)
+                cat("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
+        }
+        
+        whiskers <- get.whiskers(dframe = boxplot.df)
+        boxplot.df$cat.lab <- (boxplot.df$CATEGORY)
+        levels(boxplot.df$cat.lab)<- paste(levels(boxplot.df$CATEGORY),"\n n = ", table(boxplot.df$CATEGORY))
+        
+        p1 <- ggplot(boxplot.df, 
+                     aes(x = CATEGORY, y = RESPONSE, shape = factor(CATEGORY), fill = factor(CATEGORY))) + 
+                geom_boxplot(outlier.size = 2, outlier.colour = alpha("black", 0.2)) + 
+                geom_point(aes(x = CATEGORY, y = mean(RESPONSE), shape = CATEGORY), size = 3, bg = "white") + 
+                stat_summary(fun = mean, geom = "point", 
+                             shape = shape.palette, 
+                             size = 3, bg = "white") + 
+                scale_shape_manual(values = shape.palette) + 
+                scale_fill_manual(values = category.palette, name = category.label) +
+                scale_x_discrete(breaks = levels(boxplot.df$CATEGORY), 
+                                 labels = paste(levels(boxplot.df$CATEGORY),"\n n = ", whiskers$N)) + 
+                scale_y_continuous(limits = y.limits, breaks = y.ticks, labels = fmt(y.digits)) + 
+                geom_segment(data = whiskers, aes(x = as.numeric(CATEGORY) - 0.1, 
+                                                  y = LOWER, 
+                                                  xend = as.numeric(CATEGORY) + 0.1, 
+                                                  yend = LOWER)) + 
+                geom_segment(data = whiskers, aes(x = as.numeric(CATEGORY) - 0.1, 
+                                                  y = UPPER, xend = as.numeric(CATEGORY) + 0.1, 
+                                                  yend = UPPER)) + 
+                geom_text(data = whiskers, aes(x = as.numeric(CATEGORY) - 0.5, 
+                                               y = MEDIAN, label = format(round(MEDIAN, 2))), 
+                          size = text.size) + 
+                scale_colour_manual(values = category.palette) + 
+                guides(colour = "none") + 
+                labs(y = y.label, x = category.label, fill = category.label, shape = category.label)+
+                theme(legend.position= "bottom")
+        return(p1)
+}
 
-    names(parent.df) <- toupper(names(parent.df))
-    
-    boxplot.df <- data.frame(
-      RESPONSe = parent.df[, y.col],
-      CATEGORY= parent.df[, category.col])
-    
-    # Set resonable default limits and ticks if NULL
-    if(is.null(y.limits) || is.null(y.ticks)) {
-      y.limits = c(min(boxplot.df$RESPONSE, na.rm=T),
-       max(boxplot.df$RESPONSE, na.rm=T)); 
-      y.ticks <- pretty(boxplot.df$RESPONSE)
-      cat("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
-    }
-    
-    whiskers <- get.whiskers(dframe = boxplot.df)
-    boxplot.df$cat.lab <- (boxplot.df$CATEGORY)
-    levels(boxplot.df$cat.lab)<- paste(levels(boxplot.df$CATEGORY),"\n n = ", table(boxplot.df$CATEGORY))
-    
-    p1 <- ggplot(boxplot.df, 
-     aes(x = CATEGORY, y = RESPONSE, shape = factor(CATEGORY), fill = factor(CATEGORY))) + 
-      geom_boxplot(outlier.size = 2, outlier.colour = alpha("black", 0.2)) + 
-      geom_point(aes(x = CATEGORY, y = mean(RESPONSE), shape = CATEGORY), size = 3, bg = "white") + 
-      stat_summary(fun.y = mean, geom = "point", 
-       shape = shape.palette, 
-       size = 3, bg = "white") + 
-      scale_shape_manual(values = shape.palette) + 
-      scale_fill_manual(values = category.palette, name = category.label) +
-      scale_x_discrete(breaks = levels(boxplot.df$CATEGORY), 
-           labels = paste(levels(boxplot.df$CATEGORY),"\n n = ", whiskers$N)) + 
-      scale_y_continuous(limits = y.limits, breaks = y.ticks, labels = fmt(y.digits)) + 
-      geom_segment(data = whiskers, aes(x = as.numeric(CATEGORY) - 0.1, 
-          y = LOWER, 
-          xend = as.numeric(CATEGORY) + 0.1, 
-          yend = LOWER)) + 
-      geom_segment(data = whiskers, aes(x = as.numeric(CATEGORY) - 0.1, 
-          y = UPPER, xend = as.numeric(CATEGORY) + 0.1, 
-          yend = UPPER)) + 
-      geom_text(data = whiskers, aes(x = as.numeric(CATEGORY) - 0.5, 
-             y = MEDIAN, label = format(round(MEDIAN, 2)), nsmall = 2), 
-    size = text.size) + 
-      scale_colour_manual(values = category.palette) + 
-      guides(colour = F) + 
-      labs(y = y.label, x = category.label, fill = category.label, shape = category.label)+
-      theme(legend.position= "bottom")
-    return(p1)
-  }
+# load("~/R packages/figuRes2/data/demog.data.rda")
+# demog.data
+# box.plot (parent.df=demog.data, 
+#           y.col = "BMI", 
+#           y.label = "BMI (m/kg^2)", 
+#           category.col = "TRTGRP",
+#           category.label = "Treatment Group", 
+#           y.limits = c(10, 100), 
+#           y.ticks = seq(10, 100, 10), 
+#           y.digits = 0,
+#           shape.palette = c(1,2),
+#           category.palette = c("red", "blue"),
+#           text.size = 3)
+
+
 
 # cdf.plot ------
 #' @title cdf.plot
@@ -496,113 +518,113 @@ dot.df.melt <- RANK <- POINT.EST <- CATEGORY <- NULL
 #' @description A function for creating harmonized forest.plots via ggplot2 offering compatiability with table.plot and dot.plot. 
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti
-forest.plot <-
-  function (parent.df, 
-      y.rank.col = "rank",  # this maps the line segments to y-axis
-      Point.Est = "hr",  
-      lower.lim = "low", 
-      upper.lim = "high", 
-      y.label.rank.col = "rank",  #  this identifies the y-axis values for labels
-      y.label.col = "subcategory", # This holds the labels which should sync with y.label.breaks
-      x.label = "Estimate", 
-      y.label = "Item",
-      log.trans = TRUE, 
-      x.limits = c(0.21, 5), 
-      x.ticks = 2^(-2:2), 
-      y.limits=NULL,
-      category.color = "category", # This colors the points and line segments
-      background.palette = c("red", "blue"), 
-      category.palette = c("red", "blue"), 
-      shape.palette = c(16, 16), 
-      flip.palette = FALSE) 
-{
-    xmin <- xmax <- ymin <- ymax <- period <- POINT.EST <- RANK <- CATEGORY <- LOWER.LIM <- UPPER.LIM <- NULL
-    
-    if(is.null(y.limits) ) {
-      y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
-       max(parent.df[,y.rank.col], na.rm=T)+.25) 
-      cat("y.limits are set to NULL; defaults are used.\n")
-    }
-    
-    # Cap names
-    names(parent.df) <- toupper(names(parent.df))
-    category.color <- toupper(category.color)
-    y.rank.col <- toupper(y.rank.col)
-    Point.Est <- toupper(Point.Est)
-    lower.lim <- toupper(lower.lim)
-    upper.lim <- toupper(upper.lim)
-    y.label.rank.col <- toupper(y.label.rank.col)
-    y.label.col <- toupper(y.label.col)
-    y.label.rank.col <- toupper(y.label.rank.col)
-    
-    # Break if x.limits or x.ticks are not supplied
-    if (is.null(x.limits) || is.null(x.ticks)) {
-      cat("Either x.limits or x.ticks are set to NULL; specify.")
-      return()
-    }
-    
-    forest.df <- data.frame(RANK = parent.df[, y.rank.col],
-          POINT.EST = parent.df[, Point.Est], 
-          LOWER.LIM = parent.df[, lower.lim], 
-          UPPER.LIM = parent.df[, upper.lim],
-          LABEL.RANKS = parent.df[, y.label.rank.col],
-          LABEL.VALUES = parent.df[, y.label.col],
-          CATEGORY = parent.df[, category.color])
-    
-    # Flips the sequence of background colors
-    ifelse(flip.palette == FALSE, 
-     rects <- data.frame(xmin = c(x.limits[1], log.trans * 1), 
-             xmax = c(log.trans * 1, x.limits[2]), 
-             ymin = c(-Inf, -Inf),
-             ymax = c(Inf, Inf), 
-             period = c("A", "B")), 
-     rects <- data.frame(xmin = c(x.limits[1], log.trans * 1), 
-             xmax = c(log.trans * 1, x.limits[2]), 
-             ymin = c(-Inf, -Inf), 
-             ymax = c(Inf, Inf), 
-             period = c("B", "A")))
-    # Add the background rectangles
-    # Add the point estimate
-    # Add the error bars
-    # Manipulate the y-axis
-    # Shut the guides off
-    # Change the background colors
-    # Change the category colors
-    # Change the shapes
-    # Change the axis titles
-    
-    for.return <- ggplot() + 
-      geom_rect(data = rects, 
-    aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = period), 
-    alpha = 0.2) + 
-      geom_point(data = forest.df, aes(x = POINT.EST, y = (RANK), color = CATEGORY)) + 
-      geom_errorbarh(data = forest.df, height = 0.2, lwd = .75,
-         aes(y = RANK, x = POINT.EST, xmin = as.numeric(LOWER.LIM), xmax = as.numeric(UPPER.LIM), 
-       color = CATEGORY)) + 
-      scale_y_continuous(limits=y.limits,
-       breaks = (forest.df$LABEL.RANK), 
-       labels = (forest.df$LABEL.VALUES)) + 
-      guides(color = F, fill = F)+  
-      scale_fill_manual(values = background.palette) + 
-      scale_color_manual(values = category.palette) + 
-      scale_shape_manual(values = shape.palette) + 
-      labs(x = x.label, y = y.label) 
-    
-    # Manipulate the x-axis if necessary
-    # Add the reference line
-    ifelse(log.trans == TRUE, for.return <- for.return + 
-       scale_x_continuous(trans = log_trans(), 
-        limits = x.limits, 
-        breaks = x.ticks, expand = c(0, 0.001)) + 
-       geom_vline(xintercept = log.trans * 1), 
-     for.return <- for.return + 
-       scale_x_continuous(limits = x.limits, 
-        breaks = x.ticks, expand = c(0, 0.001)) +
-       geom_vline(xintercept = log.trans * 1))
-    
-    for.return$data <- forest.df
-    return(for.return)
-  }
+forest.plot <- 
+        function (parent.df, 
+                  y.rank.col = "rank",  # this maps the line segments to y-axis
+                  Point.Est = "hr",  
+                  lower.lim = "low", 
+                  upper.lim = "high", 
+                  y.label.rank.col = "rank",  #  this identifies the y-axis values for labels
+                  y.label.col = "subcategory", # This holds the labels which should sync with y.label.breaks
+                  x.label = "Estimate", 
+                  y.label = "Item",
+                  log.trans = TRUE, 
+                  x.limits = c(0.21, 5), 
+                  x.ticks = 2^(-2:2), 
+                  y.limits=NULL,
+                  category.color = "category", # This colors the points and line segments
+                  background.palette = c("red", "blue"), 
+                  category.palette = c("red", "blue"), 
+                  shape.palette = c(16, 16), 
+                  flip.palette = FALSE) 
+        {
+                xmin <- xmax <- ymin <- ymax <- period <- POINT.EST <- RANK <- CATEGORY <- LOWER.LIM <- UPPER.LIM <- NULL
+                
+                if(is.null(y.limits) ) {
+                        y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
+                                     max(parent.df[,y.rank.col], na.rm=T)+.25) 
+                        cat("y.limits are set to NULL; defaults are used.\n")
+                }
+                
+                # Cap names
+                names(parent.df) <- toupper(names(parent.df))
+                category.color <- toupper(category.color)
+                y.rank.col <- toupper(y.rank.col)
+                Point.Est <- toupper(Point.Est)
+                lower.lim <- toupper(lower.lim)
+                upper.lim <- toupper(upper.lim)
+                y.label.rank.col <- toupper(y.label.rank.col)
+                y.label.col <- toupper(y.label.col)
+                y.label.rank.col <- toupper(y.label.rank.col)
+                
+                # Break if x.limits or x.ticks are not supplied
+                if (is.null(x.limits) || is.null(x.ticks)) {
+                        cat("Either x.limits or x.ticks are set to NULL; specify.")
+                        return()
+                }
+                
+                forest.df <- data.frame(RANK = parent.df[, y.rank.col],
+                                        POINT.EST = parent.df[, Point.Est], 
+                                        LOWER.LIM = parent.df[, lower.lim], 
+                                        UPPER.LIM = parent.df[, upper.lim],
+                                        LABEL.RANKS = parent.df[, y.label.rank.col],
+                                        LABEL.VALUES = parent.df[, y.label.col],
+                                        CATEGORY = parent.df[, category.color])
+                
+                # Flips the sequence of background colors
+                ifelse(flip.palette == FALSE, 
+                       rects <- data.frame(xmin = c(x.limits[1], log.trans * 1), 
+                                           xmax = c(log.trans * 1, x.limits[2]), 
+                                           ymin = c(-Inf, -Inf),
+                                           ymax = c(Inf, Inf), 
+                                           period = c("A", "B")), 
+                       rects <- data.frame(xmin = c(x.limits[1], log.trans * 1), 
+                                           xmax = c(log.trans * 1, x.limits[2]), 
+                                           ymin = c(-Inf, -Inf), 
+                                           ymax = c(Inf, Inf), 
+                                           period = c("B", "A")))
+                # Add the background rectangles
+                # Add the point estimate
+                # Add the error bars
+                # Manipulate the y-axis
+                # Shut the guides off
+                # Change the background colors
+                # Change the category colors
+                # Change the shapes
+                # Change the axis titles
+                
+                for.return <- ggplot() + 
+                        geom_rect(data = rects, 
+                                  aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = period), 
+                                  alpha = 0.2) + 
+                        geom_point(data = forest.df, aes(x = POINT.EST, y = (RANK), color = CATEGORY)) + 
+                        geom_errorbarh(data = forest.df, height = 0.2, lwd = .75,
+                                       aes(y = RANK, x = POINT.EST, xmin = as.numeric(LOWER.LIM), xmax = as.numeric(UPPER.LIM), 
+                                           color = CATEGORY)) + 
+                        scale_y_continuous(limits=y.limits,
+                                           breaks = (forest.df$LABEL.RANK), 
+                                           labels = (forest.df$LABEL.VALUES)) + 
+                        guides(color = "none", fill = "none")+  
+                        scale_fill_manual(values = background.palette) + 
+                        scale_color_manual(values = category.palette) + 
+                        scale_shape_manual(values = shape.palette) + 
+                        labs(x = x.label, y = y.label) 
+                
+                # Manipulate the x-axis if necessary
+                # Add the reference line
+                ifelse(log.trans == TRUE, for.return <- for.return + 
+                               scale_x_continuous(trans = log_trans(), 
+                                                  limits = x.limits, 
+                                                  breaks = x.ticks, expand = c(0, 0.001)) + 
+                               geom_vline(xintercept = log.trans * 1), 
+                       for.return <- for.return + 
+                               scale_x_continuous(limits = x.limits, 
+                                                  breaks = x.ticks, expand = c(0, 0.001)) +
+                               geom_vline(xintercept = log.trans * 1))
+                
+                for.return$data <- forest.df
+                return(for.return)
+        }
 
 # gcurve ------
 #' @title gcurve 
@@ -1006,7 +1028,7 @@ nsubj.plot <-
 XVALUES <- YVALUES <- CATEGORY.COLOR <- TEXT <- NULL
     if (is.null(x.limits) || is.null(x.ticks)) {
       cat("Either x.limits or x.ticks are set to NULL; specify.\n")
-      break
+      
     }
     names(parent.df) <- toupper(names(parent.df))
     
@@ -1033,115 +1055,115 @@ XVALUES <- YVALUES <- CATEGORY.COLOR <- TEXT <- NULL
 #' @inheritParams graphic.params
 #' @param xtick.labs xtick labels
 #' @author Greg Cicconetti
-table.plot <-
-  function(
-    parent.df ,
-    y.rank.col= "Subcategory",
-    category.color= "Treatment",
-    text.col1 = "Point_Est",
-    text.col2 = NULL,
-    text.col3 = NULL,
-    text.col4 = NULL,
-    text.size = 12,
-    xtick.labs = c("", "", ""),
-    x.limits=NULL,
-    y.limits=NULL,
-    x.label= "Text",
-    y.label= "Item",
-    y.label.rank.col = "rank",  #  this identifies the y-axis values for labels
-    y.label.col = "subcategory", 
-    category.palette = c("red", "blue")){
-    
-CATEGORY <- RANK <- TEXT.COL1 <- TEXT.COL2 <- TEXT.COL3 <- TEXT.COL4 <- NULL
-    if(is.null(y.limits) ) {
-      y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
-             max(parent.df[,y.rank.col], na.rm=T)+.25) 
-      cat("y.limits are set to NULL; defaults are used.\n")
-    }
-    if(is.null(x.limits) ) {
-      x.limits = 1:(4-sum(c(is.null(text.col4),is.null(text.col3),is.null(text.col2))))
-      cat("x.limits are set to NULL; defaults are used.\n")
-    }
-    # Cap names
-    names(parent.df) <- toupper(names(parent.df))
-category.color <- toupper(category.color)
-    y.rank.col <- toupper(y.rank.col)
-    text.col1 <- toupper(text.col1)
-    if(is.null(text.col2)==F) text.col2 <- toupper(text.col2)
-    if(is.null(text.col3)==F)text.col3 <- toupper(text.col3)
-    if(is.null(text.col4)==F) text.col4 <- toupper(text.col4)
-    y.label.rank.col <- toupper(y.label.rank.col)
-    y.label.col <- toupper(y.label.col)
-    y.label.rank.col <- toupper(y.label.rank.col)
-    
-    table.df <- data.frame(
-      RANK = parent.df[, y.rank.col],
-      CATEGORY = parent.df[, category.color],
-      TEXT.COL1 = parent.df[, text.col1],
-      TEXT.COL2 = parent.df[, text.col2],
-      TEXT.COL3 = parent.df[, text.col3],
-      TEXT.COL4 = parent.df[, text.col4],
-      LABEL.RANKS = parent.df[, y.label.rank.col],
-      LABEL.VALUES = parent.df[, y.label.col])
-    
-    for.return <-  ggplot()+
-      geom_text(data = table.df,  size =text.size,
-          aes(x = 1,
-              colour = CATEGORY,
-              y = RANK, 
-              label = TEXT.COL1, hjust = 0.5))
-    
-    if(is.null(text.col2)==F)
-      for.return <- for.return +
-      geom_text(data = table.df,   size =text.size,
-          aes(x = 2,  
-              colour = CATEGORY, 
-              y = RANK, 
-              label = TEXT.COL2, hjust = 0.5))
-    
-    if(is.null(text.col3)==F)
-      for.return <- for.return +
-      geom_text(data = table.df,   size =text.size,
-          aes(x = 3,   
-              colour = CATEGORY, 
-              y = RANK, 
-              label = TEXT.COL3, hjust = 0.5))
-    
-    if(is.null(text.col4)==F)
-      for.return <- for.return +
-      geom_text(data = table.df,  size =text.size,
-          aes(x = 4,   
-              colour = CATEGORY, 
-              y = RANK, 
-              label = TEXT.COL4, hjust = 0.5))
-    
-    for.return <- for.return +
-      scale_x_continuous(limits = c(0.5, 4.5 -(is.null(text.col2)+
-                   is.null(text.col3)+
-                   is.null(text.col4))), 
-             breaks=1:(4 -(is.null(text.col2)+
-                 is.null(text.col3)+
-                 is.null(text.col4))), labels=xtick.labs) + 
-      scale_y_continuous(limits=y.limits,
-             breaks=table.df$LABEL.RANKS, 
-             labels=table.df$LABEL.VALUES)+
-      guides(size =FALSE, color=FALSE)+
-      labs(x=x.label, y=y.label)+
-      scale_color_manual(values=rev(category.palette))+
-      theme(plot.background = element_rect(colour = "white"), 
-            panel.background = element_rect(fill = "white", colour = NA), 
-            axis.text.x = element_text(vjust = 1, colour = "black"), 
-            axis.ticks.x = element_line(colour = "transparent"), 
-            axis.ticks.y = element_line(color= "transparent"),
-            panel.grid.minor = element_line(colour = "white", size = 0.25)
-      )
-    
-    return(for.return)
-  }
+table.plot <- function(
+                parent.df ,
+                y.rank.col= "Subcategory",
+                category.color= "Treatment",
+                text.col1 = "Point_Est",
+                text.col2 = NULL,
+                text.col3 = NULL,
+                text.col4 = NULL,
+                text.size = 12,
+                xtick.labs = c("", "", ""),
+                x.limits=NULL,
+                y.limits=NULL,
+                x.label= "Text",
+                y.label= "Item",
+                y.label.rank.col = "rank",  #  this identifies the y-axis values for labels
+                y.label.col = "subcategory", 
+                category.palette = c("red", "blue")){
+        
+        CATEGORY <- RANK <- TEXT.COL1 <- TEXT.COL2 <- TEXT.COL3 <- TEXT.COL4 <- NULL
+        if(is.null(y.limits) ) {
+                y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
+                             max(parent.df[,y.rank.col], na.rm=T)+.25) 
+                cat("y.limits are set to NULL; defaults are used.\n")
+        }
+        if(is.null(x.limits) ) {
+                x.limits = 1:(4-sum(c(is.null(text.col4),is.null(text.col3),is.null(text.col2))))
+                cat("x.limits are set to NULL; defaults are used.\n")
+        }
+        # Cap names
+        names(parent.df) <- toupper(names(parent.df))
+        category.color <- toupper(category.color)
+        y.rank.col <- toupper(y.rank.col)
+        text.col1 <- toupper(text.col1)
+        if(is.null(text.col2)==F) text.col2 <- toupper(text.col2)
+        if(is.null(text.col3)==F)text.col3 <- toupper(text.col3)
+        if(is.null(text.col4)==F) text.col4 <- toupper(text.col4)
+        y.label.rank.col <- toupper(y.label.rank.col)
+        y.label.col <- toupper(y.label.col)
+        y.label.rank.col <- toupper(y.label.rank.col)
+        
+        table.df <- data.frame(
+                RANK = parent.df[, y.rank.col],
+                CATEGORY = parent.df[, category.color],
+                TEXT.COL1 = parent.df[, text.col1],
+                TEXT.COL2 = parent.df[, text.col2],
+                TEXT.COL3 = parent.df[, text.col3],
+                TEXT.COL4 = parent.df[, text.col4],
+                LABEL.RANKS = parent.df[, y.label.rank.col],
+                LABEL.VALUES = parent.df[, y.label.col])
+        
+        for.return <-  ggplot()+
+                geom_text(data = table.df,  size =text.size,
+                          aes(x = 1,
+                              colour = CATEGORY,
+                              y = RANK, 
+                              label = TEXT.COL1, hjust = 0.5))
+        
+        if(is.null(text.col2)==F)
+                for.return <- for.return +
+                geom_text(data = table.df,   size =text.size,
+                          aes(x = 2,  
+                              colour = CATEGORY, 
+                              y = RANK, 
+                              label = TEXT.COL2, hjust = 0.5))
+        
+        if(is.null(text.col3)==F)
+                for.return <- for.return +
+                geom_text(data = table.df,   size =text.size,
+                          aes(x = 3,   
+                              colour = CATEGORY, 
+                              y = RANK, 
+                              label = TEXT.COL3, hjust = 0.5))
+        
+        if(is.null(text.col4)==F)
+                for.return <- for.return +
+                geom_text(data = table.df,  size =text.size,
+                          aes(x = 4,   
+                              colour = CATEGORY, 
+                              y = RANK, 
+                              label = TEXT.COL4, hjust = 0.5))
+        
+        for.return <- for.return +
+                scale_x_continuous(limits = c(0.5, 4.5 -(is.null(text.col2)+
+                                                                 is.null(text.col3)+
+                                                                 is.null(text.col4))), 
+                                   breaks=1:(4 -(is.null(text.col2)+
+                                                         is.null(text.col3)+
+                                                         is.null(text.col4))), labels=xtick.labs) + 
+                scale_y_continuous(limits=y.limits,
+                                   breaks=table.df$LABEL.RANKS, 
+                                   labels=table.df$LABEL.VALUES)+
+                guides(size ="none", color="none")+
+                labs(x=x.label, y=y.label)+
+                scale_color_manual(values=rev(category.palette))+
+                theme(plot.background = element_rect(colour = "white"), 
+                      panel.background = element_rect(fill = "white", colour = NA), 
+                      axis.text.x = element_text(vjust = 1, colour = "black"), 
+                      axis.ticks.x = element_line(colour = "transparent"), 
+                      axis.ticks.y = element_line(color= "transparent"),
+                      panel.grid.minor = element_line(colour = "white", size = 0.25)
+                )
+        
+        return(for.return)
+}
 
-# Global functions for figures2 
+# Global functions for figuRes2 
 
-#  Session Starters -------
+
+#  Session Starters -------------------------------------
 
 # default.settings -------
 #' @title default.settings
@@ -1153,58 +1175,9 @@ category.color <- toupper(category.color)
 #' Describe
 #' }
 #' @author Greg Cicconetti
-default.settings <- function(pos = 1,
-           envir = as.environment(pos)) 
-{
-  page.width <- page.height <- left.margin <- right.margin <- top.margin <- bottom.margin <- graph.region.h <- graph.region.w <- NULL      
-  my.path <- NULL
-  # Directories
-  # my.path <<- getwd()
-  assign("my.path", getwd(), envir = envir)
-  assign("dd", paste0(my.path, "/dddata/"), envir = envir)
-  assign("cd", paste0(my.path, "/code/"), envir = envir)
-  assign("od", paste0(my.path, "/output/"), envir = envir)
-  assign("logd", paste0(my.path, "/logd/"), envir = envir)
-  
-  #dd <<- paste0(my.path, "/dddata/")
-  #cd <<- paste0(my.path, "/code/")
-  #od <<- paste0(my.path, "/output/")
-  #logd <<- paste0(my.path, "/log/")
-  cat("my.path is set to:", my.path, "\n")
-  cat("dd is set to:", dd, "\n")
-  cat("cd is set to:", cd, "\n")
-  cat("od is set to:", od, "\n")
-  cat("\nNote: If a path is assigned to an object called od2, non-pdf files created by\nrun.specific will be diverted to that folder.\n")
-  
-  assign("page.width", 11 , envir = envir)
-  assign("page.height", 8.5, envir = envir)
-  assign("right.margin", .75, envir = envir)
-  assign("left.margin", .75, envir = envir)
-  assign("top.margin", 1.4-.5, envir = envir)
-  assign("bottom.margin", 1.75-.5, envir = envir)
-  
-  
-  cat("The default page dimension is set to landscape:", 
-      page.width, "in. x", page.height,"in.\n")
-  cat("The default page left and right page margins:", 
-      left.margin, "in. and", right.margin  ,"in., respectively.\n")
-  cat("The default top an bottom margins:", 
-      top.margin, "in. and ", bottom.margin, "in., respectively.")
-  
-  assign("graph.region.h", page.height, envir = envir)
-  assign("graph.region.w", page.width, envir = envir)
-  assign("bottom.margin", 1.75-.5, envir = envir)
-  #   graph.region.h <<- page.height - (right.margin + left.margin)
-  #   graph.region.w <<- page.width - (top.margin + bottom.margin)
-  assign("blankPanel", grid.rect(gp=gpar(col= "white"), draw=FALSE), envir = envir)
-  
-  
-  theme_set(theme_grey2_nomargins())
-  cat("\nThe default theme: theme_grey2_nomargins", "\n")
-}
 
-# default.settings2 -------
-#' @title default.settings2 - next iteration of default.settings
+# default.settings -------
+#' @title default.settings - next iteration of default.settings
 #' @description Global Defaults
 #' @details Global Defaults
 #' @inheritParams graphic.params
@@ -1212,31 +1185,26 @@ default.settings <- function(pos = 1,
 #' \describe{
 #' The following are assigned to global environment upon calling:
 #'  \itemize{
-#'  my.path <<- getwd()
-#'   \item dd
-#'   \item cd
-#'   \item od
-#'   \item blankPanel 
-#'   \item page.width 
-#'   \item page.height 
-#'   \item right.margin 
-#'   \item left.margin 
-#'   \item top.margin 
-#'   \item bottom.margin 
-#'   \item graph.region.h
-#'   \item graph.region.w
-#'   \item blankPanel 
+#'  \item my.path
+#'  \item dd
+#'  \item cd
+#'  \item od
+#'  \item blankPanel 
+#'  \item page.width 
+#'  \item page.height 
+#'  \item right.margin 
+#'  \item left.margin 
+#'  \item top.margin 
+#'  \item bottom.margin 
+#'  \item graph.region.h
+#'  \item graph.region.w
 #' }
 #' }
 #' @author Greg Cicconetti
-default.settings2 <- function(pos = 1,
+default.settings <- function(pos = 1,
             envir = as.environment(pos),
             my.path=getwd(),
             main.theme = "theme_bw",
-            dd = paste0(getwd(), "/dddata/"),
-            cd = paste0(getwd(), "/code/"),
-            od = paste0(getwd(), "/output/"),
-            logd = paste0(getwd(), "/log/"),
             page.width = 11,
             page.height = 8.5,
             right.margin = .75,
@@ -1245,12 +1213,14 @@ default.settings2 <- function(pos = 1,
             bottom.margin = 1.75-.5)
 {
   # Directories
+  # create objects in the global environment for path and subdirectories
   assign("my.path", my.path, envir = envir)
-  assign("dd", dd, envir = envir)
-  assign("cd", cd, envir = envir)
-  assign("od", od, envir = envir)
-  assign("logd", logd, envir = envir)
+  assign("dd", paste0(my.path, "/dddata/"), envir = envir)
+  assign("cd", paste0(my.path, "/code/"), envir = envir)
+  assign("od", paste0(my.path, "/output/"), envir = envir)
+  assign("logd", paste0(my.path, "/log/"), envir = envir)
   
+  # create objects in the global environment for page specifications
   assign("page.width", 11 , envir = envir)
   assign("page.height", 8.5, envir = envir)
   assign("right.margin", .75, envir = envir)
@@ -1258,23 +1228,23 @@ default.settings2 <- function(pos = 1,
   assign("top.margin", 1.4-.5, envir = envir)
   assign("bottom.margin", 1.75-.5, envir = envir)
   
-  
+  # Offer feedback:
   cat("my.path is set to:", my.path, "\n")
   cat("dd is set to:", dd, "\n")
   cat("cd is set to:", cd, "\n")
   cat("od is set to:", od, "\n")
   cat("logd is set to:", logd, "\n")
-  
-  cat("The default page dimension is set to landscape:", 
-      page.width, "in. x", page.height,"in.\n")
-  cat("The default page left and right page margins:",
-      left.margin, "in. and", right.margin  ,"in., respectively.\n")
-  cat("The default top an bottom margins:", 
-      top.margin, "in. and ", bottom.margin, "in., respectively.")
-  
-  assign("graph.region.h", page.height - (right.margin + left.margin), envir = envir)
-  assign("graph.region.w", page.height - (right.margin + left.margin), envir = envir)
+  assign("graph.region.h", page.height - (top.margin + bottom.margin), envir = envir)
+  assign("graph.region.w", page.width - (right.margin + left.margin), envir = envir)
   assign("blankPanel", grid.rect(gp=gpar(col= "white"), draw=FALSE), envir = envir)
+  
+  cat(paste0("The default page dimension is set to landscape: ", 
+      page.width, " inches wide by ", page.height, " inches tall.\n",
+      "The default page left and right page margins: ",
+      left.margin, " inches and ", right.margin  ," inches, respectively.\n",
+      "The default top an bottom margins: ", 
+      top.margin, " inches and ", bottom.margin, " inches, respectively.\n",
+      "The region available for graphics/tables is ", graph.region.w, " inches wide by ", graph.region.h, " inches tall."))
   
   do.call("theme_set", list(do.call(main.theme, list())))
   cat(paste("\nThe default theme:", main.theme, "\n"))
@@ -1283,7 +1253,7 @@ default.settings2 <- function(pos = 1,
 # Custom Themes -------
 
 # theme_grey2_nomargins -------
-#' @title figures2 themes
+#' @title figuRes2 themes
 #' @description Adapts theme_grey() found in ggplot2 
 #' @details axis.text colour changed from "grey50" to "black"; legend.position changed from "right" to "bottom"; legend.direction changed to "horizontal"; plot.margin changed from default unit(c(1, 1, 0.5, 0.5), "lines") to unit(c(0, 0, 0, 0), "in")
 #' @inheritParams graphic.params
@@ -1427,8 +1397,7 @@ theme_bw2_nomargins <- function (base_size = 12, base_family = "")
                                         colour = "grey50"), panel.grid.major = element_line(colour = "grey90", 
                                                   size = 0.2), panel.grid.minor = element_line(colour = "grey98", 
                                                                  size = 0.5), strip.background = element_rect(fill = "grey80", 
-                                                                          colour = "grey50"), strip.background = element_rect(fill = "grey80", 
-                                                                                    colour = "grey50"))
+                                                                          colour = "grey50"))
 }
 
 #' @describeIn theme_grey2_nomargins Similar to theme_bw_nomargins but with margins set to ggplot defaults, unit(c(1, 1, 0.5, 0.5), "lines")
@@ -1441,7 +1410,6 @@ theme_bw2_default_margins <- function(base_size = 12, base_family = ""){
           panel.border = element_rect(fill = NA, colour = "grey50"), 
           panel.grid.major = element_line(colour = "grey90", size = 0.2), 
           panel.grid.minor = element_line(colour = "grey98", size = 0.5), 
-          strip.background = element_rect(fill = "grey80", colour = "grey50"), 
           strip.background = element_rect(fill = "grey80", colour = "grey50"),
           plot.margin = unit(c(1, 1, 0.5, 0.5), "lines"))
 }
@@ -1469,67 +1437,193 @@ theme_table_nomargins <- function (base_size = 12, base_family = "") {
 #' @title build.page
 #' @description  Takes page dimensions, figure layout dimenesions and an ordered list of grobs/ggplot objects orients them on a page
 #' @inheritParams graphic.params
+#' @examples 
+#' \dontrun{
+#' pdf(file = "demonstrating build.page.pdf", width = 11, height = 8.5)
+#' build.page(test.dim=T)
+#' build.page(interior.w = c(.5, .5), ncol=2, nrow=1, test.dim=T)
+#' build.page(interior.h = c(.5, .5), ncol=1, nrow=2, test.dim=T)
+#' build.page(interior.h = c(.5, .5), interior.w = c(.5, .5), ncol=2, nrow=2, test.dim=T)
+#' build.page(interior.h=c(1/3,1/3,1/3),
+#'            interior.w=c(1),
+#'            ncol=1, nrow=3,
+#'            test.dim=TRUE)
+#' build.page(interior.h=c(2, 1, 3)/6,
+#'            interior.w=c(.6, .4),
+#'            ncol=2, nrow=3,
+#'            test.dim=TRUE)
+#' build.page(interior.h=c(1/3,1/3,1/3),
+#'            interior.w=c(.5, .5),
+#'            ncol=2, nrow=3,
+#'            test.dim=TRUE,
+#'            top.margin=.1,
+#'            bottom.margin=.1,
+#'            right.margin=.1,
+#'            left.margin=.1)
+#' 
+#' parabola.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^2), aes(x=x,y=y))+
+#' geom_line()
+#' parabola.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^2), aes(x=x,y=y))+
+#' geom_line()
+#' cubic.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^3), aes(x=x,y=y))+
+#' geom_line()
+#' cubic.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^3), aes(x=x,y=y))+
+#' geom_line()
+#' 
+#' red.parabola.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^2), aes(x=x,y=y))+
+#' geom_line(color="red")
+#' red.parabola.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^2), aes(x=x,y=y))+
+#' geom_line(color="red")
+#' red.cubic.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^3), aes(x=x,y=y))+
+#' geom_line(color="red")
+#' red.cubic.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^3), aes(x=x,y=y))+
+#' geom_line(color="red")
+#' 
+#' 
+#' 
+#' build.page(interior.h = c(.5, .5), nrow=2, ncol=1,
+#'            test.dim=F, interior = list(parabola.up, 
+#'                                        parabola.down))
+#' 
+#' build.page(interior.w = c(.5, .5), nrow=1, ncol=2,
+#'            test.dim=F, interior = list(parabola.up, 
+#'                                        parabola.down))
+#' 
+#' build.page(interior.w = c(.5, .5), interior.h = c(.5, .5), nrow=2, ncol=2,
+#'            test.dim=F, interior = list(parabola.up, 
+#'                                        red.parabola.up,
+#'                                        parabola.down, 
+#'                                        red.parabola.down
+#'                                        ))
+#' 
+#' build.page(interior.h=c(1/3,1/3,1/3),
+#'            interior.w=c(1),
+#'            ncol=1, nrow=3,
+#'            interior = list(parabola.up, 
+#'                            parabola.down,
+#'                            cubic.up
+#'            ))
+#' 
+#' build.page(interior.w=c(1/3,1/3,1/3),
+#'            interior.h=c(1),
+#'            ncol=3, nrow=1,
+#'            interior = list(parabola.up, 
+#'                            parabola.down,
+#'                            cubic.up
+#'            ))
+#' 
+#' build.page(interior.h=c(2, 1, 3)/6,
+#'            interior.w=c(.6, .4),
+#'            ncol=2, nrow=3,
+#'            interior = list(parabola.up, 
+#'                 parabola.down,
+#'                 cubic.up,
+#'                 cubic.down, 
+#'                 red.parabola.down,
+#'                 red.cubic.down)
+#'            )
+#' 
+#' build.page(interior.h=c(1/3, 1/3, 1/3),
+#'            interior.w=c(.5, .5),
+#'            ncol=2, nrow=3,
+#'            interior = list(parabola.up,
+#'                            parabola.down,
+#'                            cubic.up,
+#'                            cubic.down, 
+#'                            red.parabola.down,
+#'                            red.cubic.down)
+#' )
+#' 
+#' 
+#' build.page(interior.h=c(1/3,1/3,1/3),
+#'            interior.w=c(.5, .5),
+#'            ncol=2, nrow=3,
+#'            top.margin=.1,
+#'            bottom.margin=.1,
+#'            right.margin=.1,
+#'            left.margin=.1,
+#'            interior = list(parabola.up,
+#'                            parabola.down,
+#'                            cubic.up,
+#'                            cubic.down, 
+#'                            red.parabola.down,
+#'                            red.cubic.down))
+#' 
+#' 
+#' dev.off()
+#' 
+#' } 
 #' @author Greg Cicconetti
-build.page <- 
-  function (
-    interior.h=c(1),
-    interior.w=c(1),
-    ncol=1, nrow=1,
-    interior,
-    test.dim=FALSE,
-    page.height=8.5,
-    page.width=11,
-    right.margin=.75,
-    left.margin=.75,
-    top.margin=1.4-.5,
-    bottom.margin=1.75-.5,
-    pos = 1,
-    envir = as.environment(pos))
+build.page <- function (
+                interior.h=c(1),
+                interior.w=c(1),
+                ncol=1, nrow=1,
+                interior,
+                test.dim=FALSE,
+                page.height=8.5,
+                page.width=11,
+                right.margin=.75,
+                left.margin=.75,
+                top.margin=1.4-.5,
+                bottom.margin=1.75-.5,
+                pos = 1,
+                envir = as.environment(pos))
 {
-    if(sum(interior.h) !=1) return("Argument interior.h is not equal to 1.")
-    if(sum(interior.w) !=1) return("Argument interior.w is not equal to 1.")
-    if(length(interior.h) != nrow || length(interior.w) != ncol) return(cat("Check arguments: page.heights/page.widths does not correspond with ncol/nrow."))
-    
-    page.widths <- unit(c(right.margin, interior.w*(page.width-right.margin-left.margin), left.margin), units= "inches")
-    page.heights <- unit(c(top.margin, interior.h*(page.height - top.margin - bottom.margin), bottom.margin), units= "inches")
-    
-    if (test.dim == TRUE) {
-      grid.show.layout(grid.layout(nrow = nrow + 2, ncol = ncol + 2, 
-                 heights = page.heights, widths = page.widths))
-    }
-    if(test.dim==FALSE){
-      fill.it <- function(int.nrow = nrow, int.ncol = ncol, interior.list = interior, 
-              heights = page.heights, widths = page.widths) {
-        padded <- list()
-        for (i in 1:((int.ncol + 2) * (int.nrow + 2))) {
-          
-          assign("blankPanel", grid.rect(gp=gpar(col= "white"), draw=FALSE) , envir = envir)
-          
-          padded[[length(padded) + 1]] <- grid.rect(gp=gpar(col= "white"), draw=FALSE)
+        if(sum(interior.h) !=1) return("Argument interior.h is not equal to 1.")
+        if(sum(interior.w) !=1) return("Argument interior.w is not equal to 1.")
+        if(length(interior.h) != nrow || length(interior.w) != ncol) return(cat("Check arguments: page.heights/page.widths does not correspond with ncol/nrow."))
+        
+        page.widths <- unit(c(right.margin, interior.w*(page.width-right.margin-left.margin), left.margin), units= "inches")
+        page.heights <- unit(c(top.margin, interior.h*(page.height - top.margin - bottom.margin), bottom.margin), units= "inches")
+        
+        if (test.dim == TRUE) {
+                grid.show.layout(grid.layout(nrow = nrow + 2, ncol = ncol + 2, 
+                                             heights = page.heights, widths = page.widths))
+                cat(paste0(
+                        "Your page is a rectangle: ", page.width, " inches wide by ", page.height, " inches tall.\n", 
+                        "Your page setup allocates: ", left.margin,  " inches to the left margin.\n",
+                        "Your page setup allocates: ", right.margin, " inches to the right margin.\n",
+                        "Your page setup allocates: ", top.margin,  " inches to the top margin.\n",
+                        "Your page setup allocates: ", bottom.margin, " inches to the bottom margin.\n",
+                        "Your page setup allocates: a rectangle, ", page.width-right.margin-left.margin, " inches wide by ", page.height - top.margin - bottom.margin, " inches tall for graphics/tables."
+                ))
+                
         }
-        names(padded) <- rep("blankPanel", (int.nrow + 2) * (int.ncol + 
-                           2))
-        for (i in 1:length(interior.list)) {
-          padded[[((i - 1)%%(int.ncol)) + 2 + ((i - 1)%/%int.ncol + 
-                         1) * (int.ncol + 2)]] <- interior.list[[i]]
-          names(padded)[((i - 1)%%(int.ncol)) + 1 + ((i - 1)%/%int.ncol + 
-                         1) * (int.ncol + 2)] <- paste("Plot", i)
+        if(test.dim==FALSE){
+                fill.it <- function(int.nrow = nrow, int.ncol = ncol, interior.list = interior, 
+                                    heights = page.heights, widths = page.widths) {
+                        padded <- list()
+                        for (i in 1:((int.ncol + 2) * (int.nrow + 2))) {
+                                
+                                assign("blankPanel", grid.rect(gp=gpar(col= "white"), draw=FALSE) , envir = envir)
+                                
+                                padded[[length(padded) + 1]] <- grid.rect(gp=gpar(col= "white"), draw=FALSE)
+                        }
+                        names(padded) <- rep("blankPanel", (int.nrow + 2) * (int.ncol + 
+                                                                                     2))
+                        for (i in 1:length(interior.list)) {
+                                padded[[((i - 1)%%(int.ncol)) + 2 + ((i - 1)%/%int.ncol + 
+                                                                             1) * (int.ncol + 2)]] <- interior.list[[i]]
+                                names(padded)[((i - 1)%%(int.ncol)) + 1 + ((i - 1)%/%int.ncol + 
+                                                                                   1) * (int.ncol + 2)] <- paste("Plot", i)
+                        }
+                        padded[[length(padded) + 1]] <- int.ncol + 2
+                        names(padded)[length(padded)] <- "ncol"
+                        padded[[length(padded) + 1]] <- int.nrow + 2
+                        names(padded)[length(padded)] <- "nrow"
+                        padded[[length(padded) + 1]] <- heights
+                        names(padded)[length(padded)] <- "heights"
+                        padded[[length(padded) + 1]] <- widths
+                        names(padded)[length(padded)] <- "widths"
+                        return(padded)
+                }
+                args.list <- fill.it(int.nrow = nrow, int.ncol = ncol, interior.list = interior, 
+                                     heights = page.heights, widths = page.widths)
+                do.call(grid.arrange, args.list)
         }
-        padded[[length(padded) + 1]] <- int.ncol + 2
-        names(padded)[length(padded)] <- "ncol"
-        padded[[length(padded) + 1]] <- int.nrow + 2
-        names(padded)[length(padded)] <- "nrow"
-        padded[[length(padded) + 1]] <- heights
-        names(padded)[length(padded)] <- "heights"
-        padded[[length(padded) + 1]] <- widths
-        names(padded)[length(padded)] <- "widths"
-        return(padded)
-      }
-      args.list <- fill.it(int.nrow = nrow, int.ncol = ncol, interior.list = interior, 
-               heights = page.heights, widths = page.widths)
-      do.call(grid.arrange, args.list)
-    }
-  }
+}
+
+
 
 # annotate.page -------
 #' @title annotate.page
@@ -1657,9 +1751,9 @@ annotate.page <- function (
 # ggplot helper functions ----
 
 #' @title check.ggplot.outliers
+#' @param plot.object the ggplot object to check
 #' @description Reports via cat statements when ggplot windows truncate data
 #' @details Used in conjunction with log files created with start.session.log
-#' @inheritParams graphic.params
 #' @author David Wade
 check.ggplot.outliers <- function(plot.object=NULL) {
         
@@ -1681,19 +1775,19 @@ check.ggplot.outliers <- function(plot.object=NULL) {
                         
                         
                         
-                        if (line.build$scales$scales[[scale.i]]$aesthetics[1]=="y"){
+                        if (plot.object$scales$scales[[scale.i]]$aesthetics[1]=="y"){
                                 
-                                scale.y.min <- line.build$scales$scales[[scale.i]]$limits[1]
+                                scale.y.min <- plot.object$scales$scales[[scale.i]]$limits[1]
                                 
-                                scale.y.max <- line.build$scales$scales[[scale.i]]$limits[2]
+                                scale.y.max <- plot.object$scales$scales[[scale.i]]$limits[2]
                                 
                         }
                         
-                        if (line.build$scales$scales[[scale.i]]$aesthetics[1]=="x"){
+                        if (plot.object$scales$scales[[scale.i]]$aesthetics[1]=="x"){
                                 
-                                scale.x.min <- line.build$scales$scales[[scale.i]]$limits[1]
+                                scale.x.min <- plot.object$scales$scales[[scale.i]]$limits[1]
                                 
-                                scale.x.max <- line.build$scales$scales[[scale.i]]$limits[2]
+                                scale.x.max <- plot.object$scales$scales[[scale.i]]$limits[2]
                                 
                         }      
                         
@@ -2058,12 +2152,12 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")  
+        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
         cat("********************************************************************************\n")  
         cat(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figures2 Error: A fatal error ocurred causing the function to stop running")  
+        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
         cat(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
@@ -2078,12 +2172,12 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")  
+        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
         cat("********************************************************************************\n")  
         cat(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figures2 Error: A fatal error ocurred causing the function to stop running")  
+        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
         cat(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
@@ -2098,12 +2192,12 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")  
+        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
         cat("********************************************************************************\n")  
         cat(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figures2 Error: A fatal error ocurred causing the function to stop running")  
+        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
         cat(paste("\n  The error message was: ",myError))       
       })      
       dev.off()      
@@ -2118,12 +2212,12 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")  
+        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
         cat("********************************************************************************\n")  
         cat(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figures2 Error: A fatal error ocurred causing the function to stop running")  
+        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
         cat(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
@@ -2137,12 +2231,12 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")  
+        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
         cat("********************************************************************************\n")  
         cat(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figures2 Error: A fatal error ocurred causing the function to stop running")  
+        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
         cat(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
@@ -2157,12 +2251,12 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")  
+        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
         cat("********************************************************************************\n")  
         cat(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figures2 Error: A fatal error ocurred causing the function to stop running")  
+        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
         cat(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
@@ -2172,12 +2266,12 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {    
           myError <<- e$message    
           # this first message goes into the R history file    
-          cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")    
+          cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")    
           cat("********************************************************************************\n")    
           cat(paste("  The error message was: ",myError))    
           closeAllConnections()    
           # this second message goes to the console to alert the user    
-          cat("figures2 Error: A fatal error ocurred causing the function to stop running")
+          cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")
           cat(paste("\n  The error message was: ",myError))
         })
       else {
@@ -2186,12 +2280,12 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {
           myError <<- e$message
           # this first message goes into the R history file
-          cat("\n\nfigures2 Error: A fatal error ocurred causing the function to stop running\n")
+          cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")
           cat("********************************************************************************\n")
           cat(paste("  The error message was: ",myError))
           closeAllConnections()
           # this second message goes to the console to alert the user
-          cat("figures2 Error: A fatal error ocurred causing the function to stop running")
+          cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")
           cat(paste("\n  The error message was: ",myError))
         }) 
       } 
@@ -2200,8 +2294,8 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
 if (use.log==TRUE) {   stop.session.log() }
 }
 
-# all.in.one -------
-#' @title all.in.one
+# all_in_one -------
+#' @title all_in_one
 #' @description Produces a single pdf file with based on rows in the outputplan whose UseSubset column is equals 'Y'. A progress bar is displayed.
 #' @details Prerequisites: You need to have output, code, data directory paths defined in your workspace. These should take variable names od, cd, dd, respectively. This can be done by running a personalized set of the following commands:
 #' 
@@ -2214,7 +2308,7 @@ if (use.log==TRUE) {   stop.session.log() }
 #' A .pdf file called filename.pdf is deposited in the output directory.
 #' }
 #' @author Greg Cicconetti
-all.in.one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE) 
+all_in_one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE) 
 {
   if (!exists("outputplan")) 
     stop("outputplan does not exist in memory.")
@@ -2228,7 +2322,6 @@ all.in.one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE)
   pdf(paste(od, filename, sep = ""), height = 8.5, width = 11)
   
   if(reportNR ==TRUE){
-    nr <- 
       r<-  ggplot(data=outputplan[outputplan[,UseSubset]== "N",], aes(y=FigureNumber, x=0, label=paste(FigureStatus))) + 
       geom_text(size =4, hjust=0)+
       geom_text(data= outputplan[outputplan[,UseSubset]== "N",], aes(hjust=0, y=FigureNumber, x = .5, label=FigureTitle, size =4))+
@@ -2245,14 +2338,12 @@ all.in.one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE)
             counter, " of ", total, " (", round((counter/total) * 
                     100), "% done), Elapsed Time (mins): ", round(difftime(Sys.time(), 
                                  Start.time, units = "mins"), 2), sep = "")
-    setWinProgressBar(pb, counter, title = paste(filename, 
-                   "Progress Bar"), label = info)
+ #   setWinProgressBar(pb, counter, title = paste(filename,                   "Progress Bar"), label = info)
     source(paste(cd, outputplan$rcode[j], sep = ""))
   }
   dev.off()
-  close(pb)
-  elasped <- round(difftime(Sys.time(), Start.time, units = "mins"), 
-       2)
+ # close(pb)
+  elasped <- round(difftime(Sys.time(), Start.time, units = "mins"),  2)
   elasped
 }
 
@@ -2342,7 +2433,7 @@ start.session.log<-function(x, outputfile = "example.PDF", pos=1, envir=as.envir
   # print log header information
   cat("*******************************************************************\n")
   cat("*                 *\n")
-  cat("* figures2 R Graphics System              *\n")
+  cat("* figuRes2 R Graphics System              *\n")
   cat("*                 *\n")    
   cat("* Graphics session history log file             *\n")
   cat("*                 *\n")
@@ -2526,7 +2617,7 @@ NULL
 #' @name outputplan
 #' @docType data
 #' @author Greg Cicconetti
-#' @keywords dataset, run.specific, all.in.one
+#' @keywords dataset, run.specific, all_in_one
 NULL
 
 #' This is a dataset that would need some pre-processing ahead of using line.plot
@@ -2545,9 +2636,17 @@ NULL
 #' @keywords dataset, line.plot
 NULL
 
+
+#' This is a dataset that would need some pre-processing ahead of using line.plot
+#'
+#' @name category_by_visit
+#' @docType data
+#' @author Greg Cicconetti
+#' @keywords dataset, category_by_visit
+NULL
 # PACKAGE DOCUMENTATION -------
 
-#' figures2: A package for building and annotating mult-panel figures with application to large scale figure production
+#' figuRes2: A package for building and annotating mult-panel figures with application to large scale figure production
 #'
 #'This package takes the view that a figure is a collection of graphs/tables assembled on a page and optionally annotated with metadata (titles, headers and footers). The steps to figure building can then be chunked as follows: \enumerate{
 #'   \item Data importation
@@ -2557,7 +2656,7 @@ NULL
 #'   \item Optional annotation to complete the figure
 #'   }
 #'   
-#' The figures2 package provides a suite of functions for producing harmonized figures using the ggplot2 packages. Additional ggplot themes are included. The package provides functions to assist with assembling multiple graphics on a page and annotating the page with headers and footnotes.  Functions to facilitate data processing and mass figure production are included.  Data sets are included to demonstrate how the functions work and this document contains a section that walks through the workflow for large scale figure production. 
+#' The figuRes2 package provides a suite of functions for producing harmonized figures using the ggplot2 packages. Additional ggplot themes are included. The package provides functions to assist with assembling multiple graphics on a page and annotating the page with headers and footnotes.  Functions to facilitate data processing and mass figure production are included.  Data sets are included to demonstrate how the functions work and this document contains a section that walks through the workflow for large scale figure production. 
 #' 
 #' All graphing functions in this package presume a data.frame is supplied with a specific data structure.  In practice these can be either imported (e.g., as a .csv file) or generated with R (e.g., output of simulation or call to a probability distirbution function). 
 #' 
@@ -2579,7 +2678,7 @@ NULL
 #' 
 #' @docType package
 #' @author Greg Cicconetti
-#' @name figures2
+#' @name figuRes2
 NULL
 
 

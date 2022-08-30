@@ -1,12 +1,22 @@
+---
+title: "Kaplan-Meirer plots with km.plot and sync.ylab.widths functions"
+author: "Greg Cicconetti"
+date: '2022-08-15'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 %\VignetteEngine{knitr::knitr}
 %\VignetteIndexEntry{The km.plot and sync.ylab.widths functions}
 
 
 # Example 1: Juxtaposing two Kaplan-Meier graphics and their At Risk tables
+
 Intialize a session:
+
 ```{r, results='hide'}
 remove(list=ls())
-require(figures2) 
+require(figures2)
 require(survival)
 require(ggplot2)
 require(plyr)
@@ -117,6 +127,14 @@ In manipulating the plot margins keep in mind that overlapping graphics can obsc
 ```{r, fig.cap="A Figure that arranges four graphics"}
 build.page(interior.h = c(.8, .2),
            interior.w = c(.6,.4),
+           ncol=2, nrow=2,
+           interior = list(comeback.M[[1]], comeback.F[[1]],
+                           comeback.M[[2]], comeback.F[[2]]))
+```
+
+```{r, fig.cap="A Figure that better arranges four graphics"}
+build.page(interior.h = c(.8, .2),
+           interior.w = c(.5,.5),
            ncol=2, nrow=2,
            interior = list(comeback.M[[1]], comeback.F[[1]],
                            comeback.M[[2]], comeback.F[[2]]))
