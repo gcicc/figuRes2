@@ -5,7 +5,7 @@ Version: 1.0.0
 Date: 2022-08-29
 Author: Greg Cicconetti, David Wade
 URL: https://github.com/gcicc/figures2
-Maintainer: Greg Cicconetti <greg.cicconetti@takeda.com>
+Maintainer: Greg Cicconetti <greg.cicconetti@gmail.com>
 Description: We view a figure as a collection of graphs/tables assembled on a page and optionally annotated with metadata
     (titles, headers and footers). Functions and supporting documentation are offered to streamline a variety of figure production task.
 License: GPL-2
