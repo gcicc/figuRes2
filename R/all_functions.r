@@ -2317,8 +2317,10 @@ all_in_one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE)
   total <- length(which(outputplan[, UseSubset] == "Y"))
   counter <- 0
   Start.time <- Sys.time()
-  pb <- winProgressBar(title = "Example progress bar", label = "0% done", 
-           width = 500, min = 0, max = total, initial = 0)
+  
+  # Disabled due to CRAN error on Debian
+  # pb <- winProgressBar(title = "Example progress bar", label = "0% done", 
+  #          width = 500, min = 0, max = total, initial = 0)
   pdf(paste(od, filename, sep = ""), height = 8.5, width = 11)
   
   if(reportNR ==TRUE){
@@ -2338,7 +2340,7 @@ all_in_one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE)
             counter, " of ", total, " (", round((counter/total) * 
                     100), "% done), Elapsed Time (mins): ", round(difftime(Sys.time(), 
                                  Start.time, units = "mins"), 2), sep = "")
- #   setWinProgressBar(pb, counter, title = paste(filename,                   "Progress Bar"), label = info)
+ #   setWinProgressBar(pb, counter, title = paste(filename, "Progress Bar"), label = info)
     source(paste(cd, outputplan$rcode[j], sep = ""))
   }
   dev.off()
