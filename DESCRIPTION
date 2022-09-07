@@ -7,7 +7,7 @@ Authors@R:
     c(person(given = "Greg",
              family = "Cicconetti",
              role = c("aut", "cre"),
-             email = "hadley@rstudio.com",
+             email = "greg.cicconetti@gmail.com",
              comment = c(ORCID = "0000-0002-5380-7516")),
       person(given = "David",
              family = "Wade",
@@ -25,4 +25,4 @@ Suggests: RColorBrewer, knitr, rmarkdown, tidyverse, latex2exp
 ByteCompile: TRUE
 VignetteBuilder: knitr
 RoxygenNote: 7.2.1
-References: <http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot>
+

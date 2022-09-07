@@ -19,5 +19,5 @@ facetAdjust(x, pos = c("up", "down"), newpage = is.null(vp), vp = NULL)
 This function takes a 'facet wrapped' ggplot and adds axis labels when a rxc grid is incomplete
 }
 \references{
-Adapted from: http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot
+<http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot>
 }

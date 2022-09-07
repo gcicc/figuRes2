@@ -2288,7 +2288,7 @@ fmt <- function(digits=2){
 
 #' @title FacetLabelAdjuster
 #' @description This function takes a 'facet wrapped' ggplot and adds axis labels when a rxc grid is incomplete  
-#' @references Adapted from: http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot
+#' @references <http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot>
 #' @param x a ggplot object
 #' @param pos maintain default
 #' @param newpage maintain default
