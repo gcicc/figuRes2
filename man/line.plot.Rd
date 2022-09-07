@@ -80,6 +80,9 @@ line.plot(
 
 \item{linetype.col}{name of parent.df column associated with linetype}
 }
+\value{
+A ggplot object is returned.
+}
 \description{
 A function for creating harmonized line plots with optional errorbars.
 }

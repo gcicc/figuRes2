@@ -37,5 +37,4 @@ importFrom("grDevices", "bmp", "dev.cur", "dev.off", "extendrange",
              "graphics.off", "jpeg", "pdf", "png", "postscript",
              "rainbow")
 importFrom("graphics", "boxplot", "par")
-importFrom("utils", "read.csv", "sessionInfo", "setWinProgressBar",
-             "winProgressBar")
+importFrom("utils", "read.csv", "sessionInfo")

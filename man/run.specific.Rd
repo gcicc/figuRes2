@@ -7,12 +7,12 @@
 run.specific(
   source.code = "g_AErr2.r",
   outfile = "",
-  toPDF = F,
-  toWMF = F,
-  toJPEG = F,
-  toPNG = F,
-  toBMP = F,
-  toEPS = F,
+  toPDF = FALSE,
+  toWMF = FALSE,
+  toJPEG = FALSE,
+  toPNG = FALSE,
+  toBMP = FALSE,
+  toEPS = FALSE,
   dpires = 600,
   use.log = FALSE
 )
@@ -20,7 +20,7 @@ run.specific(
 \arguments{
 \item{source.code}{This is intended to be a darapladib graphics driver file returning a graphic possibly with complete headers and footers.}
 
-\item{outfile}{If (toPDF==T & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode ==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.}
+\item{outfile}{If (toPDF== TRUE & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode ==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.}
 
 \item{toPDF}{Logical. If TRUE a .pdf file will be created. If FALSE graphic is sent to screen. (run.specific)}
 

@@ -47,6 +47,9 @@ dot.plot(
 
 \item{category.palette}{colors assoicated with categorical variable}
 }
+\value{
+A ggplot object is returned.
+}
 \description{
 A function for creating harmonized ggplot2 dot plots with compatiability with table.plot and forest.plot.
 }

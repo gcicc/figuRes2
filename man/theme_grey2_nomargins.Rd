@@ -23,6 +23,9 @@ theme_table_nomargins(base_size = 12, base_family = "")
 
 \item{base_family}{used in set_theme calls}
 }
+\value{
+The returns a function that can be passed to ggplot2::theme_set
+}
 \description{
 Adapts theme_grey() found in ggplot2
 }
@@ -41,8 +44,8 @@ axis.text colour changed from "grey50" to "black"; legend.position changed from 
 
 }}
 \examples{
-\dontrun{
-theme_set(theme_grey2_nomargins())
+{
+ggplot2::theme_set(theme_grey2_nomargins())
 }
 }
 \author{

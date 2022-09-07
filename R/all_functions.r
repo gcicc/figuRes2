@@ -1,17 +1,10 @@
 utils::globalVariables(c("outputplan", "od", "cd", "dd", "logd", "FigureNumber", "graph.region.h", "graph.region.w", "FigureStatus", "FigureTitle", "i" ))
-# Sys.setenv(R_GSCMD = "c:\\Rtools\\bin\\gs915w64.exe")
-
-
-# How to fix "Unable to find GhostScript executable to run checks on size reduction" error upon package check in R?
-# https://stackoverflow.com/questions/37197603/how-to-fix-unable-to-find-ghostscript-executable-to-run-checks-on-size-reductio
-# I don't have this installed...
-# Sys.setenv(R_GSCMD = "C:\\Program Files (x86)\\gs\\gs9.19\\bin\\gswin32c.exe")
 
 # Graphics functions for figuRes2 ------
 
 # Standard Graphics Names ------
 #' @title Standard graphics names
-#' @description This is a dummy function whose purpose is to serve as repositiory for arguments used by figuRes2 functions.
+#' @description This is a dummy function whose purpose is to serve as repository for arguments used by figuRes2 functions.
 #' @param add.fignum logical (annotate.page)
 #' @param addBars logical to add error bars (line.plot)
 #' @param addTime logical for ading time stamp (annotate.page)
@@ -63,7 +56,7 @@ utils::globalVariables(c("outputplan", "od", "cd", "dd", "logd", "FigureNumber",
 #' @param nrow number of rows for the grid of graphics being built by build.page 
 #' @param nsubj.plot.label used in km.plot
 #' @param od directory where output files are sent 
-#' @param outfile If (toPDF==T & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode ==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.
+#' @param outfile If (toPDF== TRUE & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode ==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.
 #' @param override override 
 #' @param page.height used by build.page and annotate.page; presumed to be inches 
 #' @param page.width used by build.page and annotate.page; presumed to be inches 
@@ -230,24 +223,25 @@ return("Hello, this function is just a convient location to store argument names
 #' @title bar.plot
 #' @description A function for creating harmonized ggplot2 bar charts
 #' @inheritParams graphic.params
+#' @return A ggplot object is returned.
 #' @examples 
-#' \dontrun{
-#' # pre-processing
+#' {
+#' # Access dummy demography dataset
 #' data(demog.data)
 #' levels(demog.data$SEX) <- c("Female", "Male")
 #' 
 #' # A ggplot object is returned
 #' p1 <- bar.plot(parent.df = demog.data, y.col = "SEX", 
 #' x.label= "Gender", y.label = "Percentage of Subjects", 
-#' category.col = "REGRAP", category.label = "Region", 
+#' category.col = "REGION", category.label = "Region", 
 #' y.limits = c(0, 0.35), y.ticks = seq(0, 0.5, 0.05), 
 #' bar.position= "dodge", 
-#' category.palette = brewer.pal(n=5, name = "Dark2"),
+#' category.palette = RColorBrewer::brewer.pal(n=5, name = "Dark2"),
 #' text.size =4, text.buffer=.025, killMissing = TRUE) 
 #' print(p1)
 #' } 
 #' @author Greg Cicconetti
-bar.plot <-   function (
+bar.plot <- function(
   parent.df, 
   category.col = "TRTGRP",
   category.label = "Treatment Group", 
@@ -268,7 +262,7 @@ Var1 <- Var2 <- Freq <- Prop <- Prop.text <- CATEGORY <- RESPONSE <- LOWER <- UP
   if(is.null(y.limits) || is.null(y.ticks)) {
     y.limits = c(0, 1)
     y.ticks <- seq(0,1,.1)
-    cat("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
+    message("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
   }
   tab <- data.frame(table(parent.df[, y.col], parent.df[, category.col]))
   if (killMissing == T) {
@@ -277,7 +271,7 @@ Var1 <- Var2 <- Freq <- Prop <- Prop.text <- CATEGORY <- RESPONSE <- LOWER <- UP
     tab$Var1 <- factor(tab$Var1)
   }
   
-  barplot.df <- ddply(tab, .(Var1), mutate, Prop=Freq/sum(Freq))
+  barplot.df <- ddply(tab, .(Var1), mutate, Prop= Freq/sum(Freq))
   barplot.df$Prop.text <- barplot.df$Prop + text.buffer
   p1 <- ggplot(data = barplot.df, aes(x = Var1, y = Prop, fill = Var2)) + 
     geom_bar(stat = "identity", position = bar.position) + 
@@ -295,25 +289,26 @@ Var1 <- Var2 <- Freq <- Prop <- Prop.text <- CATEGORY <- RESPONSE <- LOWER <- UP
 #' @title box.plot
 #' @description A function for creating harmonized ggplot2 boxplots
 #' @inheritParams graphic.params
+#' @return A ggplot object is returned.
 #' @examples 
-#' \dontrun{
-#' #' data(demog.data)
+#' {
+#' data(demog.data)
 #' # pre-processing
 #' 
 #' levels(demog.data$SEX) <- c("Female", "Male")
 #' 
-#' # p1 <- box.plot(parent.df = demog.data, 
-#' #     y.col = "VSBMI", 
-#' #     y.label = expression(paste("BMI (m/kg",phantom()^2,")")), 
-#' #     category.col = "SEX",
-#' #     category.label = "Gender", 
-#' #      y.limits = c(0, 70), 
-#' #      y.ticks = seq(0, 100, 10), 
-#' #      y.digits = 0,
-#' #      shape.palette = c(20, 20),
-#' #      category.palette = rainbow(6),
-#' #      text.size = 4)
-#' # print(p1)
+#'  p1 <- box.plot(parent.df = demog.data, 
+#'      y.col = "BMI", 
+#'      y.label = expression(paste("BMI (m/kg",phantom()^2,")")), 
+#'      category.col = "SEX",
+#'      category.label = "Gender", 
+#'       y.limits = c(0, 70), 
+#'       y.ticks = seq(0, 100, 10), 
+#'       y.digits = 0,
+#'       shape.palette = c(20, 20),
+#'       category.palette = rainbow(6),
+#'       text.size = 4)
+#'  print(p1)
 #' }
 #' @author Greg Cicconetti
 box.plot <- function (parent.df, 
@@ -330,7 +325,7 @@ box.plot <- function (parent.df,
         CATEGORY <- RESPONSE <- LOWER <- UPPER <- MEDIAN <- NULL 
         
         get.whiskers <- function(dframe) {
-                bplot <- boxplot(dframe$RESPONSE ~ dframe$CATEGORY, plot = F)
+                bplot <- boxplot(dframe$RESPONSE ~ dframe$CATEGORY, plot = FALSE)
                 whiskers <- with(bplot, 
                                  data.frame(CATEGORY = names, 
                                             LOWER = stats[1, ], 
@@ -348,10 +343,10 @@ box.plot <- function (parent.df,
         
         # Set resonable default limits and ticks if NULL
         if(is.null(y.limits) || is.null(y.ticks)) {
-                y.limits = c(min(boxplot.df$RESPONSE, na.rm=T),
-                             max(boxplot.df$RESPONSE, na.rm=T)); 
+                y.limits = c(min(boxplot.df$RESPONSE, na.rm= TRUE),
+                             max(boxplot.df$RESPONSE, na.rm= TRUE)); 
                 y.ticks <- pretty(boxplot.df$RESPONSE)
-                cat("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
+                message("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
         }
         
         whiskers <- get.whiskers(dframe = boxplot.df)
@@ -383,46 +378,31 @@ box.plot <- function (parent.df,
                 scale_colour_manual(values = category.palette) + 
                 guides(colour = "none") + 
                 labs(y = y.label, x = category.label, fill = category.label, shape = category.label)+
-                theme(legend.position= "bottom")
+                theme(legend.position = "bottom")
         return(p1)
 }
-
-# load("~/R packages/figuRes2/data/demog.data.rda")
-# demog.data
-# box.plot (parent.df=demog.data, 
-#           y.col = "BMI", 
-#           y.label = "BMI (m/kg^2)", 
-#           category.col = "TRTGRP",
-#           category.label = "Treatment Group", 
-#           y.limits = c(10, 100), 
-#           y.ticks = seq(10, 100, 10), 
-#           y.digits = 0,
-#           shape.palette = c(1,2),
-#           category.palette = c("red", "blue"),
-#           text.size = 3)
-
-
 
 # cdf.plot ------
 #' @title cdf.plot
 #' @description A function for creating harmonized ggplot2 cumulative distribution plots. Statistics computed by stat_ecdf().
 #' @inheritParams graphic.params
+#' @return A ggplot object is returned.
 #' @examples 
-#' \dontrun{
-#' # data(demog.data)
-#' # cdf.plot(parent.df= demog.data, 
-#' #   category.col = "SEX",
-#' #   category.label   = "Gender",
-#' #   response.col = "VSBMI", 
-#' #   x.label = expression(paste("BMI (m/kg",phantom()^2,")")), 
-#' #   x.limits=c(0,60),
-#' #   x.ticks=seq(0,60,5),
-#' #   y.label = "Percentage of Subjects", 
-#' #   y.limits= c(0,1),
-#' #   y.ticks = seq(0,1,.2),
-#' #   line.size =.75,
-#' #   category.palette =c("red", "blue")
-#' #   )
+#' {
+#' data(demog.data)
+#' cdf.plot(parent.df= demog.data, 
+#'   category.col = "SEX",
+#'   category.label   = "Gender",
+#'   response.col = "BMI", 
+#'   x.label = expression(paste("BMI (m/kg",phantom()^2,")")), 
+#'   x.limits=c(0,60),
+#'   x.ticks=seq(0,60,5),
+#'   y.label = "Percentage of Subjects", 
+#'   y.limits= c(0,1),
+#'   y.ticks = seq(0,1,.2),
+#'   line.size =.75,
+#'   category.palette =c("red", "blue")
+#'   )
 #' }
 #' @author Greg Cicconetti
 cdf.plot <-
@@ -448,16 +428,16 @@ cdf.plot <-
     
     # Set reasonable limits & ticks if NULL
     if(is.null(x.limits) || is.null(x.ticks)) {
-      x.limits = c(min(cdf.df$RESPONSE, na.rm=T),
-       max(cdf.df$RESPONSE, na.rm=T)) 
+      x.limits = c(min(cdf.df$RESPONSE, na.rm= TRUE),
+       max(cdf.df$RESPONSE, na.rm= TRUE)) 
       x.ticks <- pretty(cdf.df$RESPONSE)
-      cat("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
+      message("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
     }
     
     if(is.null(y.limits) || is.null(y.ticks)) {
       y.limits = c(0,1) 
       y.ticks <- seq(0,1,.1)
-      cat("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
+      message("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
     }
     
     p1 <- ggplot(data = cdf.df, aes(x = RESPONSE, colour = CATEGORY, linetype = CATEGORY)) + 
@@ -473,6 +453,7 @@ cdf.plot <-
 # dot.plot ------
 #' @title dot.plot
 #' @description A function for creating harmonized ggplot2 dot plots with compatiability with table.plot and forest.plot. 
+#' @return A ggplot object is returned.
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti
 dot.plot <- function (parent.df = dot.df.melt, category.col = "Treatment", 
@@ -481,20 +462,19 @@ dot.plot <- function (parent.df = dot.df.melt, category.col = "Treatment",
           x.ticks = seq(0, 1, 0.2),
           y.limits = NULL, shape.palette = c(16, 17), 
           x.label = "Estimate", y.label = "Item",
-          category.palette = c("red", "blue")) 
-{
+          category.palette = c("red", "blue")) {
 dot.df.melt <- RANK <- POINT.EST <- CATEGORY <- NULL
   
   names(parent.df) <- toupper(names(parent.df))
   if (is.null(y.limits)) {
     y.limits = c(min(parent.df[, y.rank.col], na.rm = T) - 
              0.25, max(parent.df[, y.rank.col], na.rm = T) + 0.25)
-    cat("y.limits are set to NULL; defaults are used.\n")
+    message("y.limits are set to NULL; defaults are used.\n")
   }
   if (is.null(x.limits) || is.null(x.ticks)) {
     x.limits = c(0, 1)
     x.ticks <- seq(0, 1, 0.1)
-    cat("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
+    message("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
   }
   dotplot.df <- data.frame(CATEGORY = parent.df[, category.col], 
          RANK = parent.df[, y.rank.col], 
@@ -517,6 +497,7 @@ dot.df.melt <- RANK <- POINT.EST <- CATEGORY <- NULL
 #' @title forest.plot
 #' @description A function for creating harmonized forest.plots via ggplot2 offering compatiability with table.plot and dot.plot. 
 #' @inheritParams graphic.params
+#' @return A ggplot object is returned.
 #' @author Greg Cicconetti
 forest.plot <- 
         function (parent.df, 
@@ -541,9 +522,9 @@ forest.plot <-
                 xmin <- xmax <- ymin <- ymax <- period <- POINT.EST <- RANK <- CATEGORY <- LOWER.LIM <- UPPER.LIM <- NULL
                 
                 if(is.null(y.limits) ) {
-                        y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
-                                     max(parent.df[,y.rank.col], na.rm=T)+.25) 
-                        cat("y.limits are set to NULL; defaults are used.\n")
+                        y.limits = c(min(parent.df[,y.rank.col], na.rm= TRUE)-.25,
+                                     max(parent.df[,y.rank.col], na.rm= TRUE)+.25) 
+                        message("y.limits are set to NULL; defaults are used.\n")
                 }
                 
                 # Cap names
@@ -559,7 +540,7 @@ forest.plot <-
                 
                 # Break if x.limits or x.ticks are not supplied
                 if (is.null(x.limits) || is.null(x.ticks)) {
-                        cat("Either x.limits or x.ticks are set to NULL; specify.")
+                        message("Either x.limits or x.ticks are set to NULL; specify.")
                         return()
                 }
                 
@@ -643,8 +624,10 @@ forest.plot <-
 #' @param xlim inherited from curve
 #' @param ... inherited from curve
 #' @seealso graphics::curve
+#' @return A data.frame is returned. Columns include x, y, and optionally category.
 #' @examples 
-#' \dontrun{
+#' {
+#' require(ggplot2)
 #' curve(dnorm(x, mean=0, sd=1), from=-4, to = 4, n= 1001)
 #' ggplot(gcurve(expr = dnorm(x, mean=0, sd=1),from=-4, to = 4, n= 1001,
 #' category= "Standard Normal"), aes(x=x, y=y)) + geom_line()
@@ -712,7 +695,7 @@ gcurve <- function (expr, from = NULL, to = NULL, n = 101, add = FALSE,
   #   else plot(x = x, y = y, type = type, xlab = xlab, ylab = ylab, 
   #       xlim = xlim, log = lg, ...)
   for.return <- data.frame(x = x, y = y)
-  if(is.null(category)==FALSE) for.return$category <- factor(category)
+  if(is.null(category)== FALSE) for.return$category <- factor(category)
   return(for.return)
 }
 
@@ -720,39 +703,41 @@ gcurve <- function (expr, from = NULL, to = NULL, n = 101, add = FALSE,
 #' @title km.plot 
 #' @description A function for creating harmonized Kaplan-Meier plots and accompanying At Risk table.
 #' @inheritParams graphic.params
+#' @return A ggplot object is returned.
 #' @examples 
-#' \dontrun{
-#' # data(km.data)
-#' # working.df <- km.data
-#' # head(working.df)
-#' # working.df$centime <- working.df$centime/30.4375
-#' # km.M <- km.plot(parent.df = subset(working.df, SEX== "M"),
-#' #       category.col = "TRTGRP",
-#' #       category.palette = ("red", "blue"),
-#' #       at.risk.palette = c("red","blue"),           
-#' #       linetype.palette = c("solid","dotted"), 
-#' #       y.limits=c(0,.25), 
-#' #       y.ticks=seq(0,.25,.05), 
-#' #       x.limits=c(-3,48),
-#' #       x.ticks=seq(0,48,6))
-#' # print(km.M[[1]])
-#' # print(km.M[[2]])
-#' # grid.arrange(km.M[[1]] + theme(legend.position= "bottom"), km.M[[2]], ncol=1)
-#' # comeback <- sync.ylab.widths(list(km.M[[1]]+ theme(legend.position= "bottom"), km.M[[2]]))
-#' # grid.arrange(comeback[[1]] , comeback[[2]], ncol=1)
-#' # build.page(interior.h = c(.8, .2),
-#' #      interior.w = c(1),
-#' #       ncol=1, nrow=2,
-#' #       interior = list(comeback[[1]], 
-#' #           comeback[[2]]))
-#'  }
+#' {
+#' require(ggplot2); require(gridExtra)
+#' data(km.data)
+#' working.df <- km.data
+#' head(working.df)
+#' km.M <- km.plot(parent.df = subset(working.df, SEX== "M"),
+#'       centime.col = "CENTIME.DAY",
+#'       category.col = "TRTGRP",
+#'       category.palette = c("red", "blue"),
+#'       at.risk.palette = c("red","blue"),              
+#'       linetype.palette = c("solid","dotted"), 
+#'       y.limits=c(0,.01), 
+#'       y.ticks=seq(0,.01,.005), 
+#'       x.limits=c(-3,48),
+#'       x.ticks=seq(0,48,6))
+#' print(km.M[[1]])
+#' print(km.M[[2]])
+#' grid.arrange(km.M[[1]] + theme(legend.position= "bottom"), km.M[[2]], ncol=1)
+#' comeback <- sync.ylab.widths(list(km.M[[1]]+ theme(legend.position= "bottom"), km.M[[2]]))
+#' grid.arrange(comeback[[1]] , comeback[[2]], ncol=1)
+#' build.page(interior.h = c(.8, .2),
+#'       interior.w = c(1),
+#'        ncol=1, nrow=2,
+#'        interior = list(comeback[[1]], 
+#'            comeback[[2]]))
+#' }
 #' @seealso sync.ylab.widths, nsubj.plot
 #' @author Greg Cicconetti
 km.plot <- 
   function (parent.df, 
       censor.col = "CENSOR", 
-      centime.col = "CENTIME", 
-      category.col = "REGRAP", 
+      centime.col = "CENTIME.DAY", 
+      category.col = "REGION", 
       category.palette = rainbow(5), 
       at.risk.palette = rainbow(5), 
       category.label = "Treatment Group", 
@@ -762,16 +747,16 @@ km.plot <-
       y.label = "Percetage of Subjects", 
       x.limits = c(0, 48), 
       x.ticks = seq(0, 48, 3), 
-      y.ticks = seq(0, 1, 0.2), 
-      y.limits = c(0, 1), 
+      y.ticks = seq(0, .01, 0.005), 
+      y.limits = c(0, .01), 
       line.size = 0.75,
-      fromthetop=FALSE,
+      fromthetop= FALSE,
       text.size =4) 
 {
 CATEGORY <- AT.RISK <- XVALUES <- YVALUES <- NULL    
     names(parent.df) <- toupper(names(parent.df))
     
-    if(is.null(category.col)==FALSE){
+    if(is.null(category.col) == FALSE){
       km.df <- data.frame(CENTIME = parent.df[, centime.col], 
               CENSOR = parent.df[, censor.col], 
               CATEGORY = parent.df[, category.col])
@@ -809,17 +794,17 @@ add0 <- add0[, c("XVALUES", "YVALUES", "AT.RISK", "CATEGORY")]
 kmfit.out <- rbind(kmfit.out, add0)
 
 if(is.null(x.limits) || is.null(x.ticks)) {
-  x.limits = c(min(kmfit.out$XVALUES, na.rm=T),
-         max(kmfit.out$XVALUES, na.rm=T)); 
+  x.limits = c(min(kmfit.out$XVALUES, na.rm= TRUE),
+         max(kmfit.out$XVALUES, na.rm= TRUE)); 
   x.ticks <- pretty(kmfit.out$XVALUES)
-  cat("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
+  message("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
 }
 
 if(is.null(y.limits) || is.null(y.ticks)) {
-  y.limits = c(min(kmfit.out$YVALUES, na.rm=T),
-         max(kmfit.out$YVALUES, na.rm=T)); 
+  y.limits = c(min(kmfit.out$YVALUES, na.rm= TRUE),
+         max(kmfit.out$YVALUES, na.rm= TRUE)); 
   y.ticks <- pretty(kmfit.out$YVALUES)
-  cat("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
+  message("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
 }
 
 p1 <- ggplot(data = kmfit.out, 
@@ -857,9 +842,7 @@ p2 <- nsubj.plot(parent.df = at.risk,
 )
 
 return(list(p1, p2, at.risk))}
-
-
-if(is.null(category.col)==TRUE){
+    if(is.null(category.col)==TRUE){
   
   km.df <- data.frame(CENTIME = parent.df[, centime.col], 
           CENSOR = parent.df[, censor.col])
@@ -886,16 +869,16 @@ add0 <- add0[, c("XVALUES", "YVALUES", "AT.RISK")]
 kmfit.out <- rbind(kmfit.out, add0)
 
 if(is.null(x.limits) || is.null(x.ticks)) {
-  x.limits = c(min(kmfit.out$XVALUES, na.rm=T),
-         max(kmfit.out$XVALUES, na.rm=T))
+  x.limits = c(min(kmfit.out$XVALUES, na.rm= TRUE),
+         max(kmfit.out$XVALUES, na.rm= TRUE))
   x.ticks <- pretty(kmfit.out$XVALUES)
-  cat("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
+  message("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
 }
 if(is.null(y.limits) || is.null(y.ticks)) {
-  y.limits = c(min(kmfit.out$YVALUES, na.rm=T),
-         max(kmfit.out$YVALUES, na.rm=T)); 
+  y.limits = c(min(kmfit.out$YVALUES, na.rm= TRUE),
+         max(kmfit.out$YVALUES, na.rm= TRUE)); 
   y.ticks <- pretty(kmfit.out$YVALUES)
-  cat("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
+  message("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
 }
 
 p1 <- ggplot(data = kmfit.out, 
@@ -925,6 +908,7 @@ return(list(p1, p2, at.risk))}
 # line.plot ------
 #' @title line.plot 
 #' @description A function for creating harmonized line plots with optional errorbars.
+#' @return A ggplot object is returned.
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti/David Wade
 line.plot <- function (parent.df,
@@ -964,16 +948,16 @@ XVALUES <- YVALUES <- YMIN <- YMAX <- CATEGORY <- LTYPE <- NULL
           LTYPE = parent.df[,linetype.col])
   
   if (is.null(x.limits) || is.null(x.ticks)) {
-    x.limits = c(min(lineplot.df$XVALUES, na.rm = T), max(lineplot.df$XVALUES, 
-                      na.rm = T))
+    x.limits = c(min(lineplot.df$XVALUES, na.rm = TRUE), max(lineplot.df$XVALUES, 
+                      na.rm = TRUE))
     x.ticks <- pretty(lineplot.df$XVALUES)
-    x.ticks.labels <- cat("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
+    x.ticks.labels <- message("Either x.limits or x.ticks are set to NULL; defaults are used.\n")
   }
   if (is.null(y.limits) || is.null(y.ticks)) {
-    y.limits = c(min(lineplot.df$YVALUES, na.rm = T), max(lineplot.df$YVALUES, 
-                      na.rm = T))
+    y.limits = c(min(lineplot.df$YVALUES, na.rm = TRUE), max(lineplot.df$YVALUES, 
+                      na.rm = TRUE))
     y.ticks <- pretty(lineplot.df$YVALUES)
-    cat("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
+    message("Either y.limits or y.ticks are set to NULL; defaults are used.\n")
   }
   pd <- position_dodge(pdval)
   
@@ -1008,6 +992,7 @@ XVALUES <- YVALUES <- YMIN <- YMAX <- CATEGORY <- LTYPE <- NULL
 # nsubj.plot ------
 #' @title nsubj.plot 
 #' @description A function to create tables to accompany KMs and lineplots
+#' @return A ggplot object is returned.
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti/David Wade
 nsubj.plot <- 
@@ -1027,7 +1012,7 @@ nsubj.plot <-
     
 XVALUES <- YVALUES <- CATEGORY.COLOR <- TEXT <- NULL
     if (is.null(x.limits) || is.null(x.ticks)) {
-      cat("Either x.limits or x.ticks are set to NULL; specify.\n")
+      message("Either x.limits or x.ticks are set to NULL; specify.\n")
       
     }
     names(parent.df) <- toupper(names(parent.df))
@@ -1042,7 +1027,7 @@ XVALUES <- YVALUES <- CATEGORY.COLOR <- TEXT <- NULL
       geom_text(size = text.size) + 
       labs(y = y.label, x = x.label) + scale_color_manual(values = category.palette) + 
       scale_x_continuous(limits = x.limits, breaks = x.ticks, 
-             labels = x.ticks.labels) + guides(color = FALSE) + 
+             labels = x.ticks.labels) + guides(color = "none") + 
       theme_table_nomargins() + theme(axis.ticks = element_line(color = "white"), 
               axis.text.x = element_text(color = "white"))
     
@@ -1053,6 +1038,7 @@ XVALUES <- YVALUES <- CATEGORY.COLOR <- TEXT <- NULL
 #' @description A function for creating harmonized table plots with 
 #' A function for plotting columns of text in a figure offering compatiability with forest.plot and dot.plot. 
 #' @inheritParams graphic.params
+#' @return A ggplot object is returned.
 #' @param xtick.labs xtick labels
 #' @author Greg Cicconetti
 table.plot <- function(
@@ -1075,22 +1061,22 @@ table.plot <- function(
         
         CATEGORY <- RANK <- TEXT.COL1 <- TEXT.COL2 <- TEXT.COL3 <- TEXT.COL4 <- NULL
         if(is.null(y.limits) ) {
-                y.limits = c(min(parent.df[,y.rank.col], na.rm=T)-.25,
-                             max(parent.df[,y.rank.col], na.rm=T)+.25) 
-                cat("y.limits are set to NULL; defaults are used.\n")
+                y.limits = c(min(parent.df[,y.rank.col], na.rm= TRUE)-.25,
+                             max(parent.df[,y.rank.col], na.rm= TRUE)+.25) 
+                message("y.limits are set to NULL; defaults are used.\n")
         }
         if(is.null(x.limits) ) {
                 x.limits = 1:(4-sum(c(is.null(text.col4),is.null(text.col3),is.null(text.col2))))
-                cat("x.limits are set to NULL; defaults are used.\n")
+                message("x.limits are set to NULL; defaults are used.\n")
         }
         # Cap names
         names(parent.df) <- toupper(names(parent.df))
         category.color <- toupper(category.color)
         y.rank.col <- toupper(y.rank.col)
         text.col1 <- toupper(text.col1)
-        if(is.null(text.col2)==F) text.col2 <- toupper(text.col2)
-        if(is.null(text.col3)==F)text.col3 <- toupper(text.col3)
-        if(is.null(text.col4)==F) text.col4 <- toupper(text.col4)
+        if(is.null(text.col2)== FALSE) text.col2 <- toupper(text.col2)
+        if(is.null(text.col3)== FALSE)text.col3 <- toupper(text.col3)
+        if(is.null(text.col4)== FALSE) text.col4 <- toupper(text.col4)
         y.label.rank.col <- toupper(y.label.rank.col)
         y.label.col <- toupper(y.label.col)
         y.label.rank.col <- toupper(y.label.rank.col)
@@ -1112,7 +1098,7 @@ table.plot <- function(
                               y = RANK, 
                               label = TEXT.COL1, hjust = 0.5))
         
-        if(is.null(text.col2)==F)
+        if(is.null(text.col2)== FALSE)
                 for.return <- for.return +
                 geom_text(data = table.df,   size =text.size,
                           aes(x = 2,  
@@ -1120,7 +1106,7 @@ table.plot <- function(
                               y = RANK, 
                               label = TEXT.COL2, hjust = 0.5))
         
-        if(is.null(text.col3)==F)
+        if(is.null(text.col3)== FALSE)
                 for.return <- for.return +
                 geom_text(data = table.df,   size =text.size,
                           aes(x = 3,   
@@ -1128,7 +1114,7 @@ table.plot <- function(
                               y = RANK, 
                               label = TEXT.COL3, hjust = 0.5))
         
-        if(is.null(text.col4)==F)
+        if(is.null(text.col4)== FALSE)
                 for.return <- for.return +
                 geom_text(data = table.df,  size =text.size,
                           aes(x = 4,   
@@ -1166,18 +1152,7 @@ table.plot <- function(
 #  Session Starters -------------------------------------
 
 # default.settings -------
-#' @title default.settings
-#' @description Global Defaults
-#' @details Global Defaults
-#' @inheritParams graphic.params
-#' @section Value: 
-#' \describe{
-#' Describe
-#' }
-#' @author Greg Cicconetti
-
-# default.settings -------
-#' @title default.settings - next iteration of default.settings
+#' @title default.settings 
 #' @description Global Defaults
 #' @details Global Defaults
 #' @inheritParams graphic.params
@@ -1229,16 +1204,16 @@ default.settings <- function(pos = 1,
   assign("bottom.margin", 1.75-.5, envir = envir)
   
   # Offer feedback:
-  cat("my.path is set to:", my.path, "\n")
-  cat("dd is set to:", dd, "\n")
-  cat("cd is set to:", cd, "\n")
-  cat("od is set to:", od, "\n")
-  cat("logd is set to:", logd, "\n")
+  message("my.path is set to:", my.path, "\n")
+  message("dd is set to:", dd, "\n")
+  message("cd is set to:", cd, "\n")
+  message("od is set to:", od, "\n")
+  message("logd is set to:", logd, "\n")
   assign("graph.region.h", page.height - (top.margin + bottom.margin), envir = envir)
   assign("graph.region.w", page.width - (right.margin + left.margin), envir = envir)
   assign("blankPanel", grid.rect(gp=gpar(col= "white"), draw=FALSE), envir = envir)
   
-  cat(paste0("The default page dimension is set to landscape: ", 
+  message(paste0("The default page dimension is set to landscape: ", 
       page.width, " inches wide by ", page.height, " inches tall.\n",
       "The default page left and right page margins: ",
       left.margin, " inches and ", right.margin  ," inches, respectively.\n",
@@ -1247,7 +1222,7 @@ default.settings <- function(pos = 1,
       "The region available for graphics/tables is ", graph.region.w, " inches wide by ", graph.region.h, " inches tall."))
   
   do.call("theme_set", list(do.call(main.theme, list())))
-  cat(paste("\nThe default theme:", main.theme, "\n"))
+  message(paste("\nThe default theme:", main.theme, "\n"))
 }
 
 # Custom Themes -------
@@ -1257,9 +1232,10 @@ default.settings <- function(pos = 1,
 #' @description Adapts theme_grey() found in ggplot2 
 #' @details axis.text colour changed from "grey50" to "black"; legend.position changed from "right" to "bottom"; legend.direction changed to "horizontal"; plot.margin changed from default unit(c(1, 1, 0.5, 0.5), "lines") to unit(c(0, 0, 0, 0), "in")
 #' @inheritParams graphic.params
+#' @return The returns a function that can be passed to ggplot2::theme_set
 #' @examples
-#' \dontrun{
-#' theme_set(theme_grey2_nomargins())
+#' {
+#' ggplot2::theme_set(theme_grey2_nomargins())
 #' }
 #' @author Greg Cicconetti
 theme_grey2_nomargins <-  function (base_size = 12, base_family = ""){
@@ -1428,22 +1404,23 @@ theme_table_nomargins <- function (base_size = 12, base_family = "") {
           plot.margin = unit(c(0, 0, 0, 0), "lines"))
 }
 
-
 # This file holds functions associated with assembling figures on a page
 
 # Builders  -------
 
 # build.page -------
 #' @title build.page
-#' @description  Takes page dimensions, figure layout dimenesions and an ordered list of grobs/ggplot objects orients them on a page
+#' @description  Takes page dimensions, figure layout dimensions and an ordered list of grobs/ggplot objects orients them on a page
 #' @inheritParams graphic.params
+#' @return This writes graphics/grobs to a device.
 #' @examples 
-#' \dontrun{
-#' pdf(file = "demonstrating build.page.pdf", width = 11, height = 8.5)
-#' build.page(test.dim=T)
-#' build.page(interior.w = c(.5, .5), ncol=2, nrow=1, test.dim=T)
-#' build.page(interior.h = c(.5, .5), ncol=1, nrow=2, test.dim=T)
-#' build.page(interior.h = c(.5, .5), interior.w = c(.5, .5), ncol=2, nrow=2, test.dim=T)
+#' {
+#' # Commenting out calls to pdf and dev.off.
+#' # pdf(file = "demonstrating build.page.pdf", width = 11, height = 8.5)
+#' build.page(test.dim= TRUE)
+#' build.page(interior.w = c(.5, .5), ncol=2, nrow=1, test.dim= TRUE)
+#' build.page(interior.h = c(.5, .5), ncol=1, nrow=2, test.dim= TRUE)
+#' build.page(interior.h = c(.5, .5), interior.w = c(.5, .5), ncol=2, nrow=2, test.dim= TRUE)
 #' build.page(interior.h=c(1/3,1/3,1/3),
 #'            interior.w=c(1),
 #'            ncol=1, nrow=3,
@@ -1461,36 +1438,36 @@ theme_table_nomargins <- function (base_size = 12, base_family = "") {
 #'            right.margin=.1,
 #'            left.margin=.1)
 #' 
-#' parabola.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^2), aes(x=x,y=y))+
-#' geom_line()
-#' parabola.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^2), aes(x=x,y=y))+
-#' geom_line()
-#' cubic.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^3), aes(x=x,y=y))+
-#' geom_line()
-#' cubic.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^3), aes(x=x,y=y))+
-#' geom_line()
+#' parabola.up <- ggplot2::ggplot(data.frame(x=-10:10, y=(-10:10)^2), ggplot2::aes(x=x,y=y))+
+#' ggplot2::geom_line()
+#' parabola.down <- ggplot2::ggplot(data.frame(x=-10:10, y=-(-10:10)^2), ggplot2::aes(x=x,y=y))+
+#' ggplot2::geom_line()
+#' cubic.up <- ggplot2::ggplot(data.frame(x=-10:10, y=(-10:10)^3), ggplot2::aes(x=x,y=y))+
+#' ggplot2::geom_line()
+#' cubic.down <- ggplot2::ggplot(data.frame(x=-10:10, y=-(-10:10)^3), ggplot2::aes(x=x,y=y))+
+#' ggplot2::geom_line()
 #' 
-#' red.parabola.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^2), aes(x=x,y=y))+
-#' geom_line(color="red")
-#' red.parabola.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^2), aes(x=x,y=y))+
-#' geom_line(color="red")
-#' red.cubic.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^3), aes(x=x,y=y))+
-#' geom_line(color="red")
-#' red.cubic.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^3), aes(x=x,y=y))+
-#' geom_line(color="red")
+#' red.parabola.up <- ggplot2::ggplot(data.frame(x=-10:10, y=(-10:10)^2), ggplot2::aes(x=x,y=y))+
+#' ggplot2::geom_line(color="red")
+#' red.parabola.down <- ggplot2::ggplot(data.frame(x=-10:10, y=-(-10:10)^2), ggplot2::aes(x=x,y=y))+
+#' ggplot2::geom_line(color="red")
+#' red.cubic.up <- ggplot2::ggplot(data.frame(x=-10:10, y=(-10:10)^3), ggplot2::aes(x=x,y=y))+
+#' ggplot2::geom_line(color="red")
+#' red.cubic.down <- ggplot2::ggplot(data.frame(x=-10:10, y=-(-10:10)^3), ggplot2::aes(x=x,y=y))+
+#' ggplot2::geom_line(color="red")
 #' 
 #' 
 #' 
 #' build.page(interior.h = c(.5, .5), nrow=2, ncol=1,
-#'            test.dim=F, interior = list(parabola.up, 
+#'            test.dim= FALSE, interior = list(parabola.up, 
 #'                                        parabola.down))
 #' 
 #' build.page(interior.w = c(.5, .5), nrow=1, ncol=2,
-#'            test.dim=F, interior = list(parabola.up, 
+#'            test.dim= FALSE, interior = list(parabola.up, 
 #'                                        parabola.down))
 #' 
 #' build.page(interior.w = c(.5, .5), interior.h = c(.5, .5), nrow=2, ncol=2,
-#'            test.dim=F, interior = list(parabola.up, 
+#'            test.dim= FALSE, interior = list(parabola.up, 
 #'                                        red.parabola.up,
 #'                                        parabola.down, 
 #'                                        red.parabola.down
@@ -1550,7 +1527,7 @@ theme_table_nomargins <- function (base_size = 12, base_family = "") {
 #'                            red.cubic.down))
 #' 
 #' 
-#' dev.off()
+#' # dev.off()
 #' 
 #' } 
 #' @author Greg Cicconetti
@@ -1571,7 +1548,7 @@ build.page <- function (
 {
         if(sum(interior.h) !=1) return("Argument interior.h is not equal to 1.")
         if(sum(interior.w) !=1) return("Argument interior.w is not equal to 1.")
-        if(length(interior.h) != nrow || length(interior.w) != ncol) return(cat("Check arguments: page.heights/page.widths does not correspond with ncol/nrow."))
+        if(length(interior.h) != nrow || length(interior.w) != ncol) return(message("Check arguments: page.heights/page.widths does not correspond with ncol/nrow."))
         
         page.widths <- unit(c(right.margin, interior.w*(page.width-right.margin-left.margin), left.margin), units= "inches")
         page.heights <- unit(c(top.margin, interior.h*(page.height - top.margin - bottom.margin), bottom.margin), units= "inches")
@@ -1579,7 +1556,7 @@ build.page <- function (
         if (test.dim == TRUE) {
                 grid.show.layout(grid.layout(nrow = nrow + 2, ncol = ncol + 2, 
                                              heights = page.heights, widths = page.widths))
-                cat(paste0(
+                message(paste0(
                         "Your page is a rectangle: ", page.width, " inches wide by ", page.height, " inches tall.\n", 
                         "Your page setup allocates: ", left.margin,  " inches to the left margin.\n",
                         "Your page setup allocates: ", right.margin, " inches to the right margin.\n",
@@ -1628,9 +1605,9 @@ build.page <- function (
 # annotate.page -------
 #' @title annotate.page
 #' @description Optionally adds up to 4 lines for titles, 3 lines for right and left headers, and 5 lines of footnotes
+#' @return Following an application of build.page, this function stamps on meta-data.
 #' @inheritParams graphic.params
 #' @author Greg Cicconetti
-
 annotate.page <- function (
   page.height = 8.5, 
   page.width = 11, 
@@ -1682,7 +1659,7 @@ annotate.page <- function (
   time.stamp <- ifelse(addTime ==TRUE,toupper(format(Sys.time(), tz = "GMT", format = "%d%b%Y %H:%M")),"")
   fnote[[5]] <- paste(fnote[[5]], time.stamp)
   
-  if (add.fignum == T & is.null(fignum) == FALSE) {
+  if (add.fignum == TRUE & is.null(fignum) == FALSE) {
     grid.text(x = unit((page.width)/2, "inch"), 
         y = unit(page.height - top.margin, "inches") - unit(fignum.buffer, "line"), 
         just = "center", 
@@ -1756,85 +1733,33 @@ annotate.page <- function (
 #' @details Used in conjunction with log files created with start_session_log
 #' @author David Wade
 check.ggplot.outliers <- function(plot.object=NULL) {
-        
-        
-        
         if (class(plot.object)[1]=="gg") {
-                
-                
-                
-                # build <- ggplot_build(plot.object)
-                
-                cat(paste("Checking ggplot object for out of range points in",length(plot.object$layers),"layer(s):\n"))
-                
-                
-                
-                # identify the x and y axis limits 
-                
-                for (scale.i in seq(1:length(plot.object$scales$scales))){
-                        
-                        
-                        
-                        if (plot.object$scales$scales[[scale.i]]$aesthetics[1]=="y"){
-                                
-                                scale.y.min <- plot.object$scales$scales[[scale.i]]$limits[1]
-                                
-                                scale.y.max <- plot.object$scales$scales[[scale.i]]$limits[2]
-                                
+        message(paste("Checking ggplot object for out of range points in",length(plot.object$layers),"layer(s):\n"))
+        # identify the x and y axis limits 
+        for (scale.i in seq(1:length(plot.object$scales$scales))){
+                if (plot.object$scales$scales[[scale.i]]$aesthetics[1]=="y"){
+                        scale.y.min <- plot.object$scales$scales[[scale.i]]$limits[1]
+                        scale.y.max <- plot.object$scales$scales[[scale.i]]$limits[2]
                         }
-                        
-                        if (plot.object$scales$scales[[scale.i]]$aesthetics[1]=="x"){
-                                
-                                scale.x.min <- plot.object$scales$scales[[scale.i]]$limits[1]
-                                
-                                scale.x.max <- plot.object$scales$scales[[scale.i]]$limits[2]
-                                
+                if (plot.object$scales$scales[[scale.i]]$aesthetics[1]=="x"){
+                        scale.x.min <- plot.object$scales$scales[[scale.i]]$limits[1]
+                        scale.x.max <- plot.object$scales$scales[[scale.i]]$limits[2]
                         }      
-                        
                 } # end for scale.i loop
-                
-                
-                
-                
-                
-                # identify the range of the x and y data points in each layer of the plot
-                
-                for (layer.i in seq(1:length(plot.object$layers))){
-                        
-                        
-                        
-                        layer.name<-plot.object$layers[[layer.i]]$geom$objname
-                        
-                        
-                        
-                        geom.found<-FALSE
-                        
-                        if (layer.name %in% c("line","point","errorbar")){
-                                
-                                
-                                
-                                geom.found<-TRUE
-                                
-                                
-                                
-                                # first confirm that these are simple single variable plotting definitions
-                                
-                                valid.x.variable.found<-TRUE
-                                
-                                valid.y.variable.found<-TRUE
-                                
-                                x.name <- as.character(plot.object$layers[[layer.i]]$mapping$x)
-                                
-                                if (!(length(x.name)==1)){valid.x.variable.found<-FALSE}
-                                
-                                
-                                
-                                if (layer.name %in% c("line","point")){
-                                        
-                                        y.name <- as.character(plot.object$layers[[layer.i]]$mapping$y)
-                                        
-                                        if (!(length(y.name)==1)){valid.y.variable.found<-FALSE}
-                                        
+        # identify the range of the x and y data points in each layer of the plot
+        for (layer.i in seq(1:length(plot.object$layers))){
+                layer.name<-plot.object$layers[[layer.i]]$geom$objname
+                geom.found<-FALSE
+                if (layer.name %in% c("line","point","errorbar")){
+                        geom.found<-TRUE
+                        # first confirm that these are simple single variable plotting definitions
+                        valid.x.variable.found<-TRUE
+                        valid.y.variable.found<-TRUE
+                        x.name <- as.character(plot.object$layers[[layer.i]]$mapping$x)
+                        if (!(length(x.name)==1)){valid.x.variable.found<-FALSE}
+                        if (layer.name %in% c("line","point")){
+                                y.name <- as.character(plot.object$layers[[layer.i]]$mapping$y)
+                                if (!(length(y.name)==1)){valid.y.variable.found<-FALSE}
                                 }
                                 
                                 if (layer.name %in% c("errorbar")){
@@ -1859,7 +1784,7 @@ check.ggplot.outliers <- function(plot.object=NULL) {
                                         
                                 }
                                 
-                                if (valid.x.variable.found==FALSE){cat("   Layer ",layer.i," (",layer.name,") has an equation for x so x is not scanned for outliers.\n",sep="")}
+                                if (valid.x.variable.found==FALSE){message("   Layer ",layer.i," (",layer.name,") has an equation for x so x is not scanned for outliers.\n",sep="")}
                                 
                                 
                                 
@@ -1889,7 +1814,7 @@ check.ggplot.outliers <- function(plot.object=NULL) {
                                         
                                 }
                                 
-                                if (valid.y.variable.found==FALSE){cat("   Layer ",layer.i," (",layer.name,") has an equation for y so y is not scanned for outliers.\n",sep="")}
+                                if (valid.y.variable.found==FALSE){message("   Layer ",layer.i," (",layer.name,") has an equation for y so y is not scanned for outliers.\n",sep="")}
                                 
                                 
                                 
@@ -1897,19 +1822,19 @@ check.ggplot.outliers <- function(plot.object=NULL) {
                                         
                                         scale.problem.found <- FALSE
                                         
-                                        if ( data.x.min < scale.x.min ){cat("   figuRes Warning: x point below x scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                        if ( data.x.min < scale.x.min ){message("   figuRes Warning: x point below x scale in layer ",layer.i," (",layer.name,").\n",sep="")
                                                                         
                                                                         scale.problem.found<-TRUE
                                                                         
                                         }
                                         
-                                        if ( data.x.max > scale.x.max ){cat("   figuRes Warning: x point above x scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                        if ( data.x.max > scale.x.max ){message("   figuRes Warning: x point above x scale in layer ",layer.i," (",layer.name,").\n",sep="")
                                                                         
                                                                         scale.problem.found<-TRUE
                                                                         
                                         }
                                         
-                                        if (scale.problem.found==FALSE){cat("   No points found beyond x scale limits in layer ",layer.i," (",layer.name,").\n",sep="")}
+                                        if (scale.problem.found==FALSE){message("   No points found beyond x scale limits in layer ",layer.i," (",layer.name,").\n",sep="")}
                                         
                                 }
                                 
@@ -1919,31 +1844,31 @@ check.ggplot.outliers <- function(plot.object=NULL) {
                                         
                                         scale.problem.found <- FALSE
                                         
-                                        if ( data.x.min < scale.x.min ){cat("   figuRes Warning: x point below x scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                        if ( data.x.min < scale.x.min ){message("   figuRes Warning: x point below x scale in layer ",layer.i," (",layer.name,").\n",sep="")
                                                                         
                                                                         scale.problem.found<-TRUE
                                                                         
                                         }
                                         
-                                        if ( data.x.max > scale.x.max ){cat("   figuRes Warning: x point above x scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                        if ( data.x.max > scale.x.max ){message("   figuRes Warning: x point above x scale in layer ",layer.i," (",layer.name,").\n",sep="")
                                                                         
                                                                         scale.problem.found<-TRUE
                                                                         
                                         }
                                         
-                                        if ( data.y.min < scale.y.min ){cat("   figuRes Warning: y point below y scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                        if ( data.y.min < scale.y.min ){message("   figuRes Warning: y point below y scale in layer ",layer.i," (",layer.name,").\n",sep="")
                                                                         
                                                                         scale.problem.found<-TRUE
                                                                         
                                         }
                                         
-                                        if ( data.y.max > scale.y.max ){cat("   figuRes Warning: y point above y scale in layer ",layer.i," (",layer.name,").\n",sep="")
+                                        if ( data.y.max > scale.y.max ){message("   figuRes Warning: y point above y scale in layer ",layer.i," (",layer.name,").\n",sep="")
                                                                         
                                                                         scale.problem.found<-TRUE
                                                                         
                                         }
                                         
-                                        if (scale.problem.found==FALSE){cat("   No points found beyond y scale limits in layer ",layer.i," (",layer.name,").\n",sep="")}
+                                        if (scale.problem.found==FALSE){message("   No points found beyond y scale limits in layer ",layer.i," (",layer.name,").\n",sep="")}
                                         
                                 }
                                 
@@ -1953,7 +1878,7 @@ check.ggplot.outliers <- function(plot.object=NULL) {
                         
                         
                         
-                        if (geom.found==FALSE){cat("   Layer ",layer.i," (",layer.name,") y axis is not from a geom type that is scanned for outliers.\n",sep="")}
+                        if (geom.found==FALSE){message("   Layer ",layer.i," (",layer.name,") y axis is not from a geom type that is scanned for outliers.\n",sep="")}
                         
                         
                         
@@ -1961,11 +1886,11 @@ check.ggplot.outliers <- function(plot.object=NULL) {
                 
         }   
         
-        else {cat("   figuRes Error: The object attempted to check was not a ggplot object.\n")}
+        else {message("   figuRes Error: The object attempted to check was not a ggplot object.\n")}
         
         
         
-        cat(paste("Checking ggplot object for out of range points has completed.\n\n"))
+        message(paste("Checking ggplot object for out of range points has completed.\n\n"))
         
         
         
@@ -2052,24 +1977,24 @@ refresh.outputplan <-
     # search for \n in FigureTitle column
     for (i in 1:ncol(temp)) {
       temp[, i] <- as.character(temp[, i], na = "")
-      temp[, i][is.na(temp[, i]) == T] <- ""
+      temp[, i][is.na(temp[, i]) == TRUE] <- ""
     }
     
     # Replace 
     temp$FigureTitle <- gsub(pattern = "\\n", x = temp$FigureTitle, 
-           replacement = "\n", fixed = T)
+           replacement = "\n", fixed = TRUE)
     temp$FigureTitle <- gsub(pattern = "COMMA", x = temp$FigureTitle, 
-           replacement = ",", fixed = T)
+           replacement = ",", fixed = TRUE)
     temp$TableID <- gsub(pattern = "COMMA", x = temp$TableID, 
-             replacement = ",", fixed = T)
+             replacement = ",", fixed = TRUE)
     temp$fnote1 <- gsub(pattern = "COMMA", x = temp$fnote1, 
-            replacement = ",", fixed = T)
+            replacement = ",", fixed = TRUE)
     temp$fnote2 <- gsub(pattern = "COMMA", x = temp$fnote2, 
-            replacement = ",", fixed = T)
+            replacement = ",", fixed = TRUE)
     temp$fnote3 <- gsub(pattern = "COMMA", x = temp$fnote3, 
-            replacement = ",", fixed = T)
+            replacement = ",", fixed = TRUE)
     temp$fnote4 <- gsub(pattern = "COMMA", x = temp$fnote4, 
-            replacement = ",", fixed = T)
+            replacement = ",", fixed = TRUE)
     # Prepare to split FigureTitle Column into constituent title lines
     temp$FigureTitle1 <- temp$FigureTitle2 <- temp$FigureTitle3 <- temp$FigureTitle4 <- ""
     temp$nTitleLines <- 1
@@ -2111,11 +2036,11 @@ refresh.outputplan <-
     temp$nTitleLines <- as.numeric(temp$nTitleLines)
     assign("outputplan", temp, envir = envir)
     if (any(duplicated(outputplan$output))) 
-      cat(paste("Note: outputplan has duplicated values in the output column.\nThe outputplan should be edited or subseted to ensure no duplicates.\nCulprits are:", 
+      message(paste("Note: outputplan has duplicated values in the output column.\nThe outputplan should be edited or subseted to ensure no duplicates.\nCulprits are:", 
           outputplan$output[duplicated(outputplan$output)]), 
           "\n")
     if (any(duplicated(outputplan$rcode))) 
-      cat(paste("Note: outputplan has duplicated values in the rcode column.\nThe outputplan should be edited or subseted to ensure no duplicates.\nCulprits are:", 
+      message(paste("Note: outputplan has duplicated values in the rcode column.\nThe outputplan should be edited or subseted to ensure no duplicates.\nCulprits are:", 
           outputplan$rcode[duplicated(outputplan$rcode)]), 
           "\n")
   }
@@ -2129,7 +2054,7 @@ refresh.outputplan <-
 #' @param dpires passed to devices
 #' @param use.log logical to write a log file
 #' @author David wade
-run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toWMF=F, toJPEG=F, toPNG=F, toBMP=F, toEPS=F, dpires=600, use.log=FALSE)  { 
+run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF= FALSE, toWMF= FALSE, toJPEG= FALSE, toPNG= FALSE, toBMP= FALSE, toEPS= FALSE, dpires=600, use.log=FALSE)  { 
   if (use.log==TRUE) {
     start_session_log(paste0(str_split(string = "g_AErr2.r",pattern = "\\.", n=2)[[1]][1], ".PDF")) }
     
@@ -2141,9 +2066,9 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       stop("source.code not found within outputplan")
     # CHECK IT: what's point of filename?
     filename <- source.code
-    if(exists("od2")==FALSE) od2 <- od
+    if(exists("od2") == FALSE) od2 <- od
     i <- which(outputplan$rcode == filename)
-    if (toPDF == T) {
+    if (toPDF == TRUE) {
       if (outfile == "")
         pdf(paste(od, outputplan[i, ]$outputfile, sep = ""),      
             height = 8.5, width = 11)    
@@ -2152,17 +2077,17 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
-        cat("********************************************************************************\n")  
-        cat(paste("  The error message was: ",myError))  
+        message("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
+        message("********************************************************************************\n")  
+        message(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
-        cat(paste("\n  The error message was: ",myError))  
+        message("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
+        message(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
     }
-    if (toWMF == T) {      
+    if (toWMF == TRUE) {      
       if (outfile == "") 
         do.call("win.metafile", list(paste(od2,unlist(strsplit(outputplan[i, ]$outputfile,"\\."))[1],".wmf",sep = ""),         
                    height = 8.5, width = 11))
@@ -2172,17 +2097,17 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
-        cat("********************************************************************************\n")  
-        cat(paste("  The error message was: ",myError))  
+        message("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
+        message("********************************************************************************\n")  
+        message(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
-        cat(paste("\n  The error message was: ",myError))  
+        message("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
+        message(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
     } 
-    if (toJPEG == T) {      
+    if (toJPEG == TRUE) {      
       if (outfile == "")  
         jpeg(paste(od2,unlist(strsplit(outputplan[i, ]$outputfile,"\\."))[1],".jpeg",sep = ""),       
              height = 8.5, width = 11, units= "in", res=dpires)      
@@ -2192,17 +2117,17 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
-        cat("********************************************************************************\n")  
-        cat(paste("  The error message was: ",myError))  
+        message("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
+        message("********************************************************************************\n")  
+        message(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
-        cat(paste("\n  The error message was: ",myError))       
+        message("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
+        message(paste("\n  The error message was: ",myError))       
       })      
       dev.off()      
     }    
-    if (toPNG == T) {      
+    if (toPNG == TRUE) {      
       if (outfile == "")  
         png(paste(od2,unlist(strsplit(outputplan[i, ]$outputfile,"\\."))[1],".png",sep = ""),      
             height = 8.5, width = 11, units= "in", res=dpires)      
@@ -2212,17 +2137,17 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
-        cat("********************************************************************************\n")  
-        cat(paste("  The error message was: ",myError))  
+        message("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
+        message("********************************************************************************\n")  
+        message(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
-        cat(paste("\n  The error message was: ",myError))  
+        message("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
+        message(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
     }    
-    if (toBMP == T) {      
+    if (toBMP == TRUE) {      
       if (outfile == "")  
         bmp(paste(od2,unlist(strsplit(outputplan[i, ]$outputfile,"\\."))[1],".bmp",sep = ""),      
             height = 8.5, width = 11, units= "in", res=dpires)      
@@ -2231,48 +2156,48 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
-        cat("********************************************************************************\n")  
-        cat(paste("  The error message was: ",myError))  
+        message("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
+        message("********************************************************************************\n")  
+        message(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
-        cat(paste("\n  The error message was: ",myError))  
+        message("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
+        message(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
     }   
-    if (toEPS == T) {      
+    if (toEPS == TRUE) {      
       if (outfile == "")  
         postscript(paste(od2,unlist(strsplit(outputplan[i, ]$outputfile,"\\."))[1],".eps",sep = ""),       
-             height = 8.5, width = 12, pagecentre =T, horizontal=T, paper= "letter")      
+             height = 8.5, width = 12, pagecentre = TRUE, horizontal= TRUE, paper= "letter")      
       if (outfile != "")  
         postscript(paste(od2,unlist(strsplit(outfile,"\\."))[1],".eps", sep = ""), 
-             height = 8.5, width = 12, pagecentre =T, horizontal=T, paper= "letter")      
+             height = 8.5, width = 12, pagecentre = TRUE, horizontal= TRUE, paper= "letter")      
       tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {  
         myError <<- e$message  
         # this first message goes into the R history file  
-        cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
-        cat("********************************************************************************\n")  
-        cat(paste("  The error message was: ",myError))  
+        message("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")  
+        message("********************************************************************************\n")  
+        message(paste("  The error message was: ",myError))  
         closeAllConnections()  
         # this second message goes to the console to alert the user  
-        cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
-        cat(paste("\n  The error message was: ",myError))  
+        message("figuRes2 Error: A fatal error ocurred causing the function to stop running")  
+        message(paste("\n  The error message was: ",myError))  
       })      
       dev.off()      
     }    
-    if (toPDF == F & toWMF == F & toJPEG == F & toPNG == F & toBMP == F & toEPS == F) {      
+    if (toPDF == FALSE & toWMF == FALSE & toJPEG == FALSE & toPNG == FALSE & toBMP == FALSE & toEPS == FALSE) {      
       if (names(dev.cur()) == "windows")  
         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {    
           myError <<- e$message    
           # this first message goes into the R history file    
-          cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")    
-          cat("********************************************************************************\n")    
-          cat(paste("  The error message was: ",myError))    
+          message("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")    
+          message("********************************************************************************\n")    
+          message(paste("  The error message was: ",myError))    
           closeAllConnections()    
           # this second message goes to the console to alert the user    
-          cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")
-          cat(paste("\n  The error message was: ",myError))
+          message("figuRes2 Error: A fatal error ocurred causing the function to stop running")
+          message(paste("\n  The error message was: ",myError))
         })
       else {
         graphics.off()
@@ -2280,13 +2205,13 @@ run.specific <-  function (source.code = "g_AErr2.r", outfile = "", toPDF=F, toW
         tryCatch({source(paste(cd, source.code, sep = ""))},error=function(e) {
           myError <<- e$message
           # this first message goes into the R history file
-          cat("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")
-          cat("********************************************************************************\n")
-          cat(paste("  The error message was: ",myError))
+          message("\n\nfiguRes2 Error: A fatal error ocurred causing the function to stop running\n")
+          message("********************************************************************************\n")
+          message(paste("  The error message was: ",myError))
           closeAllConnections()
           # this second message goes to the console to alert the user
-          cat("figuRes2 Error: A fatal error ocurred causing the function to stop running")
-          cat(paste("\n  The error message was: ",myError))
+          message("figuRes2 Error: A fatal error ocurred causing the function to stop running")
+          message(paste("\n  The error message was: ",myError))
         }) 
       } 
     }
@@ -2329,7 +2254,7 @@ all_in_one <- function (UseSubset = "SAC", filename = "SAC.pdf", reportNR=TRUE)
       geom_text(data= outputplan[outputplan[,UseSubset]== "N",], aes(hjust=0, y=FigureNumber, x = .5, label=FigureTitle, size =4))+
       xlim(0, 5)+
       theme_classic()+
-      guides(size =F) + 
+      guides(size= "none") + 
       theme(axis.line.x=element_blank(),axis.text.x= element_blank(), axis.ticks.x=element_blank(), axis.title.x=element_blank())
     print(r)
   }
@@ -2429,34 +2354,35 @@ start_session_log<-function(x, outputfile = "example.PDF", pos=1, envir=as.envir
   # Strip the extension off of outputfile and replace with .rhis
   log.file.name <- paste0(logd,strsplit(outputfile,split = "[.]")[[1]][1],".rhis")
   # start directing all console output to a log file
-  options(warn = 1) # default setting
+  # commenting next line per CRAN
+  # options(warn = 1) # default setting
   sink(file =log.file.name)
   sink(stdout(), type = "message", append = FALSE, split=FALSE)  
   # print log header information
-  cat("*******************************************************************\n")
-  cat("*                 *\n")
-  cat("* figuRes2 R Graphics System              *\n")
-  cat("*                 *\n")    
-  cat("* Graphics session history log file             *\n")
-  cat("*                 *\n")
-  cat("*******************************************************************\n")
-  cat(" \n")
-  cat(paste("***"," R session history log file: ", log.file.name," ***\n",sep= ""))  
-  cat(" \n")
+  message("*******************************************************************\n")
+  message("*                 *\n")
+  message("* figuRes2 R Graphics System              *\n")
+  message("*                 *\n")    
+  message("* Graphics session history log file             *\n")
+  message("*                 *\n")
+  message("*******************************************************************\n")
+  message(" \n")
+  message(paste("***"," R session history log file: ", log.file.name," ***\n",sep= ""))  
+  message(" \n")
   assign("log.start.time", Sys.time(), envir=envir) 
-  cat(paste("Run time logging commenced at: ",Sys.time(),"\n"))
-  cat(" \n")
-  cat(" \n")
-  cat(" \n")
+  message(paste("Run time logging commenced at: ",Sys.time(),"\n"))
+  message(" \n")
+  message(" \n")
+  message(" \n")
   # log information about the R session in which the graphics driver was run
-  cat(" \n")
-  cat(" \n")
-  cat("* R Session Information             *\n")     
-  cat("*******************************************************************\n")
+  message(" \n")
+  message(" \n")
+  message("* R Session Information             *\n")     
+  message("*******************************************************************\n")
   #x<-alien        # these commands gets logged if executed outside of function but not in it.
   #Sys.info()      # these commands gets logged if executed outside of function but not in it.
   sessionInfo()
-  cat(" \n") 
+  message(" \n") 
 }
 
 #' @title stop_session_log
@@ -2470,13 +2396,13 @@ start_session_log<-function(x, outputfile = "example.PDF", pos=1, envir=as.envir
 stop_session_log<-function()
 {
   log.start.time <- NULL
-  cat(" \n")
-  cat(" \n")
-  cat(" \n")
-  cat(paste("*** log ended at ", Sys.time(), " ***",sep= ""))
+  message(" \n")
+  message(" \n")
+  message(" \n")
+  message(paste("*** log ended at ", Sys.time(), " ***",sep= ""))
   log.stop.time<-Sys.time()
   log.elapsed.time<-round((log.stop.time-log.start.time))
-  cat(paste("*** elapsed run time was ",log.elapsed.time," seconds ***",sep= ""))
+  message(paste("*** elapsed run time was ",log.elapsed.time," seconds ***",sep= ""))
   # stop directing all console output to a log file
   sink(type = "message")
   sink()

@@ -41,6 +41,9 @@ nsubj.plot(
 
 \item{x.ticks.labels}{passed to scale_x_continuous}
 }
+\value{
+A ggplot object is returned.
+}
 \description{
 A function to create tables to accompany KMs and lineplots
 }

@@ -40,20 +40,11 @@ default.settings(
 }
 \description{
 Global Defaults
-
-Global Defaults
 }
 \details{
 Global Defaults
-
-Global Defaults
 }
 \section{Value}{
- 
-\describe{
-Describe
-}
-
  
 \describe{
 The following are assigned to global environment upon calling:

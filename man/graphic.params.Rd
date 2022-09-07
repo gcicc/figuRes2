@@ -213,7 +213,7 @@ graphic.params(
 
 \item{od}{directory where output files are sent}
 
-\item{outfile}{If (toPDF==T & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode ==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.}
+\item{outfile}{If (toPDF== TRUE & outfile == "") a .pdf file with root name taken from outputplan$outfile[which(outputplan$rcode ==source.code)]. Otherwise a .pdf will be created the value of outfile. The pdf is stored in mypath/od defined in setpaths.r.}
 
 \item{override}{override}
 
@@ -318,7 +318,7 @@ graphic.params(
 \item{ymin.col}{name of parent.df column assoicated with ymin (line.plot errorbars)}
 }
 \description{
-This is a dummy function whose purpose is to serve as repositiory for arguments used by figuRes2 functions.
+This is a dummy function whose purpose is to serve as repository for arguments used by figuRes2 functions.
 }
 \author{
 Greg Cicconetti

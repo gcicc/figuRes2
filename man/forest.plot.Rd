@@ -62,6 +62,9 @@ forest.plot(
 
 \item{flip.palette}{logical; if TRUE it reverse the order of colors used for background (forest.plot)}
 }
+\value{
+A ggplot object is returned.
+}
 \description{
 A function for creating harmonized forest.plots via ggplot2 offering compatiability with table.plot and dot.plot.
 }

@@ -1,4 +1,6 @@
 figure$
 cache$
+^[.].*$
+^.*/[.].*$
 ^.*\.Rproj$
 ^\.Rproj\.user$

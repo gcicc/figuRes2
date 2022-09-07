@@ -47,22 +47,25 @@ bar.plot(
 
 \item{killMissing}{logical used by bar.plot}
 }
+\value{
+A ggplot object is returned.
+}
 \description{
 A function for creating harmonized ggplot2 bar charts
 }
 \examples{
-\dontrun{
-# pre-processing
+{
+# Access dummy demography dataset
 data(demog.data)
 levels(demog.data$SEX) <- c("Female", "Male")
 
 # A ggplot object is returned
 p1 <- bar.plot(parent.df = demog.data, y.col = "SEX", 
 x.label= "Gender", y.label = "Percentage of Subjects", 
-category.col = "REGRAP", category.label = "Region", 
+category.col = "REGION", category.label = "Region", 
 y.limits = c(0, 0.35), y.ticks = seq(0, 0.5, 0.05), 
 bar.position= "dodge", 
-category.palette = brewer.pal(n=5, name = "Dark2"),
+category.palette = RColorBrewer::brewer.pal(n=5, name = "Dark2"),
 text.size =4, text.buffer=.025, killMissing = TRUE) 
 print(p1)
 } 

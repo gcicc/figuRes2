@@ -7,8 +7,8 @@
 km.plot(
   parent.df,
   censor.col = "CENSOR",
-  centime.col = "CENTIME",
-  category.col = "REGRAP",
+  centime.col = "CENTIME.DAY",
+  category.col = "REGION",
   category.palette = rainbow(5),
   at.risk.palette = rainbow(5),
   category.label = "Treatment Group",
@@ -18,8 +18,8 @@ km.plot(
   y.label = "Percetage of Subjects",
   x.limits = c(0, 48),
   x.ticks = seq(0, 48, 3),
-  y.ticks = seq(0, 1, 0.2),
-  y.limits = c(0, 1),
+  y.ticks = seq(0, 0.01, 0.005),
+  y.limits = c(0, 0.01),
   line.size = 0.75,
   fromthetop = FALSE,
   text.size = 4
@@ -62,35 +62,39 @@ km.plot(
 
 \item{text.size}{value gets passed to geom_text}
 }
+\value{
+A ggplot object is returned.
+}
 \description{
 A function for creating harmonized Kaplan-Meier plots and accompanying At Risk table.
 }
 \examples{
-\dontrun{
-# data(km.data)
-# working.df <- km.data
-# head(working.df)
-# working.df$centime <- working.df$centime/30.4375
-# km.M <- km.plot(parent.df = subset(working.df, SEX== "M"),
-#       category.col = "TRTGRP",
-#       category.palette = ("red", "blue"),
-#       at.risk.palette = c("red","blue"),           
-#       linetype.palette = c("solid","dotted"), 
-#       y.limits=c(0,.25), 
-#       y.ticks=seq(0,.25,.05), 
-#       x.limits=c(-3,48),
-#       x.ticks=seq(0,48,6))
-# print(km.M[[1]])
-# print(km.M[[2]])
-# grid.arrange(km.M[[1]] + theme(legend.position= "bottom"), km.M[[2]], ncol=1)
-# comeback <- sync.ylab.widths(list(km.M[[1]]+ theme(legend.position= "bottom"), km.M[[2]]))
-# grid.arrange(comeback[[1]] , comeback[[2]], ncol=1)
-# build.page(interior.h = c(.8, .2),
-#      interior.w = c(1),
-#       ncol=1, nrow=2,
-#       interior = list(comeback[[1]], 
-#           comeback[[2]]))
- }
+{
+require(ggplot2); require(gridExtra)
+data(km.data)
+working.df <- km.data
+head(working.df)
+km.M <- km.plot(parent.df = subset(working.df, SEX== "M"),
+      centime.col = "CENTIME.DAY",
+      category.col = "TRTGRP",
+      category.palette = c("red", "blue"),
+      at.risk.palette = c("red","blue"),              
+      linetype.palette = c("solid","dotted"), 
+      y.limits=c(0,.01), 
+      y.ticks=seq(0,.01,.005), 
+      x.limits=c(-3,48),
+      x.ticks=seq(0,48,6))
+print(km.M[[1]])
+print(km.M[[2]])
+grid.arrange(km.M[[1]] + theme(legend.position= "bottom"), km.M[[2]], ncol=1)
+comeback <- sync.ylab.widths(list(km.M[[1]]+ theme(legend.position= "bottom"), km.M[[2]]))
+grid.arrange(comeback[[1]] , comeback[[2]], ncol=1)
+build.page(interior.h = c(.8, .2),
+      interior.w = c(1),
+       ncol=1, nrow=2,
+       interior = list(comeback[[1]], 
+           comeback[[2]]))
+}
 }
 \seealso{
 sync.ylab.widths, nsubj.plot

@@ -1,9 +1,17 @@
 Package: figuRes2
 Type: Package
-Title: A Package to Support a Variety of Figure Production Tasks
+Title: Support for a Variety of Figure Production Tasks
 Version: 1.0.0
 Date: 2022-08-29
-Author: Greg Cicconetti, David Wade
+Authors@R: 
+    c(person(given = "Greg",
+             family = "Cicconetti",
+             role = c("aut", "cre"),
+             email = "hadley@rstudio.com",
+             comment = c(ORCID = "0000-0002-5380-7516")),
+      person(given = "David",
+             family = "Wade",
+             role = "aut"))
 URL: https://github.com/gcicc/figures2
 Maintainer: Greg Cicconetti <greg.cicconetti@gmail.com>
 Description: We view a figure as a collection of graphs/tables assembled on a page and optionally annotated with metadata
@@ -13,7 +21,8 @@ Encoding: UTF-8
 LazyLoad: no
 Depends: R (>= 3.5.0)
 Imports: survival, ggplot2, scales, stringr, plyr, grid, gridExtra, gtable, reshape2, grDevices, utils
-Suggests: RColorBrewer, knitr, rmarkdown, tidyverse
+Suggests: RColorBrewer, knitr, rmarkdown, tidyverse, latex2exp
 ByteCompile: TRUE
 VignetteBuilder: knitr
 RoxygenNote: 7.2.1
+References: <http://stackoverflow.com/questions/13297155/add-floating-axis-labels-in-facet-wrap-plot>

@@ -50,16 +50,20 @@ build.page(
 
 \item{envir}{used internally by some functions}
 }
+\value{
+This writes graphics/grobs to a device.
+}
 \description{
-Takes page dimensions, figure layout dimenesions and an ordered list of grobs/ggplot objects orients them on a page
+Takes page dimensions, figure layout dimensions and an ordered list of grobs/ggplot objects orients them on a page
 }
 \examples{
-\dontrun{
-pdf(file = "demonstrating build.page.pdf", width = 11, height = 8.5)
-build.page(test.dim=T)
-build.page(interior.w = c(.5, .5), ncol=2, nrow=1, test.dim=T)
-build.page(interior.h = c(.5, .5), ncol=1, nrow=2, test.dim=T)
-build.page(interior.h = c(.5, .5), interior.w = c(.5, .5), ncol=2, nrow=2, test.dim=T)
+{
+# Commenting out calls to pdf and dev.off.
+# pdf(file = "demonstrating build.page.pdf", width = 11, height = 8.5)
+build.page(test.dim= TRUE)
+build.page(interior.w = c(.5, .5), ncol=2, nrow=1, test.dim= TRUE)
+build.page(interior.h = c(.5, .5), ncol=1, nrow=2, test.dim= TRUE)
+build.page(interior.h = c(.5, .5), interior.w = c(.5, .5), ncol=2, nrow=2, test.dim= TRUE)
 build.page(interior.h=c(1/3,1/3,1/3),
            interior.w=c(1),
            ncol=1, nrow=3,
@@ -77,36 +81,36 @@ build.page(interior.h=c(1/3,1/3,1/3),
            right.margin=.1,
            left.margin=.1)
 
-parabola.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^2), aes(x=x,y=y))+
-geom_line()
-parabola.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^2), aes(x=x,y=y))+
-geom_line()
-cubic.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^3), aes(x=x,y=y))+
-geom_line()
-cubic.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^3), aes(x=x,y=y))+
-geom_line()
+parabola.up <- ggplot2::ggplot(data.frame(x=-10:10, y=(-10:10)^2), ggplot2::aes(x=x,y=y))+
+ggplot2::geom_line()
+parabola.down <- ggplot2::ggplot(data.frame(x=-10:10, y=-(-10:10)^2), ggplot2::aes(x=x,y=y))+
+ggplot2::geom_line()
+cubic.up <- ggplot2::ggplot(data.frame(x=-10:10, y=(-10:10)^3), ggplot2::aes(x=x,y=y))+
+ggplot2::geom_line()
+cubic.down <- ggplot2::ggplot(data.frame(x=-10:10, y=-(-10:10)^3), ggplot2::aes(x=x,y=y))+
+ggplot2::geom_line()
 
-red.parabola.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^2), aes(x=x,y=y))+
-geom_line(color="red")
-red.parabola.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^2), aes(x=x,y=y))+
-geom_line(color="red")
-red.cubic.up <- ggplot(data.frame(x=-10:10, y=(-10:10)^3), aes(x=x,y=y))+
-geom_line(color="red")
-red.cubic.down <- ggplot(data.frame(x=-10:10, y=-(-10:10)^3), aes(x=x,y=y))+
-geom_line(color="red")
+red.parabola.up <- ggplot2::ggplot(data.frame(x=-10:10, y=(-10:10)^2), ggplot2::aes(x=x,y=y))+
+ggplot2::geom_line(color="red")
+red.parabola.down <- ggplot2::ggplot(data.frame(x=-10:10, y=-(-10:10)^2), ggplot2::aes(x=x,y=y))+
+ggplot2::geom_line(color="red")
+red.cubic.up <- ggplot2::ggplot(data.frame(x=-10:10, y=(-10:10)^3), ggplot2::aes(x=x,y=y))+
+ggplot2::geom_line(color="red")
+red.cubic.down <- ggplot2::ggplot(data.frame(x=-10:10, y=-(-10:10)^3), ggplot2::aes(x=x,y=y))+
+ggplot2::geom_line(color="red")
 
 
 
 build.page(interior.h = c(.5, .5), nrow=2, ncol=1,
-           test.dim=F, interior = list(parabola.up, 
+           test.dim= FALSE, interior = list(parabola.up, 
                                        parabola.down))
 
 build.page(interior.w = c(.5, .5), nrow=1, ncol=2,
-           test.dim=F, interior = list(parabola.up, 
+           test.dim= FALSE, interior = list(parabola.up, 
                                        parabola.down))
 
 build.page(interior.w = c(.5, .5), interior.h = c(.5, .5), nrow=2, ncol=2,
-           test.dim=F, interior = list(parabola.up, 
+           test.dim= FALSE, interior = list(parabola.up, 
                                        red.parabola.up,
                                        parabola.down, 
                                        red.parabola.down
@@ -166,7 +170,7 @@ build.page(interior.h=c(1/3,1/3,1/3),
                            red.cubic.down))
 
 
-dev.off()
+# dev.off()
 
 } 
 }

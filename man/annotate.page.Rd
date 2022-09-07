@@ -76,6 +76,9 @@ annotate.page(
 
 \item{addTime}{logical for ading time stamp (annotate.page)}
 }
+\value{
+Following an application of build.page, this function stamps on meta-data.
+}
 \description{
 Optionally adds up to 4 lines for titles, 3 lines for right and left headers, and 5 lines of footnotes
 }
